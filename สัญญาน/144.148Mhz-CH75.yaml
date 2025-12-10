@@ -1,0 +1,416 @@
+
+HF Propagation Tools and Solar Data are now on multiple pages for faster loading
+Use the buttons at the top and bottom of the page to navigate, or use the following links:
+For Online MOF/LOF HF Propagation Prediction Tool, and conversion tools click here
+For NOAA's SWPC WSA-Enlil Coronal Mass Ejection (CME) Solar Wind Prediction Model click here
+For Understanding/Using Solar-Terrestrial Data, Solar Images, and HF Tutorials click here
+For current Space Weather and HF Propagation Conditions, and MUF Maps click here
+pdf presentation that contains tutorials and information on understanding radio propagation, and how to use all the data contained in the solar panels. You can download from this link
+pdf presentation that contains detailed instructions on adding a banner to your www.qrz.com BIO page. You can download from this link
+
+Displaying Solar-Terrestrial Data Panels on your site, computer, or other personal device
+
+Add Solar-Terrestrial Data to your Website
+Solar banners are available in 19 different configurations (see below), with variations of solar indicies and measurements, HF Conditions, VHF Conditions, EME degradation, selectable and fixed MUF, selectable K index (impacts conditions), signal noise and geomagnetic conditions, current secletable solar images, world sunlight maps and globes, moon view globe, graphs and plots, and selectable current solar system planet locations.
+HF Propagation predictions are just that, predictions calculated using the available data. Of course, actual conditions at your location depend on a lot of additional items. The only sure-fire way to determine if the bands are open is to fire up that HF rig and get on the air!
+Data for VHF Conditions is from DXrobot - Gouda, Make More Miles on VHF, and Andy (G7IZU) (all used with permission).
+Data for Solar Flare Probability is from University of Bradford (used with permission).
+Data for solar data and conditions from NOAA SWPC, solar flux from Space WX Canada, MUF data from Lowell GIRO Data Center (LGDC), solar images from NASA, and world map/globes/solar system from Fourmilab (credit given).
+Just cut and Paste html into your web page. You can customize most banners with selectable data, images, etc so its unique (not sure why most of you are not using this feature!) Refer to the HAMQSL FAQ Page for complete modification instructions.
+REMINDER
+I am starting to notice a number of sites that are not only removing the hyperlink from the banners, but also removing the credits from my data, tables, presentations, and pages. I do not mind the use of any of this information on your sites, but you must leave the credit to all people (me and the others) intact. Very respectfully 73 de Paul N0NBH.
+
+If you can afford it, please consider a donation.......click to read more
+TYPE	PANEL	HTML CODE
+HF & VHF
+Selectable SN
+Selectable 304A
+Band
+Condition
+Calculations
+EME Deg
+Selectable MUF
+Horizontal
+Selectable
+Solar Images
+Black Only
+No Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solarn0nbh.php"></a>
+</center>
+
+No Band
+Condition
+Calculations
+Large Vertical
+Selectable 304A
+19 Selectable
+Solar Images
+Black Only
+No Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solarpic.php"></a>
+</center>
+
+HF & VHF
+Band
+Condition
+Calculations
+Large Vertical
+Selectable 304A
+EME Deg
+Selectable MUF
+Black Only
+No Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solarvhf.php"></a>
+</center>
+
+No Band
+Condition
+Calculations
+Small Vertical
+Selectable 304A
+Multi-Color
+& Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solar.php"></a>
+</center>
+
+No Band
+Condition
+Calculations
+Small Vertical
+Selectable 304A
+Multi-Color
+& Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solarsmall.php"></a>
+</center>
+
+No Band
+Condition
+Calculations
+Small Vertical
+Limited Data
+Multi-Color
+& Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solarbrief.php"></a>
+</center>
+
+Only Band
+Condition
+Calculations
+Small Vertical
+Multi-Color
+& Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solarbc.php"></a>
+</center>
+
+Band
+Condition
+Calculations
+Small Vertical
+Selectable 304A
+Multi-Color
+& Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solar100sc.php"></a>
+</center>
+
+Band
+Condition
+Calculations
+Large Vertical
+Selectable 304A
+Multi-Color
+& Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solar2.php"></a>
+</center>
+
+No Band
+Condition
+Calculations
+Horizontal
+Selectable 304A
+19 Selectable
+Solar Images
+Black Only
+No Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solarpich.php"></a>
+</center>
+
+Band
+Condition
+Calculations
+Selectable
+Europe K-Ind
+tromso &
+dombas
+Selectable 304A
+19 Selectable
+Solar Images
+Black Only
+No Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solar101pic.php"></a>
+</center>
+
+HF & VHF
+Selectable
+Europe K-Ind
+tromso &
+dombas
+Selectable 304A
+Band
+Condition
+Calculations
+EME Deg
+Selectable MUF
+Horizontal
+Black Only
+No Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solar101vhf.php"></a>
+</center>
+
+HF & VHF
+Selectable
+Europe K-Ind
+tromso &
+dombas
+Selectable 304A
+Band
+Condition
+Calculations
+EME Deg
+Selectable MUF
+Horizontal
+Black Only
+No Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solar101vhfper.php"></a>
+</center>
+
+HF & VHF
+Selectable
+Europe K-Ind
+tromso &
+dombas
+Selectable 304A
+Band
+Condition
+Calculations
+EME Deg
+Selectable MUF
+Horizontal
+19 Selectable
+Solar Images
+Black Only
+No Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solar101vhfpic.php"></a>
+</center>
+
+Band
+Condition
+Calculations
+Selectable
+Europe K-Ind
+tromso &
+dombas
+Selectable 304A
+Multi-Color
+& Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solar101sc.php"></a>
+</center>
+
+No Band
+Condition
+Calculations
+Horizontal
+Selectable 304A
+19 Selectable
+Solar Images
+Black Only
+No Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solarsun.php"></a>
+</center>
+
+No Band
+Condition
+Calculations
+Horizontal
+304A @ EVE only
+Solar Flux
+Sunspot No.
+Graph
+Last 30 days
+Black Only
+No Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solargraph.php"></a>
+</center>
+
+No Band
+Condition
+Calculations
+Horizontal
+171A & 304A
+@ EVE only
+Solar Flux
+Sunspot No.
+11 MUF
+readings
+Graph
+Last 30 days
+Black Only
+No Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/marston.php"></a>
+</center>
+
+No Band
+Condition
+Calculations
+Horizontal
+Selectable 304A
+Current World
+Sunlight Map
+Solar Flux
+Sunspot No.
+11 MUF
+readings
+Black Only
+No Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solarmuf.php"></a>
+</center>
+
+No Band
+Condition
+Calculations
+Selectable 304A
+Current World
+Sunlight Map
+No Color
+No Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solarmap.php"></a>
+</center>
+
+No Band
+Condition
+Calculations
+Selectable 304A
+Current World
+Sunlight Globe
+No Color
+No Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solarglobe.php"></a>
+</center>
+
+No Band
+Condition
+Calculations
+Selectable 304A
+Current World
+Moon View
+of Globe
+EME Deg
+No Color
+No Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/moonglobe.php"></a>
+</center>
+
+
+No Band
+Condition
+Calculations
+Selectable Image
+Selectable 304A
+Current Solar
+System View
+No Color
+No Transparent		
+<center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solarsystem.php"></a>
+</center>
+
+If you can afford it, please consider a donation.......click to read more
+
+
+Add Solar-Terrestrial Data to your Windows Vista / 7 / 8 / 8.1 / 10 Desktop
+Updated K7MHI gadget Version 1.5.1.1 for Windows Vista and Windows 7. Click on this link and follow the download instructions. Make sure you UNINSTALL V 1.5.1.0 first or it will not work properly.
+   	
+   
+Making the Windows gadgets work with Windows 8 / 8.1 / 10 using 8GadgetPack (I have heard this works from a number of people but Ihave not tried it as I dont have W8 or above). Use at your own risk. Click on this link and follow the download and setup instructions for the app, then the download instructions for the gadget.
+   	
+   
+Special thanks to Rob (AB1NJ) for making the small data only N0NBH gadget for Windows Vista and W7. Click on this link and follow the download instructions.
+   	
+
+Add Solar-Terrestrial Data to your Windows Vista Desktop
+This one is also mine, in two banners. Refer to the HAMQSL FAQ Page for software download locations and complete instructions.
+      	      
+
+Add Solar-Terrestrial Data to your Macintosh Desktop
+Special thanks to Jan Lategahn (DO5LJ) for making the N0NBH gadget (the horizontal one with solar data, HF conditions, and solar image) that works with Mac OS. Click on this link and follow the download instructions.
+   	
+
+Add Solar-Terrestrial Data to your Linux Desktop
+Special thanks to Petr (OK2CQR) for making any of the available N0NBH gadgets works with Linux OS. Click on this link and follow the download instructions.
+   	
+
+Add Solar-Terrestrial Data to your Windows Phone 7 (WP7)
+Special thanks to Tom (KE7WTM) for making a HF-Propagation gadget for windows phone 7 (WP7). Contains all the data that the big N0NBH Gadgets have. Tom is using the same exact data I am using for the stickers and gadgets, so it updates every hour as well. Click on this link and follow the download instructions.
+   	
+
+ Add Solar-Terrestrial Data to your Apple iPhone or iPad
+Special thanks to Alexander (KB3WRY) for making HF-Propagation widgets for your Apple iPhone or iPad. You can download the widget to your device by scanning the QR code within the Widgy app for the specific banner or manually. Click on this link for complete instructions and banner selections on the Hamqsl FAQ page for setting up the widgets on your iPhone or iPad.
+   	
+
+Add Solar-Terrestrial Data to your Android device
+Special thanks to Sammy Jones for making an app that will run on your Android device.
+   		   		   	
+The Google Phone app is available at the following link https://www.apkmonk.com/posts/hf-propagation-android-app/
+Sam is using the same exact data I am using for the stickers and gadgets, so it updates every hour as well.
+Screenshots are shown at right.
+
+Display Solar-Terrestrial Data in a Dashboard
+Special thanks to John Ludhi for making a Dashboard for the solar data. Follow this link.
+
+Add Solar-Terrestrial Data as a WordPress Plugin
+Special thanks to Tom (NS6T) for making the N0NBH gadgets as a WordPress Plugin. Widgets are configurable, allowing the site administer to select which banner to display. Works on WordPress 2.9.2 and should work on previous 2.x versions as well. Click on this link and follow the download instructions.
+
+Add Solar-Terrestrial Data as a Joomla CMS
+Special thanks to Miro (PA4RM) for making any of the solar panels available as a Joomla CMS extension (becoming very popular). To download the Joomla Solar Panel extension, click on the this link and follow the download instructions.
+
+Add Solar-Terrestrial Data to your BlackBerry
+To place on the main page of your BlackBerry, refer to the HAMQSL FAQ Page for software download locations and complete instructions.
+
+Solar Indicies and Band Conditions on Twitter
+Special thanks to Stew (M0SCU) for tweeting the current solar indicies (SFI, A & K Index, and Sunspots) and solar conditions for the HF bands on twitter at @bandconditions.
+
+Solar-Terrestrial Data XML or RSS Feeds
+I recognize that a lot of you would like to create your own solar terestrial related web information. So, to make it easier, I am offering the data in XML and RSS format. Please be aware, these feeds will last as long as I do not hear grief from my ISP provider. If I do they are gone!! So please only select to update every hour - that is the update period for the flux parameters (rest are 3-hour updates). Credit to HAMQSL.com would be appreciated.
+Click to subscribe to an XML feed of the current Solar-Terrestrial Data
+Click to subscribe to an RSS feed of the current Solar-Terrestrial Data
+If you can afford it, please consider a donation to help keep these items available.......click to read more
+Donate with PayPal button 
+
+Online MOF/LOF HF Prediction Tool Online Conversion Tools (SFI, SN, K-Index, nT, signal noise, geomag field Current CME Updates, Warnings, Predictions and Tutorials Understanding Solar Indicies and Flux values impact to HF propagation Glossary of space and solar terms Understanding Current Solar Images Current HF Propagation Maps Current f0f2 Critical Freq, T-Index, and HF Fade Maps Current MUF, Absorption, F2 Height, and Solar Angle Maps Current Space Conditions, Data and Indices Add Solar-Terrestrial Data to your website/webpage Add Solar-Terrestrial Data to your Windows Vista/7 Sidebar or Macintosh Desktop as a gadget Add Solar-Terrestrial Data to your iPod, iPhone, Android, or BlackBerry Get Solar-Terrestrial Data XML or RSS Feeds
+
+73 all, de Paul N0NBH
+ 8 Nov 2023
+
+This site is © Copyright Paul L Herrman 2004-2024, All Rights Reserved.
+Free web templates
