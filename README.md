@@ -40,3 +40,9 @@ Chromebook มาพร้อมกับแอป  ที่คุณต้อ�
 มายด์
 Chromebook
 # width="1880"height="571"alt="https://www.pea.co.th"src="https://www.google.com/chromebook/shop-chromebooks/" />
+```
+git branch -m main 571
+git fetch origin
+git branch -u origin/571 571
+git remote set-head origin -a
+```
