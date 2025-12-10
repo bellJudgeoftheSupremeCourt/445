@@ -1,0 +1,1312 @@
+<iframe src="https://www.google.com/maps/d/u/0/embed?mid=1wq8Iui_C99hPhpy7c1Qb5Ce8T63QFdA&ehbc=2E312F" width="640" height="480"></iframe>
+https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fgithub%2Fdocs%2Fissues%2Fnew%3Ftemplate%3Dimprove-existing-docs.yaml
+https://www.opera.com/browsers
+<languages/>www.bing.com
+{{Extension
+|status       = stable
+|type1        = special
+|type2        = user identity
+|type3        = api
+|type4        = database
+|author       = [[User:Werdna|Andrew Garrett]], [[Trust_and_Safety_Product|Trust and Safety Product Team]], [[User:Dreamy Jazz|Dreamy Jazz]]
+|description  = <translate><!--T:60--> Allows IP addresses and accounts to be blocked on multiple wikis</translate>
+|image        = Global block interface (2021-04-29).png
+|version      =
+|update       =
+|license      = GPL-2.0+
+|download     = {{WikimediaDownload|GlobalBlocking}}
+|readme       =
+|changelog    =
+|example      =
+|vagrant-role = globalblocking
+|table1       = globalblocks
+|table2       = global_block_whitelist
+|newhook1     = GlobalBlockingGetRetroactiveAutoblockIPs
+|newhook2     = GlobalBlockingGlobalBlockAudit
+|phabricator  = GlobalBlocking
+|needs-updatephp = yes
+|compatibility policy = rel
+|virtual domain = virtual-globalblocking
+}}
+<translate><!--T:1--> The <tvar name=1>'''GlobalBlocking'''</tvar> extension allows a user with the appropriate permissions to block an IP address, IP address range, or an account (but ''not'' accounts before MediaWiki 1.43) on all wikis in a group sharing the same <tvar name=2><code>globalblocking</code></tvar> database.</translate>https://www.gnu.org/licenses/fdl-1.3.html
+<translate><!--T:28--> It is intended to be used for combating severe cross-wiki vandalism and spam.</translate>https://www.mediawiki.org/w/index.php?title=Extension:GlobalBlocking&action=submit
+
+<translate>
+== Installation == <!--T:2-->
+</translate>
+{{ExtensionInstall
+|registration=required
+| custom-steps =
+* <translate><!--T:3--> You will also need to create a dedicated database for this extension to work.</translate> <translate><!--T:29--> At a minimum (all wikis running on the same host), you need to create a local database for the global tables.</translate> <translate><!--T:34--> Usually this database is named <tvar name="1"><code>globalblocking</code></tvar>, but you can choose a different name.</translate> <translate><!--T:35--> For example, on WMF wikis this table is on a database named <tvar name="1"><code>centralauth</code></tvar>.</translate>
+* <translate><!--T:36--> Grant all database users that your wikis run as full permissions on the database created in the above step (at a minimum, <tvar name="3"><code>SELECT, UPDATE, INSERT, DELETE</code></tvar>).</translate>
+* <translate><!--T:61--> Do either of the following depending on the version of MediaWiki you are running:</translate>
+** <translate><!--T:37--> If you run MediaWiki 1.42 or above, define the configuration <tvar name=1><syntaxhighlight lang=php inline>$wgVirtualDomainsMapping['virtual-globalblocking'] = ['db' => 'globalblocking'];</syntaxhighlight></tvar> (replacing <tvar name="2"><code>globalblocking</code></tvar> with the name of the database created in the steps above).</translate> <translate><!--T:62--> See <tvar name=1>{{ll|Manual:$wgVirtualDomainsMapping}}</tvar> for more detail on how this configuration value works.</translate>
+** <translate><!--T:38--> If you run MediaWiki 1.41 or below, define the configuration <tvar name=1><syntaxhighlight lang=php inline>$wgGlobalBlockingDatabase = 'dbname';</syntaxhighlight></tvar> where <tvar name="2"><code>dbname</code></tvar> is replaced with the name of the database you created in the steps above.</translate> <translate><!--T:39--> If you called your database <tvar name="2"><code>globalblocking</code></tvar> then you can skip this step.</translate>
+* <translate><!--T:63--> Do either of the following depending on the version of MediaWiki you are using:</translate>
+** <translate><!--T:50--> If you run MediaWiki 1.44 or newer, then run <tvar name="1"><code>update.php</code></tvar> on one wiki which will create the tables in the database you defined in the steps above.</translate>
+** <translate><!--T:4--> If you run MediaWiki 1.43 or below, after creating the database, you should import the SQL from <tvar name=1><code>tables-generated-globalblocks.sql</code></tvar> into the global blocking database.</translate>
+* <translate><!--T:5--> You also need to run <tvar name="1"><code>update.php</code></tvar> on each of your local databases to add the local tables needed by the extension.</translate>
+}}
+
+<translate>
+
+== Configuration == <!--T:6-->
+</translate>
+{| class="wikitable"
+! <translate><!--T:43--> Config variable</translate> !! <translate><!--T:44--> Description</translate>
+|-
+| {{phpi|$wgApplyGlobalBlocks}}
+| <translate><!--T:7--> Whether to respect global blocks on this wiki.</translate> <translate><!--T:30--> This is used so that global blocks can be set on one wiki, but not actually applied there (i.e. so people can contest them on that wiki).</translate>
+|-
+| {{phpi|$wgGlobalBlockingBlockXFF}}
+| <translate><!--T:8--> The flag <tvar name="1"><code>$wgGlobalBlockingBlockXFF</code></tvar>, set to <tvar name=2>{{phpi|true}}</tvar> by default, causes blocks to apply to all of the IP addresses in the [[w:X-Forwarded-For|X-Forwarded-For]] (XFF) header.</translate> <translate><!--T:9--> Set this flag to <tvar name=1>{{phpi|false}}</tvar> to disable this feature.</translate> <translate><!--T:31--> For more details, see <tvar name="1">{{task|T25343}}</tvar>.</translate>
+|-
+| {{phpi|$wgGlobalBlockingCIDRLimit}}
+| <translate><!--T:33--> Largest global rangeblocks allowed, set by CIDR prefix. The format is the same as <tvar name=1>{{ll|Manual:$wgBlockCIDRLimit|$wgBlockCIDRLimit}}</tvar> and the default values are /16 for IPv4 and /19 for IPv6, as with $wgBlockCIDRLimit.</translate>
+|-
+| {{phpi|$wgGlobalBlockingDatabase}}
+| {{MW 1.41|and before}} <translate><!--T:40--> The name of the database used to store the <tvar name="1"><code>globalblocks</code></tvar> table.</translate> <translate><!--T:41--> This table is on a different database because only one table is used for all wikis in a wiki farm.</translate>
+|-
+| {{phpi|$wgGlobalBlockRemoteReasonUrl}}
+| <translate><!--T:64--> Full path to api.php to use to expand templates in block reasons.</translate>
+|-
+| {{phpi|$wgGlobalBlockingAllowedRanges}}
+| <translate><!--T:45--> A list of ranges or IP addresses which are exempted from all global blocks which target the ranges or IP addresses.</translate> <translate><!--T:46--> This exemption does not apply to global account blocks (even if the user is on an exempt range or IP address).</translate>
+|-
+| {{phpi|$wgGlobalBlockingCentralWiki}}
+| <translate><!--T:47--> The ID of the central wiki where global blocks are performed.</translate> <translate><!--T:48--> Used to provide a link to the global block log which is likely to have entries, instead of the local log which is unlikely to contain entries.</translate> <translate><!--T:49--> If the value is <tvar name=1>{{phpi|false}}</tvar>, then the local log is used.</translate>
+|-
+| {{phpi|$wgGlobalBlockingMaximumIPsToRetroactivelyAutoblock}}
+| {{MW 1.43|and after}} <translate><!--T:51--> The maximum number of IP addresses that can be retroactively autoblocked when a user is globally blocked and global autoblocking has been enabled for the global block.</translate>
+|-
+| {{phpi|$wgGlobalBlockingMassGlobalBlockMaxTargets}}
+| {{MW 1.44|and after}} <translate><!--T:52--> The maximum number of targets that can be globally blocked or unblocked in one use of <tvar name=1><code>Special:MassGlobalBlock</code></tvar>.</translate>
+|}
+
+<translate>
+== API == <!--T:10-->
+</translate>
+<translate><!--T:11--> Two API modules are provided, one to (un)block users, and another to view existing global blocks.</translate>
+<translate><!--T:12--> They are documented at <tvar name="1">[[Extension:GlobalBlocking/API]]</tvar>.</translate>
+
+<translate>
+== Usage == <!--T:13-->
+
+=== Globally (un)blocking === <!--T:53-->
+
+<!--T:14-->
+The following requires appropriate permissions, assigned by default to stewards, which by default can be added or removed by bureaucrats.
+</translate>
+
+;GlobalBlock
+<translate><!--T:15--> To make a global block:</translate>
+
+# <translate><!--T:16--> Go to <tvar name="1">[[Special:GlobalBlock]]</tvar>.</translate>
+# <translate><!--T:17--> Enter the target you want to block. This can be an account post MediaWiki 1.43, an IPv4 address or range up to $wgGlobalBlockingCIDRLimit (by default /16, and also /16 hardcoded before that variable was introduced), or any IPv6 address or range up to $wgGlobalBlockingCIDRLimit (by default /19; /4 before that variable was introduced).</translate>
+# <translate><!--T:42--> You may decide you want to only block anonymous users, which can only be done for blocks on IPv4 or IPv6 addresses.</translate> <translate><!--T:18--> To only block anonymous users, check the checkbox.</translate>
+# <translate><!--T:19--> Submit the form.</translate> <translate><!--T:32--> The target of the block is now globally blocked on your wikis that opt in to the global blocking.</translate> <translate><!--T:20--> Account creation is blocked (even if you selected "anonymous users only": <tvar name=1>[[phab:T42190]]</tvar>), and the blocked user cannot edit any associated user talk pages on any wiki affected and opted in to the global block.</translate> <translate><!--T:21--> If <tvar name=1>{{ll|Extension:AbuseFilter}}</tvar> is installed, globally blocked IP addresses are prohibited from viewing the abuse log if the particular wiki is opted in to the block.</translate>
+
+;GlobalUnblock
+<translate><!--T:22--> To remove a global block:</translate>
+
+# <translate><!--T:23--> Go to <tvar name="1">[[Special:GlobalUnblock]]</tvar> and click "Remove a global block".</translate>
+# <translate><!--T:24--> Enter the target of the block you want to remove and the reason, and submit the form.</translate> <translate><!--T:25--> The account, IP address, or IP range will no longer be globally blocked.</translate>
+
+;MassGlobalBlock
+{{MW 1.44|and after}}
+<translate><!--T:54--> You can remove, modify, and create global blocks using <tvar name=1>[[Special:MassGlobalBlock]]</tvar> for many targets at once.</translate>
+<translate><!--T:55--> The first step of this form is to lookup the global block status of a list of targets provided in an input.</translate>
+<translate><!--T:56--> Then you can use the form to globally block or globally unblock, with the relevant parameters applied to each target.</translate>
+
+<translate>
+=== Local status === <!--T:57-->
+</translate>
+<translate><!--T:58--> Administrators can disable the global block on the wiki where they have administrator rights.</translate>
+<translate><!--T:59--> This is done through using the <tvar name=1>[[Special:GlobalBlockStatus]]</tvar> page.</translate>
+
+<translate>
+== See also == <!--T:26-->
+</translate>
+* {{ll|Manual:Combating spam|Combating spam}}
+* {{ll|Manual:Combating vandalism|Combating vandalism}}
+* {{ll|Extension:BulkBlock|BulkBlock Extension}} — <translate><!--T:27--> an extension that allows administrators to easily block multiple users at once on a MediaWiki website.</translate>
+
+{{OnWikimedia}}
+{{Used by}}
+
+[[Category:Extensions for data exchange with other local wikis{{#translation:}}]]
+<?xml version='1.0' encoding='utf-8'?>
+<rdf:RDF xmlns:cc="http://creativecommons.org/ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">https://meta.wikimedia.org/wiki/User:%E0%B9%92%E0%B9%92%E0%B9%90%E0%B9%93_%E0%B9%91%E0%B9%91%E0%B9%92%E0%B9%90%E0%B9%94_%E0%B9%90%E0%B9%90%E0%B9%97%E0%B9%97
+  <cc:License rdf:about="http://creativecommons.org/licenses/by/4.0/">https://commons.wikimedia.org/wiki/File:Logo_of_the_Provincial_Electricity_Authority_of_Thailand.svg
+    <cc:legalcode xml:lang="ar">http://creativecommons.org/licenses/by/4.0/legalcode.ar</cc:legalcode>https://github.com/4pyc24j82d-commits/LAW
+    <cc:legalcode xml:lang="cs">http://creativecommons.org/licenses/by/4.0/legalcode.cs</cc:legalcode>https://www.pea.co.th/#2528a610-f2c5-403c-aaad-4256bab060b1
+    <cc:legalcode xml:lang="da">http://creativecommons.org/licenses/by/4.0/legalcode.da</cc:legalcode>https://www.pea.co.th/#https://maps.app.goo.gl/JCs8FpsaLfQbK3QU7
+    <cc:legalcode xml:lang="de">http://creativecommons.org/licenses/by/4.0/legalcode.de</cc:legalcode>https://www.pea.co.th/#https://maps.app.goo.gl/Dyszh2cwHmK9e4Za9
+    <cc:legalcode xml:lang="el">http://creativecommons.org/licenses/by/4.0/legalcode.el</cc:legalcode>https://www.pea.co.th/#https://maps.app.goo.gl/pFob6AYuyFmTxAWM6
+    <cc:legalcode xml:lang="en">http://creativecommons.org/licenses/by/4.0/legalcode.en</cc:legalcode>https://www.pea.co.th/#https://maps.app.goo.gl/ttJaHj5jMJDAoREXA
+    <cc:legalcode xml:lang="es">http://creativecommons.org/licenses/by/4.0/legalcode.es</cc:legalcode>https://www.pea.co.th/#https://maps.app.goo.gl/r7dQdmX7GxX7TUeu7
+    <cc:legalcode xml:lang="et">http://creativecommons.org/licenses/by/4.0/legalcode.et</cc:legalcode>https://www.pea.co.th/#https://maps.app.goo.gl/rCGSeNjJPGJU34pG8
+    <cc:legalcode xml:lang="eu">http://creativecommons.org/licenses/by/4.0/legalcode.eu</cc:legalcode>https://www.pea.co.th/#https://maps.app.goo.gl/1RjcXKvMLU7FVXFP6
+    <cc:legalcode xml:lang="fi">http://creativecommons.org/licenses/by/4.0/legalcode.fi</cc:legalcode>https://www.pea.co.th/#https://maps.app.goo.gl/BYkZ4gmvWnZReaEB9
+    <cc:legalcode xml:lang="fr">http://creativecommons.org/licenses/by/4.0/legalcode.fr</cc:legalcode>https://www.pea.co.th/#https://maps.app.goo.gl/msBUuXAPq1mxXtDZ8
+    <cc:legalcode xml:lang="fy">http://creativecommons.org/licenses/by/4.0/legalcode.fy</cc:legalcode>https://www.pea.co.th/#https://maps.app.goo.gl/gLLQ1g69iFjYabGZ7
+    <cc:legalcode xml:lang="hr">http://creativecommons.org/licenses/by/4.0/legalcode.hr</cc:legalcode>https://www.pea.co.th/#https://maps.app.goo.gl/r6Wk7x1Ao3TpPgWo7
+    <cc:legalcode xml:lang="id">http://creativecommons.org/licenses/by/4.0/legalcode.id</cc:legalcode>https://www.pea.co.th/#
+    <cc:legalcode xml:lang="it">http://creativecommons.org/licenses/by/4.0/legalcode.it</cc:legalcode>#https://maps.app.goo.gl/eor4q7ahw3PZQfRf6
+    <cc:legalcode xml:lang="ja">http://creativecommons.org/licenses/by/4.0/legalcode.ja</cc:legalcode>
+    <cc:legalcode xml:lang="ko">http://creativecommons.org/licenses/by/4.0/legalcode.ko</cc:legalcode>
+    <cc:legalcode xml:lang="lt">http://creativecommons.org/licenses/by/4.0/legalcode.lt</cc:legalcode>
+    <cc:legalcode xml:lang="lv">http://creativecommons.org/licenses/by/4.0/legalcode.lv</cc:legalcode>
+    <cc:legalcode xml:lang="mi">http://creativecommons.org/licenses/by/4.0/legalcode.mi</cc:legalcode>
+    <cc:legalcode xml:lang="nl">http://creativecommons.org/licenses/by/4.0/legalcode.nl</cc:legalcode>
+    <cc:legalcode xml:lang="no">http://creativecommons.org/licenses/by/4.0/legalcode.no</cc:legalcode>
+    <cc:legalcode xml:lang="pl">http://creativecommons.org/licenses/by/4.0/legalcode.pl</cc:legalcode>
+    <cc:legalcode xml:lang="pt">http://creativecommons.org/licenses/by/4.0/legalcode.pt</cc:legalcode>
+    <cc:legalcode xml:lang="ro">http://creativecommons.org/licenses/by/4.0/legalcode.ro</cc:legalcode>
+    <cc:legalcode xml:lang="ru">http://creativecommons.org/licenses/by/4.0/legalcode.ru</cc:legalcode>
+    <cc:legalcode xml:lang="sk">http://creativecommons.org/licenses/by/4.0/legalcode.sk</cc:legalcode>
+    <cc:legalcode xml:lang="sl">http://creativecommons.org/licenses/by/4.0/legalcode.sl</cc:legalcode>
+    <cc:legalcode xml:lang="sv">http://creativecommons.org/licenses/by/4.0/legalcode.sv</cc:legalcode>
+    <cc:legalcode xml:lang="tr">http://creativecommons.org/licenses/by/4.0/legalcode.tr</cc:legalcode>141.0.8.0/22
+    <cc:legalcode xml:lang="uk">http://creativecommons.org/licenses/by/4.0/legalcode.uk</cc:legalcode>
+    <cc:legalcode xml:lang="zh-hans">http://creativecommons.org/licenses/by/4.0/legalcode.zh-hans</cc:legalcode>
+    <cc:legalcode xml:lang="zh-hant">http://creativecommons.org/licenses/by/4.0/legalcode.zh-hant</cc:legalcode>
+    <cc:licenseClass rdf:resource="http://creativecommons.org/license/"/>
+    <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>https://meta.wikimedia.org/wiki/Special:MyLanguage/NOP
+    <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>https://meta.wikimedia.org/wiki/WM:OP/H
+    <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>https://meta.wikimedia.org/wiki/
+    <cc:requires rdf:resource="http://creativecommons.org/ns#Attribution"/>141.0.8.253
+    <cc:requires rdf:resource="http://creativecommons.org/ns#Notice"/>
+    <dcterms:LicenseDocument xml:lang="ar">https://creativecommons.org/licenses/by/4.0/legalcode.ar</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="cs">https://creativecommons.org/licenses/by/4.0/legalcode.cs</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="da">https://creativecommons.org/licenses/by/4.0/legalcode.da</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="de">https://creativecommons.org/licenses/by/4.0/legalcode.de</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="el">https://creativecommons.org/licenses/by/4.0/legalcode.el</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="en">https://creativecommons.org/licenses/by/4.0/legalcode.en</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="es">https://creativecommons.org/licenses/by/4.0/legalcode.es</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="et">https://creativecommons.org/licenses/by/4.0/legalcode.et</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="eu">https://creativecommons.org/licenses/by/4.0/legalcode.eu</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="fi">https://creativecommons.org/licenses/by/4.0/legalcode.fi</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="fr">https://creativecommons.org/licenses/by/4.0/legalcode.fr</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="fy">https://creativecommons.org/licenses/by/4.0/legalcode.fy</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="hr">https://creativecommons.org/licenses/by/4.0/legalcode.hr</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="id">https://creativecommons.org/licenses/by/4.0/legalcode.id</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="it">https://creativecommons.org/licenses/by/4.0/legalcode.it</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="ja">https://creativecommons.org/licenses/by/4.0/legalcode.ja</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="ko">https://creativecommons.org/licenses/by/4.0/legalcode.ko</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="lt">https://creativecommons.org/licenses/by/4.0/legalcode.lt</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="lv">https://creativecommons.org/licenses/by/4.0/legalcode.lv</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="mi">https://creativecommons.org/licenses/by/4.0/legalcode.mi</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="nl">https://creativecommons.org/licenses/by/4.0/legalcode.nl</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="no">https://creativecommons.org/licenses/by/4.0/legalcode.no</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="pl">https://creativecommons.org/licenses/by/4.0/legalcode.pl</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="pt">https://creativecommons.org/licenses/by/4.0/legalcode.pt</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="ro">https://creativecommons.org/licenses/by/4.0/legalcode.ro</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="ru">https://creativecommons.org/licenses/by/4.0/legalcode.ru</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="sk">https://creativecommons.org/licenses/by/4.0/legalcode.sk</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="sl">https://creativecommons.org/licenses/by/4.0/legalcode.sl</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="sv">https://creativecommons.org/licenses/by/4.0/legalcode.sv</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="tr">https://creativecommons.org/licenses/by/4.0/legalcode.tr</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="uk">https://creativecommons.org/licenses/by/4.0/legalcode.uk</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="zh-hans">https://creativecommons.org/licenses/by/4.0/legalcode.zh-hans</dcterms:LicenseDocument>
+    <dcterms:LicenseDocument xml:lang="zh-hant">https://creativecommons.org/licenses/by/4.0/legalcode.zh-hant</dcterms:LicenseDocument>
+    <dcterms:creator rdf:resource="http://creativecommons.org"/>
+    <dcterms:hasVersion>4.0</dcterms:hasVersion>
+    <dcterms:identifier>by</dcterms:identifier>
+    <dcterms:source>http://creativecommons.org/licenses/by/3.0/</dcterms:source>
+    <dcterms:title xml:lang="ar">نَسْبُ الـمُصنَّف 4.0 دولي</dcterms:title>
+    <dcterms:title xml:lang="cs">Uveďte původ 4.0 Mezinárodní</dcterms:title>
+    <dcterms:title xml:lang="da">Kreditering 4.0 International</dcterms:title>
+    <dcterms:title xml:lang="de">Namensnennung 4.0 International</dcterms:title>
+    <dcterms:title xml:lang="el">Creative Commons Αναφορά 4.0</dcterms:title>
+    <dcterms:title xml:lang="en">Attribution 4.0 International</dcterms:title>
+    <dcterms:title xml:lang="es">Atribución/Reconocimiento 4.0 Internacional</dcterms:title>
+    <dcterms:title xml:lang="et">Autorile viitamine 4.0 Rahvusvaheline</dcterms:title>
+    <dcterms:title xml:lang="eu">Aitortu 4.0 Nazioartekoa</dcterms:title>
+    <dcterms:title xml:lang="fi">Nimeä 4.0 Kansainvälinen</dcterms:title>
+    <dcterms:title xml:lang="fr">Attribution 4.0 International</dcterms:title>
+    <dcterms:title xml:lang="fy">Nammeneamen 4.0 Ynternasjonaal</dcterms:title>
+    <dcterms:title xml:lang="hr">Autorstvo 4.0 Međunarodna</dcterms:title>
+    <dcterms:title xml:lang="id">Atribusi 4.0 Internasional</dcterms:title>
+    <dcterms:title xml:lang="it">Attribuzione 4.0 Internazionale</dcterms:title>
+    <dcterms:title xml:lang="ja">表示 4.0 国際</dcterms:title>
+    <dcterms:title xml:lang="ko">저작자표시 4.0 국제</dcterms:title>
+    <dcterms:title xml:lang="lt">Priskyrimo 4.0 tarptautinė licencija</dcterms:title>
+    <dcterms:title xml:lang="lv">Attiecinājums 4.0 Starptautisks</dcterms:title>
+    <dcterms:title xml:lang="mi">Tautohu Matatiki 4.0 ā-Ao</dcterms:title>
+    <dcterms:title xml:lang="nl">Naamsvermelding 4.0 Internationaal</dcterms:title>
+    <dcterms:title xml:lang="no">Navngivelse 4.0 Internasjonal</dcterms:title>
+    <dcterms:title xml:lang="pl">Uznanie autorstwa 4.0 Międzynarodowa</dcterms:title>
+    <dcterms:title xml:lang="pt">Atribuição 4.0 Internacional</dcterms:title>
+    <dcterms:title xml:lang="ro">Atribuire 4.0 Internațional</dcterms:title>
+    <dcterms:title xml:lang="ru">С указанием авторства версии 4.0 Международная</dcterms:title>
+    <dcterms:title xml:lang="sk">Uvedenie autora 4.0 medzinárodná</dcterms:title>
+    <dcterms:title xml:lang="sl">Priznanje avtorstva 4.0 Mednarodna</dcterms:title>
+    <dcterms:title xml:lang="sv">Erkännande 4.0 Internationell</dcterms:title>
+    <dcterms:title xml:lang="tr">Atıf 4.0 Uluslararası</dcterms:title>
+    <dcterms:title xml:lang="uk">Із Зазначенням Авторства 4.0 Міжнародна</dcterms:title>
+    <dcterms:title xml:lang="zh-hans">署名 4.0 协议国际版</dcterms:title>
+    <dcterms:title xml:lang="zh-hant">姓名標示 4.0 國際</dcterms:title>
+    <foaf:logo rdf:resource="http://licensebuttons.net/l/by/4.0/80x15.png"/>
+    <foaf:logo rdf:resource="http://licensebuttons.net/l/by/4.0/88x31.png"/>
+    <owl:sameAs rdf:resource="https://creativecommons.org/licenses/by/4.0/"/>
+  </cc:License>
+</rdf:RDF>
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>GitHub Status - Incident History</title>
+    <link>https://www.githubstatus.com</link>
+    <description>Statuspage</description>
+    <pubDate>Mon, 08 Dec 2025 08:20:56 +0000</pubDate>
+    <item>
+      <title>Team synchronization is experiencing delays for non enterprise managed users</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Dec &lt;var data-var=&apos;date&apos;&gt; 5&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;22:20&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - This incident has been resolved. Thank you for your patience and understanding as we addressed this issue. A detailed root cause analysis will be shared as soon as it is available.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Dec &lt;var data-var=&apos;date&apos;&gt; 5&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;21:40&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We believe we reached a scaling limit and are increasing the amount of resources available to reduce the delays for the team synchronization process.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Dec &lt;var data-var=&apos;date&apos;&gt; 5&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;19:17&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We&apos;re continuing to investigate the delays in the team synchronization and will report back once we have more information.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Dec &lt;var data-var=&apos;date&apos;&gt; 5&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;18:38&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are investigating reports of impacted performance for some GitHub services.&lt;/p&gt;      </description>
+      <pubDate>Fri, 05 Dec 2025 22:20:19 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/3hdjjpkvz895</link>
+      <guid>https://www.githubstatus.com/incidents/3hdjjpkvz895</guid>
+    </item>
+    <item>
+      <title>Incident with Copilot</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;28&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;08:23&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - On November 28th, 2025, between approximately 05:51 and 08:04 UTC, Copilot experienced an outage affecting the Claude Sonnet 4.5 model. Users attempting to use this model received an HTTP 400 error, resulting in 4.6% of total chat requests during this timeframe failing. Other models were not impacted.&lt;br /&gt;&lt;br /&gt;The issue was caused by a misconfiguration deployed to an internal service which made Claude Sonnet 4.5 unavailable. The problem was identified and mitigated by reverting the change. GitHub is working to improve cross-service deploy safeguards and monitoring to prevent similar incidents in the future.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;28&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;07:52&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We have rolled out a fix and are monitoring for recovery.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;28&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;07:04&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are investigating degraded performance with the Claude Sonnet 4.5 model in Copilot.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;28&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;06:59&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are investigating reports of degraded performance for Copilot&lt;/p&gt;      </description>
+      <pubDate>Fri, 28 Nov 2025 08:23:18 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/d4775b3j5mwm</link>
+      <guid>https://www.githubstatus.com/incidents/d4775b3j5mwm</guid>
+    </item>
+    <item>
+      <title>Disruption with some GitHub services</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;24&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;15:04&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - On November 24, 2025, between 12:15 and 15:04 UTC, Codespaces users encountered connection issues when attempting to create a codespace after choosing the recently released VS Code Codespaces extension, version 1.18.1. Users were able to downgrade to the 1.18.0 version of the extension during this period to work around this issue. At peak, the error rate was 19% of connection requests. This was caused by mismatching version dependencies for the released VS Code Codespaces extension.&lt;br /&gt;&lt;br /&gt;The connection issues were mitigated by releasing the VS Code Codespaces extension version 1.18.2 that addressed the issue. Users utilizing version 1.18.1 of the VS Code Codespaces extension are advised to upgrade to version &gt;=1.18.2.&lt;br /&gt;&lt;br /&gt;We are improving our validation and release process for this extension to ensure functional issues like this are caught before release to customers and to reduce detection and mitigation times for extension issues like this in the future.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;24&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;14:26&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Version 1.18.2 of the GitHub Codespaces VSCode extension has been released. This version should resolve the connection issues, and we are continuing to monitor success rate for Codespaces creation.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;24&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;14:00&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are testing a new version of the GitHub Codespaces VSCode extension that should resolve the connection issues, and expect that to be available in the next 30 minutes.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;24&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;13:26&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Codespaces is experiencing degraded performance. We are continuing to investigate.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;24&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;13:25&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are seeing Codespaces connection issues related to the latest version of the VSCode Codespaces extension (1.18.1). Users can select the 1.18.0 version of the extension to avoid issues (View -&gt; Command Palette, run &quot;Extensions: Install specific version of Extension...&quot;), while we work to remove the affected version.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;24&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;13:10&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently investigating this issue.&lt;/p&gt;      </description>
+      <pubDate>Mon, 24 Nov 2025 15:04:23 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/v6sx0dv6rv2x</link>
+      <guid>https://www.githubstatus.com/incidents/v6sx0dv6rv2x</guid>
+    </item>
+    <item>
+      <title>Disruption with some GitHub services</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;21&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;00:22&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - Between November 19th, 16:13UTC and November 21st, 12:22UTC, the GitHub Enterprise Importer (GEI) service was in a degraded state, during which time, customers of the service experienced a delay when reclaiming mannequins post-migration.&lt;br /&gt;&lt;br /&gt;We have taken steps to prevent similar incidents from occurring in the future.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;21&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;00:22&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Processing of these jobs has resumed.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;19&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;16:13&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - GitHub Enterprise Importer migration systems are currently impacted by a pause to Migration Mannequin Reclaiming.&lt;br /&gt;At 19:43 UTC on 2025-11-19, we paused the queue that processes Mannequin Reclaiming work done at the end of a migration.&lt;br /&gt;This was done after observing load that threatened the health of the overall system. The cause has been identified, and efforts to fix are underway.&lt;br /&gt;&lt;br /&gt;In the current state:&lt;br /&gt;  - all requests to Reclaim Mannequins will be held in a queue&lt;br /&gt;  - those requests will be processed when repair work is complete and the queue unpaused, at which time the incident will be closed&lt;br /&gt;&lt;br /&gt;This does not impact processing of migration runs using GitHub Enterprise Importer, only mannequin reclamation.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;19&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;16:13&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently investigating this issue.&lt;/p&gt;      </description>
+      <pubDate>Fri, 21 Nov 2025 00:22:14 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/zzl9nl31lb35</link>
+      <guid>https://www.githubstatus.com/incidents/zzl9nl31lb35</guid>
+    </item>
+    <item>
+      <title>Disruption with some GitHub services</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;20&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;19:24&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - Between November 20, 2025 17:16 UTC to November, 2025 19:08 UTC some users experienced delayed or failed Git Operations for raw file downloads. On average, the error rate was less than 0.2%. This was due to a sustained increase in unauthenticated repository traffic.&lt;br /&gt;&lt;br /&gt;We mitigated the incident by applying regional rate limiting and are taking steps to improve our monitoring and time to mitigation for similar issues in the future.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;20&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;19:24&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Mitigation has been applied and operations have returned to normal.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;20&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;18:44&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We continue to see a small number of errors when accessing raw file content. We are deploying a mitigation.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;20&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;18:05&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We&apos;re investigating elevated error rates for a small amount of customers when accessing raw file content.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;20&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;18:04&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently investigating this issue.&lt;/p&gt;      </description>
+      <pubDate>Thu, 20 Nov 2025 19:24:33 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/cg3wwz9dw5dg</link>
+      <guid>https://www.githubstatus.com/incidents/cg3wwz9dw5dg</guid>
+    </item>
+    <item>
+      <title>Incident with Actions</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;19&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;18:07&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - On November 19, between 17:36 UTC and 18:04 UTC, GitHub Actions service experienced degraded performance that caused excessive latency in queueing and updating workflow runs and job statuses. Operations related to artifacts, cache, job steps and logs also had significantly increased latency. At peak, 67% of workflow jobs queued during that timeframe were impacted, and the median latency for impacted operations increased by up to 35x.&lt;br /&gt;&lt;br /&gt;This was caused by a significant change in load pattern on Actions Cache-related operations, leading to a saturated shared resource on the backend. The impact was mitigated by mitigating the new load pattern.&lt;br /&gt;&lt;br /&gt;To reduce the likelihood of a recurrence, we are improving rate-limiting measures in this area to ensure a more consistent experience for all customers.  We are also evaluating changes to reduce the scope of impact.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;19&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;17:59&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We have applied mitigation and are seeing recovery&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;19&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;17:56&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are investigating delays in actions runs and possible errors in artifact and cache creation.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;19&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;17:48&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are investigating reports of degraded performance for Actions&lt;/p&gt;      </description>
+      <pubDate>Wed, 19 Nov 2025 18:07:20 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/zs5ccnvqv64m</link>
+      <guid>https://www.githubstatus.com/incidents/zs5ccnvqv64m</guid>
+    </item>
+    <item>
+      <title>Git operation failures</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;18&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;21:59&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - From Nov 18, 2025 20:30 UTC to Nov 18, 2025 21:34 UTC we experienced failures on all Git operations, including both SSH and HTTP Git client interactions, as well as raw file access. These failures also impacted products that rely on Git operations.&lt;br /&gt;&lt;br /&gt;The root cause was an expired TLS certificate used for internal service-to-service communication. We mitigated the incident by replacing the expired certificate and restarting impacted services. Once those services were restarted we saw a full recovery.&lt;br /&gt;&lt;br /&gt;We have updated our alerting to cover the expired certificate and are performing an audit of other certificates in this area to ensure they also have the proper alerting and automation before expiration. In parallel, we are accelerating efforts to eliminate our remaining manually managed certificates, ensuring all service-to-service communication is fully automated and aligned with modern security practices.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;18&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;21:56&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Git Operations is operating normally.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;18&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;21:55&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are seeing full recovery after rolling out the fix and all services are operational.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;18&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;21:55&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Codespaces is operating normally.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;18&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;21:36&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We have shipped a fix and are seeing recovery in some areas and will continue to provide updates.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;18&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;21:27&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We have identified the likely cause of the incident and are working on a fix. We will provide another update as we get closer to deploying the fix.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;18&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;21:25&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Codespaces is experiencing degraded availability. We are continuing to investigate.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;18&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;21:11&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are currently investigating failures on all Git operations, including both SSH and HTTP.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;18&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;20:52&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are seeing failures for some git http operations and are investigating&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;18&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;20:39&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Git Operations is experiencing degraded availability. We are continuing to investigate.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;18&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;20:39&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently investigating this issue.&lt;/p&gt;      </description>
+      <pubDate>Tue, 18 Nov 2025 21:59:21 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/5q7nmlxz30sk</link>
+      <guid>https://www.githubstatus.com/incidents/5q7nmlxz30sk</guid>
+    </item>
+    <item>
+      <title>Disruption with some GitHub services</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;18&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;00:10&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - Between November 17, 2025 21:24 UTC and November 18, 2025 00:04 UTC the gists service was degraded and users were unable to create gists via the web UI. 100% of gist creation requests failed with a 404 response. This was due to a change in the web middleware that inadvertently triggered a routing error. We resolved the incident by rolling back the change. We are working on more effective monitoring to reduce the time it takes to detect similar issues and evaluating our testing approach for middleware functionality.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;17&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;23:01&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are investigating reports of 404s creating gists.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;17&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;23:01&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently investigating this issue.&lt;/p&gt;      </description>
+      <pubDate>Tue, 18 Nov 2025 00:10:50 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/ql19qqqmdf99</link>
+      <guid>https://www.githubstatus.com/incidents/ql19qqqmdf99</guid>
+    </item>
+    <item>
+      <title>Disruption with some GitHub services</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;17&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;19:08&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - From Nov 17, 2025 00:00 UTC to Nov 17, 2025 15:00 UTC Dependabot was hitting a rate limit in GitHub Container Registry (GHCR) and was unable to complete about 57% of jobs.&lt;br /&gt;&lt;br /&gt;To mitigate the issue we lowered the rate at which Dependabot started jobs and increased the GHCR rate limit.&lt;br /&gt;&lt;br /&gt;We’re adding new monitors and alerts and looking into more ways to decrease load on GHCR to help prevent this in the future.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;17&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;18:54&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We continue to see recovery and dependabot jobs are currently processing as expected.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;17&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;18:18&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are applying a configuration change and will monitor for recovery.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;17&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;17:50&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are continuing to investigate dependabot failures and a configuration change to mitigate.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;17&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;17:15&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are investigating dependabot job failures affecting approximately 50% of version updates and 25% of security updates.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;17&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;16:52&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently investigating this issue.&lt;/p&gt;      </description>
+      <pubDate>Mon, 17 Nov 2025 19:08:41 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/3bmqzkljz8s3</link>
+      <guid>https://www.githubstatus.com/incidents/3bmqzkljz8s3</guid>
+    </item>
+    <item>
+      <title>Some users may experience failing git push and pull operations.</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;13&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;15:13&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - From Nov 13, 2025 14:50 UTC to Nov 13, 2025 15:01 UTC we experienced failures on all Git Push and SSH operations. An internal service became unhealthy due to a scaling configuration change. We reverted the change and are evaluating our health monitoring and processes to prevent similar incidents.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;13&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;15:03&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Git Operations is experiencing degraded performance. We are continuing to investigate.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;13&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;15:00&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently investigating this issue.&lt;/p&gt;      </description>
+      <pubDate>Thu, 13 Nov 2025 15:13:56 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/1jw8ltnr1qrj</link>
+      <guid>https://www.githubstatus.com/incidents/1jw8ltnr1qrj</guid>
+    </item>
+    <item>
+      <title>Disruption with some GitHub services</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;12&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;23:04&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - On November 12, 2025, between 22:10 UTC and 23:04 UTC, Codespaces used internally at GitHub were impacted. There was no impact to external customers. The scope of impact was not clear in the initial steps of incident response, so it was considered public until confirmed otherwise. One improvement from this will be improved clarity of internal versus public impact for similar failures to better inform our status decisions going forward.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;12&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;22:51&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are continuing to investigate connectivity issues with codespaces&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;12&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;22:26&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are investing reports of codespaces no longer appearing in the UI or API. Users may experience connectivity issues to the impacted codespaces.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;12&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;22:26&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently investigating this issue.&lt;/p&gt;      </description>
+      <pubDate>Wed, 12 Nov 2025 23:04:23 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/br7kz68t38cl</link>
+      <guid>https://www.githubstatus.com/incidents/br7kz68t38cl</guid>
+    </item>
+    <item>
+      <title>Delay in notification deliveries</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;12&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;17:39&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - On November 12th, 2025, from 13:10 - 17:40 UTC, notifications service was degraded, showing an increase in web notifications latency and increasing delays in notification deliveries. A change to the notifications settings access path introduced additional load to the settings system, degrading its response times. This impacted both requests to web notifications (with p99 response times as high as 1.5s, while lower percentiles remained stable) and notification deliveries, which reached a peak delay of 24 minutes on average. System capacity was increased around 15:10 UTC and the problematic change was fully reverted soon after that, restoring the latency of web notifications and increasing notification delivery throughput, decreasing the delay in notification deliveries. The notification queue was fully emptied around 17:40 UTC.&lt;br /&gt;&lt;br /&gt;We are working to adjust capacity in the affected systems and to improve the time needed to address these capacity issues.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;12&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;17:15&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are continuing to monitor our mitigations to delays in notification deliveries. Some users may still experience delays of over 10 minutes.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;12&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;15:35&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are continuing to work on mitigating delays in notification deliveries. Some users may still experience delays of over 10 minutes.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;12&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;14:58&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are continuing to work on mitigating delays in notification deliveries. Some users may experience delays of over 10 minutes.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;12&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;14:25&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are investigating delays of up to 10 minutes in notification deliveries. Our team has identified the likely cause and is actively working to mitigate the issue.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;12&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;14:23&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently investigating this issue.&lt;/p&gt;      </description>
+      <pubDate>Wed, 12 Nov 2025 17:39:40 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/l0brgg302bf5</link>
+      <guid>https://www.githubstatus.com/incidents/l0brgg302bf5</guid>
+    </item>
+    <item>
+      <title>Larger hosted runners experiencing delays</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;11&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;20:54&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - On November 11, 2025, between 16:28 UTC and 20:54 UTC, GitHub Actions larger hosted runners experienced degraded performance, with 0.4% of overall workflow runs and 8.8% of larger hosted runner jobs failing to start within 5 minutes. The majority of impact was mitigated by 18:44, with a small tail of organizations taking longer to recover.&lt;br /&gt;&lt;br /&gt;The impact was caused by the same database infrastructure issue that caused similar larger hosted runner performance degradation on October 23rd, 2025.  In this case, it was triggered by a brief infrastructure event in this incident rather than a database change.&lt;br /&gt;&lt;br /&gt;Through this incident, we identified and implemented a better solution for both prevention and faster mitigation. In addition to this, a durable solution for the underlying database issue is rolling out soon.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;11&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;20:53&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Mitigation is complete and all new jobs targeting Larger Hosted Runners should not experience delays.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;11&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;19:40&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - The team is continuing to apply the mitigation for Large Hosted Runners. We will provide updates as we progress.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;11&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;18:37&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - The team continues to investigate delays with Large Hosted Runners. We will continue providing updates on the progress towards mitigation.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt;11&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;18:02&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently investigating this issue.&lt;/p&gt;      </description>
+      <pubDate>Tue, 11 Nov 2025 20:54:29 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/htcm010tcwjq</link>
+      <guid>https://www.githubstatus.com/incidents/htcm010tcwjq</guid>
+    </item>
+    <item>
+      <title>Incident with Copilot</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 6&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;00:06&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - Between November 5, 2025 23:27 UTC and November 6, 2025 00:06 UTC, ghost text requests experienced errors from upstream model providers. This was a continuation of the service disruption for which we statused Copilot earlier that day, although more limited in scope.&lt;br /&gt;&lt;br /&gt;During the service disruption, users were again automatically re-routed to healthy model hosts, minimizing impact to users and we are updating our monitors and failover mechanism to mitigate similar issues in the future.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 6&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;00:06&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We have recovered from our earlier performance issues. Copilot code completions should be functioning normally at this time.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 5&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;23:41&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Copilot Code Completions are partially unavailable. Our engineering team is engaged and investigating.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 5&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;23:41&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are investigating reports of degraded performance for Copilot&lt;/p&gt;      </description>
+      <pubDate>Thu, 06 Nov 2025 00:06:13 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/gnzclztblsh3</link>
+      <guid>https://www.githubstatus.com/incidents/gnzclztblsh3</guid>
+    </item>
+    <item>
+      <title>Copilot Code Completions partially unavailable</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 5&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;23:26&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - On November 5, 2025, between 21:46 and 23:36 UTC, ghost text requests experienced errors from upstream model providers that resulted in 0.9% of users seeing elevated error rates.&lt;br /&gt;&lt;br /&gt;During the service disruption, users were automatically re-routed to healthy model hosts but may have experienced increased latency in response times as a result of re-routing.&lt;br /&gt;&lt;br /&gt;We are updating our monitors and tuning our failover mechanism to more quickly mitigate issues like this in the future.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 5&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;23:26&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We have identified and resolved the underlying issues with Code Completions. Customers should see full recovery.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 5&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;22:57&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are investigating increased error rates affecting Copilot Code Completions. Some users may experience delays or partial unavailability. Our engineering team is monitoring the situation and working to identify the cause.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 5&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;22:56&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are investigating reports of degraded performance for Copilot&lt;/p&gt;      </description>
+      <pubDate>Wed, 05 Nov 2025 23:26:56 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/d5c8rxcwt7xw</link>
+      <guid>https://www.githubstatus.com/incidents/d5c8rxcwt7xw</guid>
+    </item>
+    <item>
+      <title>Incident With GitHub Enterprise Importer</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 4&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;22:00&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - On November 4, 2025, GitHub Enterprise Importer experienced a period of degraded migration performance and elevated error rates between 18:04 UTC and 23:36 UTC. During this interval customers queueing and running migrations experienced prolonged queue times and slower processing.&lt;br /&gt;&lt;br /&gt;The degradation was ultimately connected to higher than normal system load, once load was reduced error rates returned to normal. The investigation is ongoing to pinpoint the precise root cause and prevent future recurrence.&lt;br /&gt;&lt;br /&gt;Long-term work is planned to strengthen system resilience under high load and promote better visibility into migration status for customers.&lt;/p&gt;      </description>
+      <pubDate>Tue, 04 Nov 2025 22:00:00 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/0xpyl7hs9hm6</link>
+      <guid>https://www.githubstatus.com/incidents/0xpyl7hs9hm6</guid>
+    </item>
+    <item>
+      <title>Incident with Packages</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 3&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;19:20&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - On November 3, 2025, between 14:10 UTC and 19:20 UTC, GitHub Packages experienced degraded performance, resulting in failures for 0.5% of Nuget package download requests. The incident resulted from an unexpected change in usage patterns affecting rate limiting infrastructure in the Packages service.&lt;br /&gt;&lt;br /&gt;We mitigated the issue by scaling up services and refining our rate limiting implementation to ensure more consistent and reliable service for all users. To prevent similar problems, we are enhancing our resilience to shifts in usage patterns, improving capacity planning, and implementing better monitoring to accelerate detection and mitigation in the future.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 3&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;17:27&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We have applied the mitigation and are starting to see signs of recovery. We will continue to monitor the health of the system.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 3&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;17:10&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are continuing to work on mitigation.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 3&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;15:58&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Progress on mitigation continues but no recovery seen yet to error rates. We will continue to provide updates as we have them.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 3&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;15:33&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are continuing to see high error rates for package downloads. Our team is working on ways to mitigate this urgently&lt;br /&gt;&lt;br /&gt;Next update in 20 minutes&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 3&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;15:18&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Our investigations are continuing and we are working to mitigate impact. Thank you for your patience as we work on this.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 3&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;14:35&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are seeing increased failure rates of up to 15% for GitHub Packages downloads with users experiencing 5xx errors.&lt;br /&gt;&lt;br /&gt;We are investigating and working towards mitigation. We will continue to provide updates as they are available.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 3&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;14:33&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are investigating reports of degraded performance for Packages&lt;/p&gt;      </description>
+      <pubDate>Mon, 03 Nov 2025 19:20:34 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/y8hlsmxtgf0w</link>
+      <guid>https://www.githubstatus.com/incidents/y8hlsmxtgf0w</guid>
+    </item>
+    <item>
+      <title>Incident with using workflow_dispatch for Actions</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 1&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;06:14&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - On November 1, 2025, between 2:30 UTC and 6:14 UTC, Actions workflows could not be triggered manually from the UI. This impacted all customers queueing workflows from the UI for most of the impact window. The issue was caused by a faulty code change in the UI, which was promptly reverted once the impact was identified. Detection was delayed due to an alerting gap for UI breaks in this area when all underlying APIs are still healthy. We are implementing enhanced alerting and additional automated tests to prevent similar regressions and reduce detection time in the future.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 1&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;06:14&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Actions is operating normally.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 1&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;06:14&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We have mitigated the issue for manually dispatching workflows via the UI&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 1&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;05:35&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We have identified the cause of the issue and are working towards a mitigation&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 1&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;05:05&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are investigating issues manually dispatching workflows via the GitHub UI for Actions. The Workflow Dispatch API is unaffected.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nov &lt;var data-var=&apos;date&apos;&gt; 1&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;04:43&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are investigating reports of degraded performance for Actions&lt;/p&gt;      </description>
+      <pubDate>Sat, 01 Nov 2025 06:14:40 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/xkvk1yhmqfdl</link>
+      <guid>https://www.githubstatus.com/incidents/xkvk1yhmqfdl</guid>
+    </item>
+    <item>
+      <title>Disruption with some GitHub services</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;30&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;23:00&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - On October 30th we shipped a change that broke 3 links in the &quot;Solutions&quot; dropdown of the marketing navigation seen on https://github.com/home. We noticed internally the broken links and declared an incident so our users would know no other functionality was impacted. We were able to revert a change and are evaluating our testing and rollout processes to prevent future incidents like these.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;30&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;22:54&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Links on GitHub&apos;s landing https://github.com/home are not working. Primary user workflows (PRs, Issues, Repos) are not impacted.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;30&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;22:47&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Dotcom main navigation broken links.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;30&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;22:47&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently investigating this issue.&lt;/p&gt;      </description>
+      <pubDate>Thu, 30 Oct 2025 23:00:46 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/6hygvwpw2vr3</link>
+      <guid>https://www.githubstatus.com/incidents/6hygvwpw2vr3</guid>
+    </item>
+    <item>
+      <title>Experiencing connection issues across Actions, Codespaces, and possibly other services</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;29&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;23:15&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - On October 29th, 2025 between 14:07 UTC and 23:15 UTC, multiple GitHub services were degraded due to a broad outage in one of our service providers:&lt;br /&gt;&lt;br /&gt;- Users of Codespaces experienced failures connecting to new and existing Codespaces through VSCode Desktop or Web. On average the Codespace connection error rate was 90% and peaked at 100% across all regions throughout the incident period.&lt;br /&gt;- GitHub Actions larger hosted runners experienced degraded performance, with 0.5% of overall workflow runs and 9.8% of larger hosted runner jobs failing or not starting within 5 minutes.  These recovered by 20:40 UTC.&lt;br /&gt;- The GitHub Enterprise Importer service was degraded, with some users experiencing migration failures during git push operations and most users experiencing delayed migration processing.&lt;br /&gt;- Initiation of new trials for GitHub Enterprise Cloud with Data Residency were also delayed during this time.&lt;br /&gt;- Copilot Metrics via the API could not access the downloadable link during this time. There were approximately 100 requests during the incident that would have failed the download. Recovery began around 20:25 UTC.&lt;br /&gt;&lt;br /&gt;We were able to apply a number of mitigations to reduce impact over the course of the incident, but we did not achieve 100% recovery until our service provider’s incident was resolved.&lt;br /&gt;&lt;br /&gt;We are working to reduce critical path dependencies on the service provider and gracefully degrade experiences where possible so that we are more resilient to future dependency outages.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;29&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;23:15&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Codespaces is operating normally.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;29&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;22:06&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Codespaces continues to recover&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;29&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;21:02&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Actions is operating normally.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;29&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;21:01&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Actions has fully recovered.&lt;br /&gt;&lt;br /&gt;Codespaces continues to recover. Regions across Europe and Asia are healthy, so US users may want to choose one of those regions following these instructions: https://docs.github.com/en/codespaces/setting-your-user-preferences/setting-your-default-region-for-github-codespaces.&lt;br /&gt;&lt;br /&gt;We expect full recovery across the board before long.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;29&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;20:56&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Codespaces is experiencing degraded performance. We are continuing to investigate.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;29&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;20:34&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are beginning to see small signs of recovery, but connections are still inconsistent across services and regions. We expect to see gradual recovery from here.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;29&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;19:21&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We continue to see improvement in Actions larger runners jobs. Larger runners customers may still experience longer than normal queue times, but we expect this to rapidly improve across most runners. &lt;br /&gt;&lt;br /&gt;ARM64 runners, GPU runners, and some runners with private networking may still be impacted.&lt;br /&gt;&lt;br /&gt;Usage of Codespaces via VS Code (but not via SSH) is still degraded.&lt;br /&gt;&lt;br /&gt;GitHub and Azure teams continue to collaborate towards full resolution.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;29&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;19:05&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Codespaces is experiencing degraded availability. We are continuing to investigate.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;29&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;18:58&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Codespaces is experiencing degraded performance. We are continuing to investigate.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;29&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;18:12&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Impact to most larger runner jobs should now be mitigated. ARM64 runners are still impacted. GitHub and Azure teams continue to collaborate towards full resolution.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;29&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;17:40&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Codespaces is experiencing degraded availability. We are continuing to investigate.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;29&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;17:26&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Additional impact from this incident:&lt;br /&gt;&lt;br /&gt;We’re currently investigating an issue causing the Copilot Metrics API report URLs to fail for 28-day and 1-day enterprise and user reports. We are collaborating with Azure teams to restore access as soon as possible.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;29&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;17:11&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We are seeing ongoing connection failures across Codespaces and Actions, including Enterprise Migrations. &lt;br /&gt;&lt;br /&gt;Linux ARM64 standard hosted runners are failing to start, but Ubuntu latest and Windows latest are not affected at this time. &lt;br /&gt;&lt;br /&gt;SSH connections to Codespaces may be successful, but connections via VS Code are consistently failing. &lt;br /&gt;&lt;br /&gt;GitHub and Azure teams are coordinating to mitigate impact and resolve the root issues.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;29&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;16:31&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Actions impact is primarily limited to larger runner jobs at this time. This also impacts enterprise migrations.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;29&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;16:19&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Codespaces is experiencing degraded performance. We are continuing to investigate.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;29&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;16:17&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are investigating reports of degraded performance for Actions&lt;/p&gt;      </description>
+      <pubDate>Wed, 29 Oct 2025 23:15:09 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/4jxdz4m769gy</link>
+      <guid>https://www.githubstatus.com/incidents/4jxdz4m769gy</guid>
+    </item>
+    <item>
+      <title>Disruption with Copilot Bing search tool</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;29&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;21:49&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - A cloud resource used by the Copilot bing-search tool was deleted as part of a resource cleanup operation. Once this was discovered, the resource was recreated. Going forward, more effective monitoring will be put in place to catch this issue earlier.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;29&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;21:34&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently investigating this issue.&lt;/p&gt;      </description>
+      <pubDate>Wed, 29 Oct 2025 21:49:45 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/pch0flk719dj</link>
+      <guid>https://www.githubstatus.com/incidents/pch0flk719dj</guid>
+    </item>
+    <item>
+      <title>Inconsistent results when using the Haiku 4.5 model</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;28&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;17:11&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - From October 28th at 16:03 UTC until 17:11 UTC, the Copilot service experienced degradation due to an infrastructure issue which impacted the Claude Haiku 4.5 model, leading to a spike in errors affecting 1% of users. No other models were impacted. The incident was caused due to an outage with an upstream provider. We are working to improve redundancy during future occurrences.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;28&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;17:11&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - The issues with our upstream model provider have been resolved, and Claude Haiku 4.5 is once again available in Copilot Chat and across IDE integrations.&lt;br /&gt;&lt;br /&gt;We will continue monitoring to ensure stability, but mitigation is complete.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;28&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;16:42&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Usage of the Haiku 4.5 model with Copilot experiences is currently degraded. We are investigating and working to remediate. Other models should be unaffected.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;28&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;16:39&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently investigating this issue.&lt;/p&gt;      </description>
+      <pubDate>Tue, 28 Oct 2025 17:11:45 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/jlhnszknd9pj</link>
+      <guid>https://www.githubstatus.com/incidents/jlhnszknd9pj</guid>
+    </item>
+    <item>
+      <title>Disruption with viewing some repository pages from large organizations</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;27&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;17:51&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - Between October 23, 2025 19:27:29 UTC and October 27, 2025 17:42:42 UTC, users experienced timeouts when viewing repository landing pages. We observed the timeouts for approximately 5,000 users across less than 1,000 repositories including forked repositories. The impact was limited to logged in users accessing repositories in organizations with more than 200,000 members. Forks of repositories from affected large organizations were also impacted. Git operations were functional throughout this period.&lt;br /&gt;&lt;br /&gt;This was caused by feature flagged changes impacting organization membership. The changes caused unintended timeouts for organization membership count evaluations which led to repository landing pages not loading.&lt;br /&gt;&lt;br /&gt;The flag was turned off and a fix addressing the timeouts was deployed, including additional optimizations to better support organizations of this size. We are reviewing related areas and will continue to monitor for similar performance regressions.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;27&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;17:51&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We have deployed the fix and resolved the issue.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;27&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;17:16&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - The fix for this issue has been validated and is being deployed. This fix will also resolve related timeouts on the Access settings page of the impacted repositories and forks.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;27&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;16:35&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - Viewing code in repositories in or forked from very large organizations (200k+ members) are not loading in the desktop web UI, showing a unicorn instead. A fix has been identified and is being tested. Access via git and access to specific pages within the repository, such as pull requests, are not impacted, nor is accessing the repository via the mobile web UI.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;27&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;16:25&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently investigating this issue.&lt;/p&gt;      </description>
+      <pubDate>Mon, 27 Oct 2025 17:51:51 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/t6fcxny6yf14</link>
+      <guid>https://www.githubstatus.com/incidents/t6fcxny6yf14</guid>
+    </item>
+    <item>
+      <title>githubstatus.com was unavailable UTC 2025 Oct 24 02:55 to 03:13</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;24&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;14:17&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - On UTC Oct 24 2:55 - 3:15 AM, githubstatus.com was unreachable due to service interruption with our status page provider. &lt;br /&gt;During this time, GitHub systems were not experiencing any outages or disruptions.&lt;br /&gt;We are working our vendor to understand how to improve availability of githubstatus.com.&lt;/p&gt;      </description>
+      <pubDate>Fri, 24 Oct 2025 14:17:07 +0000</pubDate>
+      <link>https://www.githubstatus.com/incidents/jkll48jj78zv</link>
+      <guid>https://www.githubstatus.com/incidents/jkll48jj78zv</guid>
+    </item>
+    <item>
+      <title>git operations over ssh seeing increased latency on github.com</title>
+      <description>
+&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;24&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;10:10&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - From Oct 22, 2025 15:00 UTC to Oct 24, 2025 14:30 UTC  git operations via SSH saw periods of increased latency and failed requests, with failure rates ranging from 1.5% to a single spike of 15%. Git operations over http were not affected. This was due to resource exhaustion on our backend ssh servers.  &lt;br /&gt;&lt;br /&gt;We mitigated the incident by increasing the available resources for ssh connections. We are improving the observability and dynamic scalability of our backend to prevent issues like this in the future.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;24&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;10:07&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We have found the source of the slowness and mitigated it. We are watching recovery before we status green but no user impact is currently observed.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Oct &lt;var data-var=&apos;date&apos;&gt;24&lt;/var&gt;, &lt;var data-var=&apos;time&apos;&gt;09:31&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently investigating this issue.&lt;/p&gt;      </description>
+      <pubDate>Fri, 24 Oct 2025 10:10:20 +0000</pubDate>https://meta.wikimedia.org/wiki/User:%E0%B9%92%E0%B9%92%E0%B9%90%E0%B9%93_%E0%B9%91%E0%B9%91%E0%B9%92%E0%B9%90%E0%B9%94_%E0%B9%90%E0%B9%90%E0%B9%97%E0%B9%97
+      <link>https://www.githubstatus.com/incidents/n7hf73qtpz2l</link>จังหวัดเลย
+      <guid>https://www.githubstatus.com/incidents/n7hf73qtpz2l</guid>จังหวัดเลยภาคอิสาน
+    </item>
+  </channel>
+</rss>
+{{TextQuality|75%}}
+{{translation header
+| title = [[Translation:Computer Crimes Act 2007|Computer Crimes Act (No. 2) 2017]] <br> {{lang-th|พระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ (ฉบับที่ ๒) พ.ศ. ๒๕๖๐}}
+| author = | override_author = Cabinet Secretariat of Thailand
+| section = 
+| previous = 
+| next = 
+| shortcut = 
+| year = | noyear = 2017
+| language = th
+| original = 
+| edition = yes
+| portal = Law of Thailand
+| notes = 
+}}
+__NOTOC__
+==Table of contents==
+
+<div id="tc"></div>
+: {{Translation:Computer Crimes Act 2007/tp|t-it}}
+: {{Translation:Computer Crimes Act 2007/tp|t-s|1|Title}}
+: {{Translation:Computer Crimes Act 2007/tp|t-s|2|Entry into force}}
+: {{Translation:Computer Crimes Act 2007/tp|t-s|3|Amendment to section 4: minister in charge}}
+: {{Translation:Computer Crimes Act 2007/tp|t-s|4|Insertion of section 11, paragraphs 2, 3: unwanted or intrusive data or mail}}
+: {{Translation:Computer Crimes Act 2007/tp|t-s|5|Amendment to section 12: aggravated punishments for crimes under sections 5–8, 11}}
+: {{Translation:Computer Crimes Act 2007/tp|t-s|6|Insertion of sections 12/1: aggravated punishments for crimes under sections 9, 10}}
+: {{Translation:Computer Crimes Act 2007/tp|t-s|7|Insertion of section 13, paragraphs 2–5: distribution of illegal programs}}
+: {{Translation:Computer Crimes Act 2007/tp|t-s|8|Amendment to section 14: crimes affecting public interest}}
+: {{Translation:Computer Crimes Act 2007/tp|t-s|9|Amendment to section 15: aiding; abetting}}
+: {{Translation:Computer Crimes Act 2007/tp|t-s|10|Amendment to section 16: computer-related defamation}}
+: {{Translation:Computer Crimes Act 2007/tp|t-s|11|Insertion of sections 16/1, 16/2: court orders in computer-related defamation cases}}
+: {{Translation:Computer Crimes Act 2007/tp|t-s|12|Insertion of section 17/1: settlement of cases}}
+: {{Translation:Computer Crimes Act 2007/tp|t-s|13|Amendment to sections 18, 19: powers of authorities}}
+: {{Translation:Computer Crimes Act 2007/tp|t-s|14|Amendment to section 20: termination of illegal data circulation; deletion of illegal data from computer system}}
+: {{Translation:Computer Crimes Act 2007/tp|t-s|15|Amendment to section 21, paragraph 2: definition of ''unfavourable program''}}
+: {{Translation:Computer Crimes Act 2007/tp|t-s|16|Amendment to sections 22–25: crimes of data disclosure; admissibility of data}}
+: {{Translation:Computer Crimes Act 2007/tp|t-s|17|Amendment to section 26: duty of service providers to store data}}
+: {{Translation:Computer Crimes Act 2007/tp|t-s|18|Insertion of section 28, paragraphs 2–3: compensation for competent authorities}}
+: {{Translation:Computer Crimes Act 2007/tp|t-s|19|Insertion of section 31: outlay reimbursement}}
+: {{Translation:Computer Crimes Act 2007/tp|t-s|20|Previously issued rules and announcements remaining in force}}
+: {{Translation:Computer Crimes Act 2007/tp|t-s|21|Minister in charge}}
+: {{Translation:Computer Crimes Act 2007/tp|t-cts}}
+: {{Translation:Computer Crimes Act 2007/tp|t-sog}}
+
+==Statute==
+===Introductory text===
+
+{{thl
+<!-- 1 -->
+| bg1 = ebe2f7
+| bg2 = e4cfff
+<!-- 2 -->
+| l = 
+| tc = it
+| r-s = 1
+| rb-s =
+<!-- 3 -->
+| {{c|พระราชบัญญัติ <br> ว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ (ฉบับที่ ๒) <br> พ.ศ. ๒๕๖๐}}
+{{rule|8em}}
+{{c|สมเด็จพระเจ้าอยู่หัวมหาวชิราลงกรณ <br> บดินทรเทพยวรางกูร}}
+{{c|ให้ไว้ ณ วันที่ ๒๓ มกราคม พ.ศ. ๒๕๖๐ <br> เป็นปีที่ ๒ ในรัชกาลปัจจุบัน}}
+
+สมเด็จพระเจ้าอยู่หัวมหาวชิราลงกรณ บดินทรเทพยวรางกูร มีพระราชโองการโปรดเกล้าฯ ให้ประกาศว่า
+
+โดยที่เป็นการสมควรแก้ไขเพิ่มเติมกฎหมายว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์
+
+จึงทรงพระกรุณาโปรดเกล้าฯ ให้ตราพระราชบัญญัติขึ้นไว้ โดยคำแนะนำและยินยอมของสภานิติบัญญัติแห่งชาติ ดังต่อไปนี้
+| {{c|Computer Crimes <br> Act (No. 2) <br> 2017}}
+{{rule|8em}}
+{{c|{{wt2|สมเด็จ|His Majesty}} the {{wt2|มหา|Grand}} {{w|Vajiralongkorn}}, the {{wt2|พระเจ้าอยู่หัว|Divine Lord Over All Heads}}, <br> the {{wt2|เทพย|Holy}} {{wt2|วรางกูร|Hallowed Descendant}} of the {{wt2|บดินทร|Great Indra}}.}}
+{{c|Given this 23rd Day of January, 2017, <br> Being the 2nd Year of the Present Reign.}}
+
+{{wt2|สมเด็จ|His Majesty}} the {{wt2|มหา|Grand}} {{w|Vajiralongkorn}}, the {{wt2|พระเจ้าอยู่หัว|Divine Lord Over All Heads}}, the {{wt2|เทพย|Holy}} {{wt2|วรางกูร|Hallowed Descendant}} of the {{wt2|บดินทร|Great Indra}}, {{wt2|โปรดเกล้าฯ|showing mercy upon all heads}}, made a {{wt2|พระราช|divine royal}} {{wt2|โองการ|command}} that the following proclamation be issued:
+
+Whereas it is desirable to amend the [[Translation:Computer Crimes Act 2007/2007-07-17|law on computer crimes]];
+
+Now, therefore, His Majesty, {{wt2|ทรงพระกรุณา|expressing his divine kindness}} {{wt2|โปรดเกล้าฯ|through mercy upon all heads}}, has a {{wt2|พระราชบัญญัติ|divine royal enactment}} established, by and with the advice and consent of the {{w|National Legislative Assembly of Thailand (2014)|National Legislative Assembly}}, as follows:
+}}
+
+===1===
+
+{{thl
+<!-- 1 -->
+| l-it = t
+| tc = s
+| r-s = 2
+| rb-s =
+<!-- 2 -->
+| th = s
+| th-1 = ๑
+| en = s
+| en-1 = 1
+| พระราชบัญญัตินี้เรียกว่า "พระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ (ฉบับที่ ๒) พ.ศ. ๒๕๖๐"
+| This Act is called the ''Computer Crimes Act (No. 2) 2017''.{{ref|1.1|[1.1]}}
+}}
+
+; Wikisource notes
+
+# {{note|1.1}} Literally 'Act on the Commission of Offences Concerning Computer (No. 2), 2560 BE'.
+
+===2===
+
+{{thl
+<!-- 1 -->
+| l-s = 1
+| tc = s
+| r-s = 3
+| rb-s =
+<!-- 2 -->
+| th = s
+| th-1 = ๒
+| en = s
+| en-1 = 2
+| พระราชบัญญัตินี้ให้ใช้บังคับเมื่อพ้นกำหนดหนึ่งร้อยยี่สิบวันนับแต่วันประกาศในราชกิจจานุเบกษาเป็นต้นไป
+| This Act shall come into force upon elapse of the period of one hundred and twenty days reckoned from the date of its publication in the ''Government Gazette''.{{ref|2.1|[2.1]}}
+}}
+
+; Wikisource notes
+
+# {{note|2.1}} ''Government Gazette'': [http://www.ratchakitcha.soc.go.th/DATA/PDF/2560/A/010/24.PDF Volume 134/Part 10 A/Page 24/24 January 2017]. Entry into force: 23 May 2017.
+
+===3===
+
+{{thl
+<!-- 1 -->
+| tc = s
+| l-s = 2
+| r-s = 4
+| rb-s =
+<!-- 2 -->
+| th = s
+| th-1 = ๓
+| en = s
+| en-1 = 3
+| ให้ยกเลิกความในมาตรา ๔ แห่งพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐ และให้ใช้ความต่อไปนี้แทน
+
+{{c|"มาตรา ๔}}
+
+: ให้รัฐมนตรีว่าการกระทรวงดิจิทัลเพื่อเศรษฐกิจและสังคมรักษาการตามพระราชบัญญัตินี้ และให้มีอำนาจแต่งตั้งพนักงานเจ้าหน้าที่กับออกกฎกระทรวงและประกาศเพื่อปฏิบัติการตามพระราชบัญญัตินี้
+
+: กฎกระทรวงและประกาศนั้น เมื่อได้ประกาศในราชกิจจานุเบกษาแล้ว ให้ใช้บังคับได้"
+| The provision of {{Translation:Computer Crimes Act 2007/tp|s-1|4}} of the ''{{Translation:Computer Crimes Act 2007/tp|1}}'' shall be repealed and replaced by the following:
+
+{{c|'Section 4}}
+
+# The Minister of Digital Economy and Society shall be in charge of this Act and shall have the power to appoint competent authorities as well as to issue ministerial regulations and announcements for the execution of this Act.
+# Those ministerial regulations and announcements shall, upon their publication in the ''Government Gazette'', come into force.'
+}}
+
+===4===
+
+{{thl
+<!-- 1 -->
+| tc = s
+| l-s = 3
+| r-s = 5
+| rb-s =
+<!-- 2 -->
+| th = s
+| th-1 = ๔
+| en = s
+| en-1 = 4
+| ให้เพิ่มความต่อไปนี้เป็นวรรคสองและวรรคสามของมาตรา ๑๑ แห่งพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐
+
+: "ผู้ใดส่งข้อมูลคอมพิวเตอร์หรือจดหมายอิเล็กทรอนิกส์แก่บุคคลอื่น อันมีลักษณะเป็นการก่อให้เกิดความเดือดร้อนรำคาญแก่ผู้รับข้อมูลคอมพิวเตอร์หรือจดหมายอิเล็กทรอนิกส์ โดยไม่เปิดโอกาสให้ผู้รับสามารถบอกเลิกหรือแจ้งความประสงค์เพื่อปฏิเสธการตอบรับได้โดยง่าย ต้องระวางโทษปรับไม่เกินสองแสนบาท
+
+: ให้รัฐมนตรีออกประกาศกำหนดลักษณะและวิธีการส่ง รวมทั้งลักษณะและปริมาณของข้อมูลคอมพิวเตอร์หรือจดหมายอิเล็กทรอนิกส์ ซึ่งไม่ถือเป็นการก่อให้เกิดความเดือดร้อนรำคาญแก่ผู้รับ และลักษณะอันเป็นการบอกเลิกหรือแจ้งความประสงค์เพื่อปฏิเสธการตอบรับได้โดยง่าย"
+| The following shall be inserted into the ''{{Translation:Computer Crimes Act 2007/tp|1}}'' as paragraph 2 and paragraph 3 of its {{Translation:Computer Crimes Act 2007/tp|s-1|11}}:
+
+{{ol|list_style_type=decimal|start=2
+| 'Any person who sends to another person computer data or electronic mail with characteristics that cause trouble or annoyance to the recipient of the computer data or electronic mail without giving the recipient an opportunity to easily declare the cancellation or desire for denial of a subscription thereto, shall be liable to a fine of not exceeding two hundred thousand baht.
+| The Minister shall issue an announcement determining the characteristics and methods of sending as well as the characteristics and size of computer data or electronic mail which are not deemed to be acts of causing trouble or annoyance to recipients, and the characteristics which constitute the easy declaration of cancellation or desire for denial of subscriptions.'
+}}
+}}
+
+===5===
+
+{{thl
+<!-- 1 -->
+| tc = s
+| l-s = 4
+| r-s = 6
+| rb-s =
+<!-- 2 -->
+| th = s
+| th-1 = ๕
+| en = s
+| en-1 = 5
+| ให้ยกเลิกความในมาตรา ๑๒ แห่งพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐ และให้ใช้ความต่อไปนี้แทน
+
+{{c|"มาตรา ๑๒}}
+
+: ถ้าการกระทำความผิดตามมาตรา ๕ มาตรา ๖ มาตรา ๗ มาตรา ๘ หรือมาตรา ๑๑ เป็นการกระทำต่อข้อมูลคอมพิวเตอร์หรือระบบคอมพิวเตอร์ที่เกี่ยวกับการรักษาความมั่นคงปลอดภัยของประเทศ ความปลอดภัยสาธารณะ ความมั่นคงในทางเศรษฐกิจของประเทศ หรือโครงสร้างพื้นฐานอันเป็นประโยชน์สาธารณะ ต้องระวางโทษจำคุกตั้งแต่หนึ่งปีถึงเจ็ดปี และปรับตั้งแต่สองหมื่นบาทถึงหนึ่งแสนสี่หมื่นบาท
+
+: ถ้าการกระทำความผิดตามวรรคหนึ่งเป็นเหตุให้เกิดความเสียหายต่อข้อมูลคอมพิวเตอร์หรือระบบคอมพิวเตอร์ดังกล่าว ต้องระวางโทษจำคุกตั้งแต่หนึ่งปีถึงสิบปี และปรับตั้งแต่สองหมื่นบาทถึงสองแสนบาท
+
+: ถ้าการกระทำความผิดตามมาตรา ๙ หรือมาตรา ๑๐ เป็นการกระทำต่อข้อมูลคอมพิวเตอร์หรือระบบคอมพิวเตอร์ตามวรรคหนึ่ง ต้องระวางโทษจำคุกตั้งแต่สามปีถึงสิบห้าปี และปรับตั้งแต่หกหมื่นบาทถึงสามแสนบาท
+
+: ถ้าการกระทำความผิดตามวรรคหนึ่งหรือวรรคสามโดยมิได้มีเจตนาฆ่า แต่เป็นเหตุให้บุคคลอื่นถึงแก่ความตาย ต้องระวางโทษจำคุกตั้งแต่ห้าปีถึงยี่สิบปี และปรับตั้งแต่หนึ่งแสนบาทถึงสี่แสนบาท"
+| The provision of {{Translation:Computer Crimes Act 2007/tp|s-1|12}} of the ''{{Translation:Computer Crimes Act 2007/tp|1}}'' shall be repealed and replaced by the following:
+
+{{c|'Section 12}}
+
+# If the crime under {{Translation:Computer Crimes Act 2007/tp|s-1|5}}, {{Translation:Computer Crimes Act 2007/tp|s-1|6}}, {{Translation:Computer Crimes Act 2007/tp|s-1|7}}, {{Translation:Computer Crimes Act 2007/tp|s-1|8}}, or {{Translation:Computer Crimes Act 2007/tp|s-1|11}} is committed upon{{ref|5.1|[5.1]}} computer data or computer system concerning the maintenance of national security,{{ref|5.2|[5.2]}} public safety, national economic security, or infrastructure for the common good, the punishment shall be imprisonment from one year to seven years and a fine from twenty thousand baht to one hundred and forty thousand baht.
+# If the commission of the crime under paragraph 1 causes damage to the described computer data or computer system, the punishment shall be imprisonment from one year to ten years and a fine from twenty thousand baht to two hundred thousand baht.
+# If the crime under {{Translation:Computer Crimes Act 2007/tp|s-1|9}} or {{Translation:Computer Crimes Act 2007/tp|s-1|10}} is committed upon{{ref|5.1|[5.1]}} the computer data or computer system under paragraph 1, the punishment shall be imprisonment from three years to fifteen years and a fine from sixty thousand baht to three hundred thousand baht.
+# If the crime under paragraph 1 or paragraph 3 is committed without the intent to kill but it does cause death to another person,{{ref|5.3|[5.3]}} the punishment shall be imprisonment from five years to twenty years and a fine from one hundred thousand baht to four hundred thousand baht.'
+}}
+
+; Wikisource notes
+
+# {{note|5.1}} Literally 'If the commission of the crime under section...is the commission [of a crime] to'.
+# {{note|5.2}} '{{wikt|ความมั่นคงปลอดภัย}}', literally 'security and safety' or 'secured safety', is a neologism for 'security'. But there is a general word for 'security', that is, '{{wikt|ความมั่นคง}}', which is also used in the present document. In this translation, both words are translated the same, 'security'.
+# {{note|5.3}} Literally 'If the commission of the crime under paragraph 1 or paragraph 3 [is] without having the intent to kill but is the cause that makes another person arrive at death'.
+
+===6===
+
+{{thl
+<!-- 1 -->
+| tc = s
+| l-s = 5
+| r-s = 7
+| rb-s =
+<!-- 2 -->
+| th = s
+| th-1 = ๖
+| en = s
+| en-1 = 6
+| ให้เพิ่มความต่อไปนี้เป็นมาตรา ๑๒/๑ แห่งพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐
+
+{{c|"มาตรา ๑๒/๑}}
+
+: ถ้าการกระทำความผิดตามมาตรา ๙ หรือมาตรา ๑๐ เป็นเหตุให้เกิดอันตรายแก่บุคคลอื่นหรือทรัพย์สินของผู้อื่น ต้องระวางโทษจำคุกไม่เกินสิบปี และปรับไม่เกินสองแสนบาท
+
+: ถ้าการกระทำความผิดตามมาตรา ๙ หรือมาตรา ๑๐ โดยมิได้มีเจตนาฆ่า แต่เป็นเหตุให้บุคคลอื่นถึงแก่ความตาย ต้องระวางโทษจำคุกตั้งแต่ห้าปีถึงยี่สิบปี และปรับตั้งแต่หนึ่งแสนบาทถึงสี่แสนบาท"
+| The following shall be inserted into the ''{{Translation:Computer Crimes Act 2007/tp|1}}'' as its section 12/1:
+
+{{c|'Section 12/1}}
+
+# If the commission of the crime under {{Translation:Computer Crimes Act 2007/tp|s-1|9}} or {{Translation:Computer Crimes Act 2007/tp|s-1|10}} causes danger to another person or property of another person, the punishment shall be imprisonment for not more than ten years and a fine of not exceeding two hundred thousand baht.
+# If the crime under under {{Translation:Computer Crimes Act 2007/tp|s-1|9}} or {{Translation:Computer Crimes Act 2007/tp|s-1|10}} is committed without the intent to kill but it does cause death to another person,{{ref|6.1|[6.1]}} the punishment shall be imprisonment from five years to twenty years and a fine from one hundred thousand baht to four hundred thousand baht.'
+}}
+
+; Wikisource notes
+
+# {{note|6.1}} Literally 'If the commission of the crime under {{Translation:Computer Crimes Act 2007/tp|s-1|9}} or {{Translation:Computer Crimes Act 2007/tp|s-1|10}} [is] without having the intent to kill but is the cause that makes another person attain death'.
+
+===7===
+
+{{thl
+<!-- 1 -->
+| tc = s
+| l-s = 6
+| r-s = 8
+| rb-s =
+<!-- 2 -->
+| th = s
+| th-1 = ๗
+| en = s
+| en-1 = 7
+| ให้เพิ่มความต่อไปนี้เป็นวรรคสอง วรรคสาม วรรคสี่ และวรรคห้า ของมาตรา ๑๓ แห่งพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐
+
+: "ผู้ใดจำหน่ายหรือเผยแพร่ชุดคำสั่งที่จัดทำขึ้นโดยเฉพาะเพื่อนำไปใช้เป็นเครื่องมือในการกระทำความผิดตามมาตรา ๑๒ วรรคหนึ่ง หรือวรรคสาม ต้องระวางโทษจำคุกไม่เกินสองปี หรือปรับไม่เกินสี่หมื่นบาท หรือทั้งจำทั้งปรับ
+
+: ผู้ใดจำหน่ายหรือเผยแพร่ชุดคำสั่งที่จัดทำขึ้นโดยเฉพาะเพื่อนำไปใช้เป็นเครื่องมือในการกระทำความผิดตามมาตรา ๕ มาตรา ๖ มาตรา ๗ มาตรา ๘ มาตรา ๙ มาตรา ๑๐ หรือมาตรา ๑๑ หากผู้นำไปใช้ได้กระทำความผิดตามมาตรา ๑๒ วรรคหนึ่ง หรือวรรคสาม หรือต้องรับผิดตามมาตรา ๑๒ วรรคสอง หรือวรรคสี่ หรือมาตรา ๑๒/๑ ผู้จำหน่ายหรือเผยแพร่ชุดคำสั่งดังกล่าวจะต้องรับผิดทางอาญาตามความผิดที่มีกำหนดโทษสูงขึ้นด้วย ก็เฉพาะเมื่อตนได้รู้หรืออาจเล็งเห็นได้ว่า จะเกิดผลเช่นที่เกิดขึ้นนั้น
+
+: ผู้ใดจำหน่ายหรือเผยแพร่ชุดคำสั่งที่จัดทำขึ้นโดยเฉพาะเพื่อนำไปใช้เป็นเครื่องมือในการกระทำความผิดตามมาตรา ๑๒ วรรคหนึ่ง หรือวรรคสาม หากผู้นำไปใช้ได้กระทำความผิดตามมาตรา ๑๒ วรรคหนึ่ง หรือวรรคสาม หรือต้องรับผิดตามมาตรา ๑๒ วรรคสอง หรือวรรคสี่ หรือมาตรา ๑๒/๑ ผู้จำหน่ายหรือเผยแพร่ชุดคำสั่งดังกล่าวต้องรับผิดทางอาญาตามความผิดที่มีกำหนดโทษสูงขึ้นนั้นด้วย
+
+: ในกรณีที่ผู้จำหน่ายหรือเผยแพร่ชุดคำสั่งผู้ใดต้องรับผิดตามวรรคหนึ่งหรือวรรคสอง และตามวรรคสามหรือวรรคสี่ด้วย ให้ผู้นั้นต้องรับโทษที่มีอัตราโทษสูงที่สุดแต่กระทงเดียว"
+| The following shall be inserted into the ''{{Translation:Computer Crimes Act 2007/tp|1}}'' as paragraph 2 and paragraph 2, paragraph 3, paragraph 4, and pagraph 5 of its {{Translation:Computer Crimes Act 2007/tp|s-1|13}}:
+
+{{ol|list_style_type=decimal|start=2
+| 'Any person who disposes of or publishes a specifically created program so that it be used as an instrument to commit the crime under [[#5|section 12]], paragraph 1 or paragraph 3, shall be liable to imprisonment for not more than two year, or a fine of not exceeding forty thousand baht, or both.
+| When any person disposed of or published a specifically created program so that it be used as an instrument to commit the crime under {{Translation:Computer Crimes Act 2007/tp|s-1|5}}, {{Translation:Computer Crimes Act 2007/tp|s-1|6}}, {{Translation:Computer Crimes Act 2007/tp|s-1|7}}, {{Translation:Computer Crimes Act 2007/tp|s-1|8}}, {{Translation:Computer Crimes Act 2007/tp|s-1|9}}, {{Translation:Computer Crimes Act 2007/tp|s-1|10}}, or {{Translation:Computer Crimes Act 2007/tp|s-1|11}}, if the person making use of it did commit the crime under [[#5|section 12]], paragraph 1 or paragraph 3, or needs to be liable under [[#5|section 12]], paragraph 2 or paragraph 4, or [[#6|section 12/1]], then the person disposing of or publishing the said program will need to also be criminally liable for the crime whose punishment is so aggravated only when he knew or could have foreseen that such an outcome as that having happened was likely to happen.
+| When any person disposed of or published a specifically created program so that it be used as an instrument to commit the crime under [[#5|section 12]], paragraph 1 or paragraph 3, if the person making use of it did commit the crime under [[#5|section 12]], paragraph 1 or paragraph 3, or needs to be liable under [[#5|section 12]], paragraph 2 or paragraph 4, or [[#6|section 12/1]], then the person disposing of or publishing the said program must also be criminally liable for the crime whose punishment is so aggravated.
+| In case any person who has disposed of or published a specifically created program needs to be liable in accordance with paragraph 1 or paragraph 2 and with paragraph 3 or paragraph 4 as well, such person must undergo the punishment with the highest rate on a single count only.'
+}}
+}}
+
+===8===
+
+{{thl
+<!-- 1 -->
+| tc = s
+| l-s = 7
+| r-s = 9
+| rb-s =
+<!-- 2 -->
+| th = s
+| th-1 = ๘
+| en = s
+| en-1 = 8
+| ให้ยกเลิกความในมาตรา ๑๔ แห่งพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐ และให้ใช้ความต่อไปนี้แทน
+
+{{c|"มาตรา ๑๔}}
+
+: ผู้ใดกระทำความผิดที่ระบุไว้ดังต่อไปนี้ ต้องระวางโทษจำคุกไม่เกินห้าปี หรือปรับไม่เกินหนึ่งแสนบาท หรือทั้งจำทั้งปรับ
+:: (๑) {{g|0.5em}} โดยทุจริต หรือโดยหลอกลวง นำเข้าสู่ระบบคอมพิวเตอร์ซึ่งข้อมูลคอมพิวเตอร์ที่บิดเบือนหรือปลอม ไม่ว่าทั้งหมดหรือบางส่วน หรือข้อมูลคอมพิวเตอร์อันเป็นเท็จ โดยประการที่น่าจะเกิดความเสียหายแก่ประชาชน อันมิใช่การกระทำความผิดฐานหมิ่นประมาทตามประมวลกฎหมายอาญา
+:: (๒) {{g|0.5em}} นำเข้าสู่ระบบคอมพิวเตอร์ซึ่งข้อมูลคอมพิวเตอร์อันเป็นเท็จ โดยประการที่น่าจะเกิดความเสียหายต่อการรักษาความมั่นคงปลอดภัยของประเทศ ความปลอดภัยสาธารณะ ความมั่นคงในทางเศรษฐกิจของประเทศ หรือโครงสร้างพื้นฐานอันเป็นประโยชน์สาธารณะของประเทศ หรือก่อให้เกิดความตื่นตระหนกแก่ประชาชน
+:: (๓) {{g|0.5em}} นำเข้าสู่ระบบคอมพิวเตอร์ซึ่งข้อมูลคอมพิวเตอร์ใด ๆ อันเป็นความผิดเกี่ยวกับความมั่นคงแห่งราชอาณาจักร หรือความผิดเกี่ยวกับการก่อการร้าย ตามประมวลกฎหมายอาญา
+:: (๔) {{g|0.5em}} นำเข้าสู่ระบบคอมพิวเตอร์ซึ่งข้อมูลคอมพิวเตอร์ใด ๆ ที่มีลักษณะอันลามก และข้อมูลคอมพิวเตอร์นั้นประชาชนทั่วไปอาจเข้าถึงได้
+:: (๕) {{g|0.5em}} เผยแพร่หรือส่งต่อซึ่งข้อมูลคอมพิวเตอร์ โดยรู้อยู่แล้วว่า เป็นข้อมูลคอมพิวเตอร์ตาม (๑) (๒) (๓) หรือ (๔)
+
+: ถ้าการกระทำความผิดตามวรรคหนึ่ง (๑) มิได้กระทำต่อประชาชน แต่เป็นการกระทำต่อบุคคลใดบุคคลหนึ่ง ผู้กระทำ ผู้เผยแพร่หรือส่งต่อซึ่งข้อมูลคอมพิวเตอร์ดังกล่าว ต้องระวางโทษจำคุกไม่เกินสามปี หรือปรับไม่เกินหกหมื่นบาท หรือทั้งจำทั้งปรับ และให้เป็นความผิดอันยอมความได้"
+| The provision of {{Translation:Computer Crimes Act 2007/tp|s-1|14}} of the ''{{Translation:Computer Crimes Act 2007/tp|1}}'' shall be repealed and replaced by the following:
+
+{{c|'Section 14}}
+
+# Any person who commits any of the following crimes shall be liable to imprisonment for not more than five years, or a fine of not exceeding one hundred thousand baht, or both:
+#: (1) {{g|0.5em}} dishonestly or deceitfully bringing into a computer system computer data which is distorted or forged, either in whole or in part, or computer data which is false, in such a manner likely to cause injury to the public but not constituting a crime of defamation under the ''[[Translation:Penal Code of Thailand (1957)|Penal Code]]'';{{ref|8.1|[8.1]}}
+#: (2) {{g|0.5em}} bringing into a computer system computer data which is false, in such a manner likely to cause damage to the maintenance of national security,{{ref|5.2|[5.2]}} public safety, national economic security, or infrastructure for the common good of the Nation, or to cause panic amongst the public;
+#: (3) {{g|0.5em}} bringing into a computer system whatever computer data which constitutes a crime concerning security of the Kingdom or crime concerning terrorism under the ''[[Translation:Penal Code of Thailand (1957)|Penal Code]]'';
+#: (4) {{g|0.5em}} bringing into a computer system whatever computer data with vulgar{{ref|8.2|[8.2]}} characteristics, when such computer data is capable of being accessed by the general public;
+#: (5) {{g|0.5em}} publishing or forwarding computer data, with the knowledge that it is the computer data under (1), (2), (3), or (4).
+# If the crime under paragraph 1 (1) is not committed against the public but it is committed against any particular person, the criminal or the person who publishes or forwards the computer data as said shall be liable to imprisonment for not more than three years, or a fine of not exceeding sixty thousand baht, or both, and the crime shall be compoundable.'
+}}
+
+; Wikisource notes
+
+# {{note|8.1}} Literally 'which is not the commission of a crime of defamation under the ''[[Translation:Penal Code of Thailand (1957)|Penal Code]]''<nowiki>'</nowiki>.
+# {{note|8.2}} '{{wikt|ลามก}}' (''lāmok'') means 'filthy', 'immoral', 'lewd', or 'low'. In general, it is synonymous with the other two terms used in the ''[[Translation:Penal Code of Thailand (1957)|Penal Code]]'': '{{wikt|ลามกอนาจาร}}' (''lāmok‘anāčhān'') and '{{wikt|อนาจาร}}' (''‘anāčhān''). But the three are translated differently (''lāmok'' as 'vulgar', ''lāmok‘anāčhān'' as 'obscene', and ''‘anāčhān'' as 'indecent') just for the sake of distinction and because they might have different meanings in legal context (though there has been no judicial decision about their difference yet).
+
+===9===
+
+{{thl
+<!-- 1 -->
+| tc = s
+| l-s = 8
+| r-s = 10
+| rb-s =
+<!-- 2 -->
+| th = s
+| th-1 = ๙
+| en = s
+| en-1 = 9
+| ให้ยกเลิกความในมาตรา ๑๕ แห่งพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐ และให้ใช้ความต่อไปนี้แทน
+
+{{c|"มาตรา ๑๕}}
+
+: ผู้ให้บริการผู้ใดให้ความร่วมมือ ยินยอม หรือรู้เห็นเป็นใจให้มีการกระทำความผิดตามมาตรา ๑๔ ในระบบคอมพิวเตอร์ที่อยู่ในความควบคุมของตน ต้องระวางโทษเช่นเดียวกับผู้กระทำความผิดตามมาตรา ๑๔
+
+: ให้รัฐมนตรีออกประกาศกำหนดขั้นตอนการแจ้งเตือน การระงับการทำให้แพร่หลายของข้อมูลคอมพิวเตอร์ และการนำข้อมูลคอมพิวเตอร์นั้นออกจากระบบคอมพิวเตอร์
+
+: ถ้าผู้ให้บริการพิสูจน์ได้ว่า ตนได้ปฏิบัติตามประกาศของรัฐมนตรีที่ออกตามวรรคสอง ผู้นั้นไม่ต้องรับโทษ"
+| The provision of {{Translation:Computer Crimes Act 2007/tp|s-1|15}} of the ''{{Translation:Computer Crimes Act 2007/tp|1}}'' shall be repealed and replaced by the following:
+
+{{c|'Section 15}}
+
+# Any service provider who provides cooperation to, consents to, or connives at the commission of any crime under [[#8|section 14]] within a computer system under his control shall be liable to the same punishment as the criminal under section 14.
+# The Minister shall issue an announcement determining processes for the giving of warnings, the termination of the circulation of computer data, and the removal of such computer data from computer systems.
+# If the service provider successfully proves that he has observed the announcement issued by the Minister by virtue of paragraph 2, he needs not to undergo the punishment.'
+}}
+
+===10===
+
+{{thl
+<!-- 1 -->
+| tc = s
+| l-s = 9
+| r-s = 11
+| rb-s =
+<!-- 2 -->
+| th = s
+| th-1 = ๑๐
+| en = s
+| en-1 = 10
+| ให้ยกเลิกความในมาตรา ๑๖ แห่งพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐ และให้ใช้ความต่อไปนี้แทน
+
+{{c|"มาตรา ๑๖}}
+
+: ผู้ใดนำเข้าสู่ระบบคอมพิวเตอร์ที่ประชาชนทั่วไปอาจเข้าถึงได้ซึ่งข้อมูลคอมพิวเตอร์ที่ปรากฏเป็นภาพของผู้อื่น และภาพนั้นเป็นภาพที่เกิดจากการสร้างขึ้น ตัดต่อ เติม หรือดัดแปลงด้วยวิธีการทางอิเล็กทรอนิกส์หรือวิธีการอื่นใด โดยประการที่น่าจะทำให้ผู้อื่นนั้นเสียชื่อเสียง ถูกดูหมิ่น ถูกเกลียดชัง หรือได้รับความอับอาย ต้องระวางโทษจำคุกไม่เกินสามปี และปรับไม่เกินสองแสนบาท
+
+: ถ้าการกระทำตามวรรคหนึ่งเป็นการกระทำต่อภาพของผู้ตาย และการกระทำนั้นน่าจะทำให้บิดา มารดา คู่สมรส หรือบุตรของผู้ตาย เสียชื่อเสียง ถูกดูหมิ่น หรือถูกเกลียดชัง หรือได้รับความอับอาย ผู้กระทำต้องระวางโทษดังที่บัญญัติไว้ในวรรคหนึ่ง
+
+: ถ้าการกระทำตามวรรคหนึ่งหรือวรรคสองเป็นการนำเข้าข้อมูลคอมพิวเตอร์โดยสุจริต อันเป็นการติชมด้วยความเป็นธรรมซึ่งบุคคลหรือสิ่งใดอันเป็นวิสัยของประชาชนย่อมกระทำ ผู้กระทำไม่มีความผิด
+
+: ความผิดตามวรรคหนึ่งและวรรคสองเป็นความผิดอันยอมความได้
+
+: ถ้าผู้เสียหายในความผิดตามวรรคหนึ่งหรือวรรคสองตายเสียก่อนร้องทุกข์ ให้บิดา มารดา คู่สมรส หรือบุตรของผู้เสียหาย ร้องทุกข์ได้ และให้ถือว่า เป็นผู้เสียหาย"
+| The provision of {{Translation:Computer Crimes Act 2007/tp|s-1|16}} of the ''{{Translation:Computer Crimes Act 2007/tp|1}}'' shall be repealed and replaced by the following:
+
+{{c|'Section 16}}
+
+# Any person who, in a manner likely to cause another person to lose his reputation, to be insulted, to be detested, or to suffer humiliation, brings into a computer system which the general public may access computer data that appears to be another person's image generated by imaging, editing, addition, or modification through electronic means or through any other means,{{ref|10.1|[10.1]}} shall be liable to imprisonment for not more than three years and a fine of not exceeding two hundred thousand baht.
+# If the act under paragraph 1 is committed upon an image of a dead person and such act is likely to cause the father, mother, spouse, or child of the dead person to lose his or her reputation, to be insulted, or to be detested, or to suffer humiliation, then the actor shall be liable to the punishment as mentioned in paragraph 1.
+# If the act under paragraph 1 or paragraph 2 is the honest bringing of computer data into a computer system with a view to giving a fair comment upon anyone or anything as the public would do in general, then the actor shall be guiltless.{{ref|10.2|[10.2]}}
+# The crimes under paragraph 1 and paragraph 2 are compoundable.
+# If the victim of the crime under paragraph 1 or paragraph 2 dies prior to lodging a complaint, then the father, mother, spouse, or child of the victim may lodge a complaint and shall be deemed to be the victim.'
+}}
+
+; Wikisource notes
+
+# {{note|10.1}} Literally 'Any person brings into a computer system that the general people may enter and reach, computer data that appears as an image of [an]other person, and that image is an image that comes into existence from an act of creating, editing, adding, or modifying by electronic method or by any other method; prescribed, however, that [the act of bringing is done] in a manner that is likely to make that other person lose reputation, be insulted, be hated, or receive shame'.
+# {{note|10.2}} Literally: <br> {{g|1em}} (1) {{g|0.5em}} 'If the act according to paragraph 1 or paragraph 2 is an act of bringing computer data in[to a computer system] with good mind[/in good faith], which is an act of condemning or praising with fairness about any person or thing, which is the usualness of the people to do, the person acting does not have wrongfulness'; <br> {{g|1em}} (2) {{g|0.5em}} 'If the act according to paragraph 1 or paragraph 2 is an act of bringing computer data in[to a computer system] with good mind[/in good faith], which is an act of making with fairness a condemnation or praise about any person or thing, the making of which is the nature of the people, the person acting does not have wrongfulness'; <br> {{g|1em}} (3) {{g|0.5em}} 'If the act according to paragraph 1 or paragraph 2 is an act of bringing computer data in[to a computer system] with good mind[/in good faith], which is an act of making with fairness a condemnation or praise about any person or thing, which the people would make by nature, the person acting does not have wrongfulness'.
+
+===11===
+
+{{thl
+<!-- 1 -->
+| tc = s
+| l-s = 10
+| r-s = 12
+| rb-s =
+<!-- 2 -->
+| th = s
+| th-1 = ๑๑
+| en = s
+| en-1 = 11
+| ให้เพิ่มความต่อไปนี้เป็นมาตรา ๑๖/๑ และมาตรา ๑๖/๒ แห่งพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐
+
+{{c|"มาตรา ๑๖/๑}}
+
+: ในคดีความผิดตามมาตรา ๑๔ หรือมาตรา ๑๖ ซึ่งมีคำพิพากษาว่า จำเลยมีความผิด ศาลอาจสั่ง
+:: (๑) {{g|0.5em}} ให้ทำลายข้อมูลตามมาตราดังกล่าว
+:: (๒) {{g|0.5em}} ให้โฆษณาหรือเผยแพร่คำพิพากษาทั้งหมดหรือแต่บางส่วนในสื่ออิเล็กทรอนิกส์ วิทยุกระจายเสียง วิทยุโทรทัศน์ หนังสือพิมพ์ หรือสื่ออื่นใดตามที่ศาลเห็นสมควร โดยให้จำเลยเป็นผู้ชำระค่าโฆษณาหรือเผยแพร่
+:: (๓) {{g|0.5em}} ให้ดำเนินการอื่นตามที่ศาลเห็นสมควรเพื่อบรรเทาความเสียหายที่เกิดขึ้นจากการกระทำความผิดนั้น
+
+{{c|มาตรา ๑๖/๒}}
+
+: ผู้ใดรู้ว่า ข้อมูลอิเล็กทรอนิกส์ในความครอบครองของตนเป็นข้อมูลที่ศาลสั่งให้ทำลายตามมาตรา ๑๖/๑ ผู้นั้นต้องทำลายข้อมูลดังกล่าว หากฝ่าฝืน ต้องระวางโทษกึ่งหนึ่งของโทษที่บัญญัติไว้ในมาตรา ๑๔ หรือมาตรา ๑๖ แล้วแต่กรณี"
+| The following shall be inserted into the ''{{Translation:Computer Crimes Act 2007/tp|1}}'' as its section 16/1 and section 16/2:
+
+{{c|'Section 16/1}}
+
+: In case of the crime under [[#8|section 14]] or [[#10|section 16]] in respect of which there is a judgment declaring the defendant guilty, the court may order:
+:: (1) {{g|0.5em}} the data under the said section to be destroyed;
+:: (2) {{g|0.5em}} the judgment to be disseminated or published, either in whole or in part, through electronic media, broadcasting radio, broadcasting television, newspapers, or any other media as the court deems appropriate, with the requirement that the defendant bear the costs of dissemination or publication;
+:: (3) {{g|0.5em}} other actions to be taken as the court deems appropriate for the remedy of the injury arising from the commission of that crime.
+
+{{c|Section 16/2}}
+
+: When any person knows that electronic data in his possession is one which a court orders to be destroyed according to section 16/1, such person must destroy the said data. In case of violation, the punishment shall be one half of the punishment mentioned in [[#8|section 14]] or [[#10|section 16]], as the case may be.'
+}}
+
+===12===
+
+{{thl
+<!-- 1 -->
+| tc = s
+| l-s = 11
+| r-s = 13
+| rb-s =
+<!-- 2 -->
+| th = s
+| th-1 = ๑๒
+| en = s
+| en-1 = 12
+| ให้เพิ่มความต่อไปนี้เป็นมาตรา ๑๗/๑ แห่งพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐
+
+{{c|"มาตรา ๑๗/๑}}
+
+: ความผิดตามมาตรา ๕ มาตรา ๖ มาตรา ๗ มาตรา ๑๑ มาตรา ๑๓ วรรคหนึ่ง มาตรา ๑๖/๒ มาตรา ๒๓ มาตรา ๒๔ และมาตรา ๒๗ ให้คณะกรรมการเปรียบเทียบที่รัฐมนตรีแต่งตั้งมีอำนาจเปรียบเทียบได้
+
+: คณะกรรมการเปรียบเทียบที่รัฐมนตรีแต่งตั้งตามวรรคหนึ่ง ให้มีจำนวนสามคน ซึ่งคนหนึ่งต้องเป็นพนักงานสอบสวนตามประมวลกฎหมายวิธีพิจารณาความอาญา
+
+: เมื่อคณะกรรมการเปรียบเทียบได้ทำการเปรียบเทียบกรณีใด และผู้ต้องหาได้ชำระเงินค่าปรับตามคำเปรียบเทียบภายในระยะเวลาที่คณะกรรมการเปรียบเทียบกำหนดแล้ว ให้ถือว่า คดีนั้นเป็นอันเลิกกันตามประมวลกฎหมายวิธีพิจารณาความอาญา
+
+: ในกรณีที่ผู้ต้องหาไม่ชำระเงินค่าปรับภายในระยะเวลาที่กำหนด ให้เริ่มนับอายุความในการฟ้องคดีใหม่นับตั้งแต่วันที่ครบกำหนดระยะเวลาดังกล่าว"
+| The following shall be inserted into the ''{{Translation:Computer Crimes Act 2007/tp|1}}'' as its section 17/1:
+
+{{c|'Section 17/1}}
+
+# With respect to the crimes under {{Translation:Computer Crimes Act 2007/tp|s-1|5}}, {{Translation:Computer Crimes Act 2007/tp|s-1|6}}, {{Translation:Computer Crimes Act 2007/tp|s-1|7}}, {{Translation:Computer Crimes Act 2007/tp|s-1|11}}, {{Translation:Computer Crimes Act 2007/tp|s-1|13}}, paragraph 1, [[#11|section 16/2]], {{Translation:Computer Crimes Act 2007/tp|s-1|23}}, {{Translation:Computer Crimes Act 2007/tp|s-1|24}}, and {{Translation:Computer Crimes Act 2007/tp|s-1|27}}, a settlement panel appointed by the Minister shall have the power of settlement.
+# The settlement panel appointed by the Minister in accordance with paragraph 1 shall consist of members numbering three,{{ref|12.1|[12.1]}} of whom one must be an inquiry officer under the ''[[Translation:Criminal Procedure Code of Thailand|Criminal Procedure Code]]''.
+# Once the settlement panel has conducted settlement for any case and the accused person has paid the fined sum according to the settlement verdict within the period of time fixed by the settlement panel, then it shall be deemed that the case is excluded in accordance with the ''[[Translation:Criminal Procedure Code of Thailand|Criminal Procedure Code]]''.
+# In the event that the accused person fails to pay the fined sum within the period of time fixed, the calculation of the limitation governing the institution of the case shall be restarted as from the date the said period of time expires.'
+}}
+
+; Wikisource notes
+
+# {{note|12.1}} Literally 'shall have the number of three persons'.
+
+===13===
+
+{{thl
+<!-- 1 -->
+| tc = s
+| l-s = 13
+| r-s = 14
+| rb-s =
+<!-- 2 -->
+| th = s
+| th-1 = ๑๓
+| en = s
+| en-1 = 13
+| ให้ยกเลิกความในมาตรา ๑๘ และมาตรา ๑๙ แห่งพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐ และให้ใช้ความต่อไปนี้แทน
+
+{{c|"มาตรา ๑๘}}
+
+: ภายใต้บังคับมาตรา ๑๙ เพื่อประโยชน์ในการสืบสวนและสอบสวนในกรณีที่มีเหตุอันควรเชื่อได้ว่า มีการกระทำความผิดตามพระราชบัญญัตินี้ หรือในกรณีที่มีการร้องขอตามวรรคสอง ให้พนักงานเจ้าหน้าที่มีอำนาจอย่างหนึ่งอย่างใดดังต่อไปนี้ เฉพาะที่จำเป็นเพื่อประโยชน์ในการใช้เป็นหลักฐานเกี่ยวกับการกระทำความผิดและหาตัวผู้กระทำความผิด
+:: (๑) {{g|0.5em}} มีหนังสือสอบถามหรือเรียกบุคคลที่เกี่ยวข้องกับการกระทำความผิดมาเพื่อให้ถ้อยคำ ส่งคำชี้แจงเป็นหนังสือ หรือส่งเอกสาร ข้อมูล หรือหลักฐานอื่นใดที่อยู่ในรูปแบบที่สามารถเข้าใจได้
+:: (๒) {{g|0.5em}} เรียกข้อมูลจราจรทางคอมพิวเตอร์จากผู้ให้บริการเกี่ยวกับการติดต่อสื่อสารผ่านระบบคอมพิวเตอร์หรือจากบุคคลอื่นที่เกี่ยวข้อง
+:: (๓) {{g|0.5em}} สั่งให้ผู้ให้บริการส่งมอบข้อมูลเกี่ยวกับผู้ใช้บริการที่ต้องเก็บตามมาตรา ๒๖ หรือที่อยู่ในความครอบครองหรือควบคุมของผู้ให้บริการให้แก่พนักงานเจ้าหน้าที่ หรือให้เก็บข้อมูลดังกล่าวไว้ก่อน
+:: (๔) {{g|0.5em}} ทำสำเนาข้อมูลคอมพิวเตอร์ ข้อมูลจราจรทางคอมพิวเตอร์ จากระบบคอมพิวเตอร์ที่มีเหตุอันควรเชื่อได้ว่า มีการกระทำความผิด ในกรณีที่ระบบคอมพิวเตอร์นั้นยังมิได้อยู่ในความครอบครองของพนักงานเจ้าหน้าที่
+:: (๕) {{g|0.5em}} สั่งให้บุคคลซึ่งครอบครองหรือควบคุมข้อมูลคอมพิวเตอร์ หรืออุปกรณ์ที่ใช้เก็บข้อมูลคอมพิวเตอร์ ส่งมอบข้อมูลคอมพิวเตอร์หรืออุปกรณ์ดังกล่าวให้แก่พนักงานเจ้าหน้าที่
+:: (๖) {{g|0.5em}} ตรวจสอบหรือเข้าถึงระบบคอมพิวเตอร์ ข้อมูลคอมพิวเตอร์ ข้อมูลจราจรทางคอมพิวเตอร์ หรืออุปกรณ์ที่ใช้เก็บข้อมูลคอมพิวเตอร์ของบุคคลใด อันเป็นหลักฐานหรืออาจใช้เป็นหลักฐานเกี่ยวกับการกระทำความผิด หรือเพื่อสืบสวนหาตัวผู้กระทำความผิด และสั่งให้บุคคลนั้นส่งข้อมูลคอมพิวเตอร์ ข้อมูลจราจรทางคอมพิวเตอร์ ที่เกี่ยวข้องเท่าที่จำเป็นให้ด้วยก็ได้
+:: (๗) {{g|0.5em}} ถอดรหัสลับของข้อมูลคอมพิวเตอร์ของบุคคลใด หรือสั่งให้บุคคลที่เกี่ยวข้องกับการเข้ารหัสลับของข้อมูลคอมพิวเตอร์ ทำการถอดรหัสลับ หรือให้ความร่วมมือกับพนักงานเจ้าหน้าที่ในการถอดรหัสลับดังกล่าว
+:: (๘) {{g|0.5em}} ยึดหรืออายัดระบบคอมพิวเตอร์เท่าที่จำเป็นเฉพาะเพื่อประโยชน์ในการทราบรายละเอียดแห่งความผิดและผู้กระทำความผิดตามพระราชบัญญัตินี้
+
+: เพื่อประโยชน์ในการสืบสวนและสอบสวนของพนักงานสอบสวนตามประมวลกฎหมายวิธีพิจารณาความอาญา ในบรรดาความผิดอาญาต่อกฎหมายอื่นซึ่งได้ใช้ระบบคอมพิวเตอร์ ข้อมูลคอมพิวเตอร์ หรืออุปกรณ์ที่ใช้เก็บข้อมูลคอมพิวเตอร์ เป็นองค์ประกอบหรือเป็นส่วนหนึ่งในการกระทำความผิด หรือมีข้อมูลคอมพิวเตอร์เกี่ยวข้องกับการกระทำความผิดอาญาตามกฎหมายอื่น พนักงานสอบสวนอาจร้องขอให้พนักงานเจ้าหน้าที่ตามวรรคหนึ่งดำเนินการตามวรรคหนึ่งก็ได้ ให้พนักงานเจ้าหน้าที่รีบรวบรวมข้อเท็จจริงและหลักฐานแล้วแจ้งไปยังเจ้าหน้าที่ที่เกี่ยวข้องเพื่อดำเนินการต่อไป
+
+: ให้ผู้ได้รับการร้องขอจากพนักงานเจ้าหน้าที่ตามวรรคหนึ่ง (๑) (๒) และ (๓) ดำเนินการตามคำร้องขอโดยไม่ชักช้า แต่ต้องไม่เกินเจ็ดวันนับแต่วันที่ได้รับคำร้องขอ หรือภายในระยะเวลาที่พนักงานเจ้าหน้าที่กำหนด ซึ่งต้องไม่น้อยกว่าเจ็ดวัน และไม่เกินสิบห้าวัน เว้นแต่ในกรณีที่มีเหตุสมควร ต้องได้รับอนุญาตจากพนักงานเจ้าหน้าที่ ทั้งนี้ รัฐมนตรีอาจประกาศในราชกิจจานุเบกษากำหนดระยะเวลาที่ต้องดำเนินการที่เหมาะสมกับประเภทของผู้ให้บริการก็ได้
+
+{{c|มาตรา ๑๙}}
+
+: การใช้อำนาจของพนักงานเจ้าหน้าที่ตามมาตรา ๑๘ (๔) (๕) (๖) (๗) และ (๘) ให้พนักงานเจ้าหน้าที่ยื่นคำร้องต่อศาลที่มีเขตอำนาจเพื่อมีคำสั่งอนุญาตให้พนักงานเจ้าหน้าที่ดำเนินการตามคำร้อง ทั้งนี้ คำร้องต้องระบุเหตุอันควรเชื่อได้ว่า บุคคลใดกระทำหรือกำลังจะกระทำการอย่างหนึ่งอย่างใดอันเป็นความผิด เหตุที่ต้องใช้อำนาจ ลักษณะของการกระทำความผิด รายละเอียดเกี่ยวกับอุปกรณ์ที่ใช้ในการกระทำความผิดและผู้กระทำความผิด เท่าที่สามารถจะระบุได้ ประกอบคำร้องด้วย ในการพิจารณาคำร้อง ให้ศาลพิจารณาคำร้องดังกล่าวโดยเร็ว
+
+: เมื่อศาลมีคำสั่งอนุญาตแล้ว ก่อนดำเนินการตามคำสั่งของศาล ให้พนักงานเจ้าหน้าที่ส่งสำเนาบันทึกเหตุอันควรเชื่อที่ทำให้ต้องใช้อำนาจตามมาตรา ๑๘ (๔) (๕) (๖) (๗) และ (๘) มอบให้เจ้าของหรือผู้ครอบครองระบบคอมพิวเตอร์นั้นไว้เป็นหลักฐาน แต่ถ้าไม่มีเจ้าของหรือผู้ครอบครองเครื่องคอมพิวเตอร์อยู่ ณ ที่นั้น ให้พนักงานเจ้าหน้าที่ส่งมอบสำเนาบันทึกนั้นให้แก่เจ้าของหรือผู้ครอบครองดังกล่าวในทันทีที่กระทำได้
+
+: ให้พนักงานเจ้าหน้าที่ผู้เป็นหัวหน้าในการดำเนินการตามมาตรา ๑๘ (๔) (๕) (๖) (๗) และ (๘) ส่งสำเนาบันทึกรายละเอียดการดำเนินการและเหตุผลแห่งการดำเนินการให้ศาลที่มีเขตอำนาจภายในสี่สิบแปดชั่วโมงนับแต่เวลาลงมือดำเนินการ เพื่อเป็นหลักฐาน
+
+: การทำสำเนาข้อมูลคอมพิวเตอร์ตามมาตรา ๑๘ (๔) ให้กระทำได้เฉพาะเมื่อมีเหตุอันควรเชื่อได้ว่า มีการกระทำความผิด และต้องไม่เป็นอุปสรรคในการดำเนินกิจการของเจ้าของหรือผู้ครอบครองข้อมูลคอมพิวเตอร์นั้นเกินความจำเป็น
+
+: การยึดหรืออายัดตามมาตรา ๑๘ (๘) นอกจากจะต้องส่งมอบสำเนาหนังสือแสดงการยึดหรืออายัดมอบให้เจ้าของหรือผู้ครอบครองระบบคอมพิวเตอร์นั้นไว้เป็นหลักฐานแล้ว พนักงานเจ้าหน้าที่จะสั่งยึดหรืออายัดไว้เกินสามสิบวันมิได้ ในกรณีจำเป็นที่ต้องยึดหรืออายัดไว้นานกว่านั้น ให้ยื่นคำร้องต่อศาลที่มีเขตอำนาจเพื่อขอขยายเวลายึดหรืออายัดได้ แต่ศาลจะอนุญาตให้ขยายเวลาครั้งเดียวหรือหลายครั้งรวมกันได้อีกไม่เกินหกสิบวัน เมื่อหมดความจำเป็นที่จะยึดหรืออายัด หรือครบกำหนดเวลาดังกล่าวแล้ว พนักงานเจ้าหน้าที่ต้องส่งคืนระบบคอมพิวเตอร์ที่ยึดหรือถอนการอายัดโดยพลัน
+
+: หนังสือแสดงการยึดหรืออายัดตามวรรคห้า ให้เป็นไปตามที่กำหนดในกฎกระทรวง"
+| The provisions of {{Translation:Computer Crimes Act 2007/tp|s-1|18}} and {{Translation:Computer Crimes Act 2007/tp|s-1|19}} of the ''{{Translation:Computer Crimes Act 2007/tp|1}}'' shall be repealed and replaced by the following:
+
+{{c|'Section 18}}
+
+# Subject to {{Translation:Computer Crimes Act 2007/tp|s-1|19}}, competent authorities shall, for the purpose of investigation and inquiry when arises a reasonable belief that there is the commission of a crime under this Act or when there is a request according to paragraph 2,{{ref|13.1|[13.1]}} be invested with one of the following powers to the extent necessary for the production of evidence concerning the commission of the crime and for the identification of the person of the criminal:{{ref|13.2|[13.2]}}
+#: (1) {{g|0.5em}} to, in writing, question persons involved in the commission of the crime or require them to appear and give statements, submit written explanations, or submit documents, information, or any other evidence in a comprehensible form;
+#: (2) {{g|0.5em}} to demand computer traffic data from service providers offering services as to the communication through computer systems or from other relevant persons;
+#: (3) {{g|0.5em}} to order service providers to deliver to competent authorities data concerning service receivers which is required to be stored according to [[#17|section 26]] or which is in their possession or control, or to store the said data for the time being;
+#: (4) {{g|0.5em}} to make copies of computer data or computer traffic data from a computer system where the commission of the crime is reasonably believed to have occurred, in case such computer system has not yet been placed in possession of a competent authority;
+#: (5) {{g|0.5em}} to order persons possessing or controlling computer data or computer data storage media to submit the said computer data or media to competent authorities;
+#: (6) {{g|0.5em}} to inspect or access computer systems, computer data, computer traffic data, or computer data storage media of any individual which are evidence or capable of being used as evidence concerning the commission of the crime or for the purpose of investigation to identify the person of the criminal, and to order such individual to also submit relevant computer data or computer traffic data to the extent necessary;
+#: (7) {{g|0.5em}} to decrypt computer data of any person, or to order persons concerning the encryption of computer data to conduct decryption or to provide cooperation to competent authorities with respect to the said decryption;
+#: (8) {{g|0.5em}} to seize or attach computer systems to the extent necessary, for the purpose of ascertaining details as to crimes and criminals under this Act.
+# For the purpose of the conduct of investigation and inquiry by inquiry officers under the ''[[Translation:Criminal Procedure Code of Thailand|Criminal Procedure Code]]'', inquiry officers may, in respect of all crimes under other laws which involve the use of computer system, computer data, or computer data storage media as an element or part of the commission or when there exists computer data which concerns the commission of crimes under other laws, request the competent authorities under paragraph 1 to carry out the activities according to paragraph 1. The competent authorities shall hasten to collect facts and evidence and communicate them to the relevant authorities for further proceedings.
+# The person receiving a request from a competent authority in accordance with paragraph 1 (1), (2), and (3) shall proceed with the request without delay, but not later than seven days reckoned from the date he receives the request, or within a period of time fixed by the competent authority, which must not be less than seven days but not more than fifteen days, save where there is a reasonable cause and the person has obtained permission from the competent authority;{{ref|13.3|[13.3]}} prescribed that the Minister may publish in the ''Government Gazette'' the determination of the periods of time governing the proceedings as appropriate for each type of service providers.{{ref|13.4|[13.4]}}
+
+{{c|Section 19}}
+
+# In exercising the competent authority powers under section 18 (4), (5), (6), (7), and (8), a competent authority shall file an application with a competent court requesting it to issue an order permitting the competent authority to carry out the activities according to the application; prescribed that the application must also contain as much as possible supplementary statements of the reasonable belief that any person commits or is to commit any particular act which constitutes a crime, the grounds for the exercise of the powers, the characteristics of the commission of the crime, the details as to the equipment used in the commission of the crime and as to the criminal. In considering the application, the court shall expeditiously conduct the consideration.{{ref|13.5|[13.5]}}
+# Once the court has issued an order of permission, the competent authority shall, before carrying out the activities according to the court order, deliver to the owner or possessor of the computer system in question as evidence a copied note of the reasonable belief by which the powers under section 18 (4), (5), (6), (7), and (8) need to be exercised. But if no owner or possessor of the computer is present at the place, the competent authority shall deliver the copied note to the said owner or possessor as soon as possible.
+# The competent authority in charge of{{ref|13.6|[13.6]}} the carrying out of the activities under section 18 (4), (5), (6), (7), and (8), shall, within forty-eight hours reckoned from the time the activities are commenced, submit to a competent court as evidence a copied note of the details of the activities and the grounds for the activities.
+# The copying of computer data in accordance with section 18 (4) shall only be made when arises a reasonable belief that there is the commission of a crime and must not obstruct beyond necessity the carrying out of business of the owner or possessor of such computer data.
+# With regard to the seizure or attachment under section 18 (8), in addition to being required to deliver a copied letter of seizure or attachment to the owner of possessor of the computer system as evidence, the competent authority is prohibited from imposing the seizure or attachment in excess of thirty days. In case of need to carry out the seizure or attachment for a longer period, he shall file an application with a competent court for extension of the period of seizure or attachment. However, the court may not grant extension in excess of sixty days in total, whether it be granted once or several times. When the seizure or attachment is not needed any longer or the said period is over, the competent authority must promptly return the seized computer system or revoke the attachment.
+# The letter of seizure or attachment according to paragraph 5 shall be as prescribed in ministerial regulations.'
+}}
+
+; Wikisource notes
+
+# {{note|13.1}} Literally 'in case there is a cause by which it should be believed that there is the commission of a crime according to this Act or in case there is a request according to paragraph 2'.
+# {{note|13.2}} Literally 'necessary for the purpose in using as evidence concerning the commission of the crime and finding the person of the crime-committing individual'.
+# {{note|13.3}} Literally 'except in the case that there is a reasonable cause, [he] must have receive permission from the competent authority'.
+# {{note|13.4}} Literally 'appropriate for type[s] of service providers'.
+# {{note|13.5}} Literally '[In] the exercise of the powers of competent authorities according to section 18 (4), (5), (6), (7), and (8), a competent authority shall file an application to a court that has jurisdiction so that [it] issues an order permitting the competent authority to carry out the activities according to the application; provided that the application must specify the causes by which it should be believed that any person commits or is to commit any particular act which is a crime, the reasons for which the power(s) must be exercised, the characteristics of the commission of the crime, the details about the equipment that is used in the commission of the crime and [about] the person committing the crime, as much as [he] could specify, as supplementaries to the application also. In considering the application, the court shall consider the said application with quickness.'
+# {{note|13.6}} Literally 'the competent authority who is the head in'.
+
+===14===
+
+{{thl
+<!-- 1 -->
+| tc = s
+| l-s = 13
+| r-s = 15
+| rb-s =
+<!-- 2 -->
+| th = s
+| th-1 = ๑๔
+| en = s
+| en-1 = 14
+| ให้ยกเลิกความในมาตรา ๒๐ แห่งพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐ และให้ใช้ความต่อไปนี้แทน
+
+{{c|"มาตรา ๒๐}}
+
+: ในกรณีที่มีการทำให้แพร่หลายซึ่งข้อมูลคอมพิวเตอร์ที่ดังต่อไปนี้ พนักงานเจ้าหน้าที่ โดยได้รับความเห็นชอบจากรัฐมนตรี อาจยื่นคำร้องพร้อมแสดงพยานหลักฐานต่อศาลที่มีเขตอำนาจขอให้มีคำสั่งระงับการทำให้แพร่หลายหรือลบข้อมูลคอมพิวเตอร์นั้นออกจากระบบคอมพิวเตอร์ได้
+:: (๑) {{g|0.5em}} ข้อมูลคอมพิวเตอร์ที่เป็นความผิดตามพระราชบัญญัตินี้
+:: (๒) {{g|0.5em}} ข้อมูลคอมพิวเตอร์ที่อาจกระทบกระเทือนต่อความมั่นคงแห่งราชอาณาจักร ตามที่กำหนดไว้ในภาค ๒ ลักษณะ ๑ หรือลักษณะ ๑/๑ แห่งประมวลกฎหมายอาญา
+:: (๓) {{g|0.5em}} ข้อมูลคอมพิวเตอร์ที่เป็นความผิดอาญาตามกฎหมายเกี่ยวกับทรัพย์สินทางปัญญา หรือกฎหมายอื่น ซึ่งข้อมูลคอมพิวเตอร์นั้นมีลักษณะขัดต่อความสงบเรียบร้อยหรือศีลธรรมอันดีของประชาชน และเจ้าหน้าที่ตามกฎหมายนั้นหรือพนักงานสอบสวนตามประมวลกฎหมายวิธีพิจารณาความอาญาได้ร้องขอ
+
+: ในกรณีที่มีการทำให้แพร่หลายซึ่งข้อมูลคอมพิวเตอร์ที่มีลักษณะขัดต่อความสงบเรียบร้อยหรือศีลธรรมอันดีของประชาชน รัฐมนตรี โดยความเห็นชอบของคณะกรรมการกลั่นกรองข้อมูลคอมพิวเตอร์ จะมอบหมายให้พนักงานเจ้าหน้าที่ยื่นคำร้องพร้อมแสดงพยานหลักฐานต่อศาลที่มีเขตอำนาจขอให้มีคำสั่งระงับการทำให้แพร่หลายหรือลบซึ่งข้อมูลคอมพิวเตอร์นั้นออกจากระบบคอมพิวเตอร์ได้ ทั้งนี้ ให้นำบทบัญญัติว่าด้วยคณะกรรมการที่มีอำนาจดำเนินการพิจารณาทางปกครองตามกฎหมายว่าด้วยวิธีปฏิบัติราชการทางปกครองมาใช้บังคับกับการประชุมของคณะกรรมการกลั่นกรองข้อมูลคอมพิวเตอร์โดยอนุโลม
+
+: ให้รัฐมนตรีแต่งตั้งคณะกรรมกรรมการกลั่นกรองข้อมูลคอมพิวเตอร์ตามวรรคสองขึ้นคณะหนึ่งหรือหลายคณะ แต่ละคณะให้มีกรรมการจำนวนเก้าคน ซึ่งสามในเก้าคนต้องมาจากผู้แทนภาคเอกชนด้านสิทธิมนุษยชน ด้านสื่อสารมวลชน ด้านเทคโนโลยีสารสนเทศ หรือด้านอื่นที่เกี่ยวข้อง และให้กรรมการได้รับค่าตอบแทนตามหลักเกณฑ์ที่รัฐมนตรีกำหนดโดยได้รับความเห็นชอบจากกระทรวงการคลัง
+
+: การดำเนินการของศาลตามวรรคหนึ่งและวรรคสอง ให้นำประมวลกฎหมายวิธีพิจารณาความอาญามาใช้บังคับโดยอนุโลม ในกรณีที่ศาลมีคำสั่งให้ระงับการทำให้แพร่หลายหรือลบข้อมูลคอมพิวเตอร์ตามวรรคหนึ่งหรือวรรคสอง พนักงานเจ้าหน้าที่จะทำการระงับการทำให้แพร่หลายหรือลบข้อมูลคอมพิวเตอร์นั้นเอง หรือจะสั่งให้ผู้ให้บริการระงับการทำให้แพร่หลายหรือลบข้อมูลคอมพิวเตอร์นั้นก็ได้ ทั้งนี้ ให้รัฐมนตรีประกาศกำหนดหลักเกณฑ์ ระยะเวลา และวิธีการปฏิบัติสำหรับการระงับการทำให้แพร่หลายหรือลบข้อมูลคอมพิวเตอร์ของพนักงานเจ้าหน้าที่หรือผู้ให้บริการให้เป็นไปในแนวทางเดียวกัน โดยคำนึงถึงพัฒนาการทางเทคโนโลยีที่เปลี่ยนแปลงไป เว้นแต่ศาลจะมีคำสั่งเป็นอย่างอื่น
+
+: ในกรณีที่มีเหตุจำเป็นเร่งด่วน พนักงานเจ้าหน้าที่จะยื่นคำร้องตามวรรคหนึ่งไปก่อนที่จะได้รับความเห็นชอบจากรัฐมนตรี หรือพนักงานเจ้าหน้าที่ โดยความเห็นชอบของคณะกรรมการกลั่นกรองข้อมูลคอมพิวเตอร์ จะยื่นคำร้องตามวรรคสองไปก่อนที่รัฐมนตรีจะมอบหมายก็ได้ แต่ทั้งนี้ ต้องรายงานให้รัฐมนตรีทราบโดยเร็ว"
+| The provision of {{Translation:Computer Crimes Act 2007/tp|s-1|20}} of the ''{{Translation:Computer Crimes Act 2007/tp|1}}'' shall be repealed and replaced by the following:
+
+{{c|'Section 20}}
+
+# In case there is circulation of the following computer data, a competent authority may, with the approval of the Minister, file an application with and produce evidence before a competent court for an order terminating the circulation of such computer data or deleting the data from computer systems:
+#: (1) {{g|0.5em}} computer data which constitutes a crime under this Act;
+#: (2) {{g|0.5em}} computer data which may affect the security of the Kingdom as described in the ''[[Translation:Penal Code of Thailand (1957)|Penal Code]]'', [[Translation:Penal_Code_of_Thailand_(1957)#Division_2_Offences|Division 2]], [[Translation:Penal_Code_of_Thailand_(1957)#.28a.29_State|Title 1]] or [[Translation:Penal_Code_of_Thailand_(1957)#.28a.29_State|Title 1/1]];
+#: (3) {{g|0.5em}} computer data which constitutes a crime under a law concerning intellectual property or a different law, when such computer data bears characteristics which are contrary to peace and order or good morals of the people and the authority under the law concerned or an inquiry officer under the ''[[Translation:Criminal Procedure Code of Thailand|Criminal Procedure Code]]'' makes a request.
+# In case there is circulation of computer data with characteristics which are contrary to peace and order or good morals of the people, the Minister may, with the approval of a computer data screening panel, authorise a competent authority to file an application with and produce evidence before a competent court for an order termination the circulation of such computer data or deleting the data from computer systems; prescribed that the provisions governing committees competent to conduct administrative proceedings according to the [[Translation:Administrative Procedure Act 1996|law on administrative procedure]] shall apply ''mutatis mutandis'' to meetings of the computer data screening panel.
+# The Minister shall appoint one or several computer data screening panels according to paragraph 2. Each panel shall consist of members numbering nine. Three of the nine members must be appointed from amongst the private sector representatives in the field of human rights, field of mass communication, field of information technology, or other relevant fields. And the members shall receive compensation in accordance with the criteria which the Minister determines with the approval of the Ministry of Finance.
+# As for the court activities under paragraph 1 and paragraph 2, the ''[[Translation:Criminal Procedure Code of Thailand|Criminal Procedure Code]]'' shall apply ''mutatis mutandis''. In case a court issues an order terminating the circulation of computer data or deleting computer data in accordance with paragraph 1 or paragraph 2, the competent authority may carry out the termination of the circulation of computer data or the deletion of computer data himself or may order service providers to terminate the circulation of computer data or delete computer data; prescribed that the Minister shall, by announcement, determine criteria, periods of time, and operative procedures governing the termination of the circulation of computer data or the deletion of computer data by competent authorities or service providers so that their actions be carried out in the same way, taking into account the technological developments that have changed, save where the court gives a different order.
+# In case of urgent need, a competent authority may file an application in accordance with paragraph 1 before obtaining the approval of the Minister, or a competent authority may, with the approval of a computer data screening panel, file an application in accordance with paragraph 2 before being authorised by the Minister; prescribed, however, that a report must forthwith be made to the Minister for acknowledgement.'
+}}
+
+===15===
+
+{{thl
+<!-- 1 -->
+| tc = s
+| l-s = 14
+| r-s = 16
+| rb-s =
+<!-- 2 -->
+| th = s
+| th-1 = ๑๕
+| en = s
+| en-1 = 15
+| ให้ยกเลิกความในวรรคสองของมาตรา ๒๑ แห่งพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐ และให้ใช้ความต่อไปนี้แทน
+
+: "ชุดคำสั่งไม่พึงประสงค์ ตามวรรคหนึ่ง หมายถึง ชุดคำสั่งที่มีผลทำให้ข้อมูลคอมพิวเตอร์ หรือระบบคอมพิวเตอร์ หรือชุดคำสั่งอื่น เกิดความเสียหาย ถูกทำลาย ถูกแก้ไข เปลี่ยนแปลง หรือเพิ่มเติม ขัดข้อง หรือปฏิบัติงานไม่ตรงตามคำสั่ง หรือโดยประการอื่นตามที่กำหนดในกฎกระทรวง เว้นแต่เป็นชุดคำสั่งไม่พึงประสงค์ที่อาจนำมาใช้เพื่อป้องกันหรือแก้ไขชุดคำสั่งดังกล่าวข้างต้น ทั้งนี้ รัฐมนตรีอาจประกาศในราชกิจจานุเบกษากำหนดรายชื่อ ลักษณะ หรือรายละเอียดของชุดคำสั่งไม่พึงประสงค์ซึ่งอาจนำมาใช้เพื่อป้องกันหรือแก้ไขชุดคำสั่งไม่พึงประสงค์ก็ได้"
+
+| The provision of paragraph 2 of {{Translation:Computer Crimes Act 2007/tp|s-1|21}} of the ''{{Translation:Computer Crimes Act 2007/tp|1}}'' shall be repealed and replaced by the following:
+
+{{ol|list_style_type=decimal|start=2
+| <nowiki>'</nowiki>'''''Unfavourable program''''', in paragraph 1, means a program which results in any computer data or computer system or another program being exposed to damage, to destruction, to modification, alteration, or supplementation, or to disruption, or operating in a manner contrary to given directions or in other manners as determined in ministerial regulations, save an unfavourable program which may be used for prevention or modification of the previously described program; prescribed that the Minister may, by publication in the ''Government Gazette'', determine a list of names, characteristics, or details of unfavourable programs which can be used for prevention or modification of unfavorable programs.'
+}}
+}}
+
+===16===
+
+{{thl
+<!-- 1 -->
+| tc = s
+| l-s = 15
+| r-s = 17
+| rb-s =
+<!-- 2 -->
+| th = s
+| th-1 = ๑๖
+| en = s
+| en-1 = 16
+| ให้ยกเลิกความในมาตรา ๒๒ มาตรา ๒๓ มาตรา ๒๔ และมาตรา ๒๕ แห่งพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐ และให้ใช้ความต่อไปนี้แทน
+
+{{c|"มาตรา ๒๒}}
+
+: ห้ามมิให้พนักงานเจ้าหน้าที่ และพนักงานสอบสวน ในกรณีตามมาตรา ๑๘ วรรคสอง เปิดเผยหรือส่งมอบข้อมูลคอมพิวเตอร์ ข้อมูลจราจรทางคอมพิวเตอร์ หรือข้อมูลของผู้ใช้บริการ ที่ได้มาตามมาตรา ๑๘ ให้แก่บุคคลใด
+
+: ความในวรรคหนึ่งมิให้ใช้บังคับกับการกระทำเพื่อประโยชน์ในการดำเนินคดีกับผู้กระทำความผิดตามพระราชบัญญัตินี้ หรือผู้กระทำความผิดตามกฎหมายอื่น ในกรณีตามมาตรา ๑๘ วรรคสอง หรือเพื่อประโยชน์ในการดำเนินคดีกับพนักงานเจ้าหน้าที่เกี่ยวกับการใช้อำนาจหน้าที่โดยมิชอบ หรือกับพนักงานสอบสวน ในส่วนที่เกี่ยวกับการปฏิบัติหน้าที่ตามมาตรา ๑๘ วรรคสอง โดยมิชอบ หรือเป็นการกระทำตามคำสั่งหรือที่ได้รับอนุญาตจากศาล
+
+: พนักงานเจ้าหน้าที่หรือพนักงานสอบสวนผู้ใดฝ่าฝืนวรรคหนึ่ง ต้องระวางโทษจำคุกไม่เกินสามปี หรือปรับไม่เกินหกหมื่นบาท หรือทั้งจำทั้งปรับ
+
+{{c|มาตรา ๒๓}}
+
+: พนักงานเจ้าหน้าที่ หรือพนักงานสอบสวน ในกรณีตามมาตรา ๑๘ วรรคสอง ผู้ใดกระทำโดยประมาทเป็นเหตุให้ผู้อื่นล่วงรู้ข้อมูลคอมพิวเตอร์ ข้อมูลจราจรทางคอมพิวเตอร์ หรือข้อมูลของผู้ใช้บริการ ที่ได้มาตามมาตรา ๑๘ ต้องระวางโทษจำคุกไม่เกินหนึ่งปี หรือปรับไม่เกินสองหมื่นบาท หรือทั้งจำทั้งปรับ
+
+{{c|มาตรา ๒๔}}
+
+: ผู้ใดล่วงรู้ข้อมูลคอมพิวเตอร์ ข้อมูลจราจรทางคอมพิวเตอร์ หรือข้อมูลของผู้ใช้บริการ ที่พนักงานเจ้าหน้าที่หรือพนักงานสอบสวนได้มาตามมาตรา ๑๘ และเปิดเผยข้อมูลนั้นต่อผู้หนึ่งผู้ใด ต้องระวางโทษจำคุกไม่เกินสองปี หรือปรับไม่เกินสี่หมื่นบาท หรือทั้งจำทั้งปรับ
+
+{{c|มาตรา ๒๕}}
+
+: ข้อมูล ข้อมูลคอมพิวเตอร์ หรือข้อมูลจราจรทางคอมพิวเตอร์ ที่พนักงานเจ้าหน้าที่ได้มาตามพระราชบัญญัตินี้ หรือที่พนักงานสอบสวนได้มาตามมาตรา ๑๘ วรรคสอง ให้อ้างและรับฟังเป็นพยานหลักฐานตามบทบัญญัติแห่งประมวลกฎหมายวิธีพิจารณาความอาญาหรือกฎหมายอื่นอันว่าด้วยการสืบพยานได้ แต่ต้องเป็นชนิดที่มิได้เกิดขึ้นจากการจูงใจ มีคำมั่นสัญญา ขู่เข็ญ หลอกลวง หรือโดยมิชอบประการอื่น"
+| The provisions of {{Translation:Computer Crimes Act 2007/tp|s-1|22}}, {{Translation:Computer Crimes Act 2007/tp|s-1|23}}, {{Translation:Computer Crimes Act 2007/tp|s-1|24}}, and {{Translation:Computer Crimes Act 2007/tp|s-1|25}} of the ''{{Translation:Computer Crimes Act 2007/tp|1}}'' shall be repealed and replaced by the following:
+
+{{c|'Section 22}}
+
+# The competent authorities and, in case of [[#13|section 18]], paragraph 2, the inquiry officers shall not disclose or deliver to any person computer data, computer traffic data, or service receiver data acquired in accordance with [[#13|section 18]].
+# The provision of paragraph 1 shall not apply to acts done for the purpose of prosecuting criminals under this Act or, in case of [[#13|section 18]], paragraph 2, criminals under other laws, or for the purpose of prosecuting competent authorities on account of wrongful exercise of authority or inquiry officers with respect to wrongful performance of the duties under [[#13|section 18]], paragraph 2, or acts done at the behest of or on the permission of a court.
+# Any competent authority or inquiry officer who contravenes paragraph 1 shall be liable to imprisonment for not more than three years, or a fine of not exceeding sixty thousand baht, or both.
+
+{{c|Section 23}}
+
+: Any competent authority or, in case of [[#13|section 18]], paragraph 2, inquiry officer who acts negligently and thereby causes another person to obtain the knowledge about computer data, computer traffic data, or service receiver data acquired in accordance with [[#13|section 18]], shall be liable to imprisonment for not more than one year, or a fine of not exceeding twenty thousand baht, or both.
+
+{{c|Section 24}}
+
+: Any person who obtains the knowledge about computer data, computer traffic data, or service receiver data which a competent authority or inquiry officer has acquired in accordance with [[#13|section 18]] and discloses such data to any particular person shall be liable to imprisonment for not more than two years, or a fine of not exceeding forty thousand baht, or both.
+
+{{c|Section 25}}
+
+: Data, computer data, or computer traffic data which a competent authority has acquired in line with this Act or which an inquiry offence has acquired in accordance with [[#13|section 18]], paragraph 2, can be cited and admitted as evidence according to the provisions of the ''[[Translation:Criminal Procedure Code of Thailand|Criminal Procedure Code]]'' or other laws governing the taking of evidence, but it must not be one that has been brought into existence through{{ref|16.1|[16.1]}} inducement, promise, threat, deceit, or other wrongful means.'
+}}
+
+; Wikisource notes
+
+# {{note|16.1}} Literally 'but it must be the kind that does not come into existence from'.
+
+===17===
+
+{{thl
+<!-- 1 -->
+| tc = s
+| l-s = 16
+| r-s = 18
+| rb-s =
+<!-- 2 -->
+| th = s
+| th-1 = ๑๗
+| en = s
+| en-1 = 17
+| ให้ยกเลิกความในวรรคหนึ่งของมาตรา ๒๖ แห่งพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐ และให้ใช้ความต่อไปนี้แทน
+
+{{c|"มาตรา ๒๖}}
+
+: ผู้ให้บริการต้องเก็บรักษาข้อมูลจราจรทางคอมพิวเตอร์ไว้ไม่น้อยกว่าเก้าสิบวันนับแต่วันที่ข้อมูลนั้นเข้าสู่ระบบคอมพิวเตอร์ แต่ในกรณีจำเป็น พนักงานเจ้าหน้าที่จะสั่งให้ผู้ให้บริการผู้ใดเก็บรักษาข้อมูลจราจรทางคอมพิวเตอร์ไว้เกินเก้าสิบวันแต่ไม่เกินสองปีเป็นกรณีพิเศษเฉพาะรายและเฉพาะคราวก็ได้"
+| The provision of paragraph 1 of {{Translation:Computer Crimes Act 2007/tp|s-1|26}} of the ''{{Translation:Computer Crimes Act 2007/tp|1}}'' shall be repealed and replaced by the following:
+
+{{c|'Section 26}}
+
+# Service providers must store computer traffic data for not less than ninety days reckoned from the date the said data enters a computer system. However, in case of necessity, a competent authority may, for a specific and temporary exceptional cause, order any service provider to store computer data for a period over ninety days but not exceeding two years.'
+}}
+
+===18===
+
+{{thl
+<!-- 1 -->
+| tc = s
+| l-s = 17
+| r-s = 19
+| rb-s =
+<!-- 2 -->
+| th = s
+| th-1 = ๑๘
+| en = s
+| en-1 = 18
+| ให้เพิ่มความต่อไปนี้เป็นวรรคสองและวรรคสามของมาตรา ๒๘ แห่งพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐
+
+: "ผู้ที่ได้รับการแต่งตั้งเป็นพนักงานเจ้าหน้าที่ตามพระราชบัญญัตินี้อาจได้รับค่าตอบแทนพิเศษตามที่รัฐมนตรีกำหนดโดยได้รับความเห็นชอบจากกระทรวงการคลัง
+
+: ในการกำหนดให้ได้รับค่าตอบแทนพิเศษ ต้องคำนึงถึงภาระหน้าที่ ความรู้ความเชี่ยวชาญ ความขาดแคลนในการหาผู้มาปฏิบัติหน้าที่หรือมีการสูญเสียผู้ปฏิบัติงานออกจากระบบราชการเป็นจำนวนมาก คุณภาพของงาน และการดำรงตนอยู่ในความยุติธรรม โดยเปรียบเทียบค่าตอบแทนของผู้ปฏิบัติงานอื่นในกระบวนการยุติธรรมด้วย"
+| The following shall be inserted into the ''{{Translation:Computer Crimes Act 2007/tp|1}}'' as paragraph 2 and paragraph 3 of its {{Translation:Computer Crimes Act 2007/tp|s-1|28}}:
+
+{{ol|list_style_type=decimal|start=2
+| The persons appointed as competent authorities under this Act may receive special compensation as determined by the Minister with the approval of the Ministry of Finance.
+| In determining special compensation, regard must be had to the missions and duties, the knowledge and proficiency, the lack of functionaries or the loss of large numbers of functionaries from the government system, the qualities of work, and the maintenance of oneself in righteousness, with comparison to compensation for other functionaries in the process of justice as well.'{{ref|18.1|[18.1]}}
+}}
+}}
+
+; Wikisource notes
+
+# {{note|18.1}} Literally 'In determining that [competent authorities] receive special compensation, [the person determining] must have regard to the missions and duties, the knowledge and proficiency, the shortage in the finding of persons to performs duties or there is an act of losing persons performing duties out of the system of official affairs in large numbers, the qualities of work, and the [competent authorities' (?)] maintenance of themselves in righteousness, by comparing compensation of other persons performing work in the process of justice also.'
+
+===19===
+
+{{thl
+<!-- 1 -->
+| tc = s
+| l-s = 18
+| r-s = 20
+| rb-s =
+<!-- 2 -->
+| th = s
+| th-1 = ๑๙
+| en = s
+| en-1 = 19
+| ให้เพิ่มความต่อไปนี้เป็นมาตรา ๓๑ แห่งพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐
+
+{{c|"มาตรา ๓๑}}
+
+: ค่าใช้จ่ายในเรื่องดังต่อไปนี้ รวมทั้งวิธีการเบิกจ่าย ให้เป็นไปตามระเบียบที่รัฐมนตรีกำหนดโดยได้รับความเห็นชอบจากกระทรวงการคลัง
+:: (๑) {{g|0.5em}} การสืบสวน การแสวงหาข้อมูลและรวบรวมพยานหลักฐาน ในคดีความผิดตามพระราชบัญญัตินี้
+:: (๒) {{g|0.5em}} การดำเนินการตามมาตรา ๑๘ วรรคหนึ่ง (๔) (๕) (๖) (๗) และ (๘) และมาตรา ๒๐
+:: (๓) {{g|0.5em}} การดำเนินการอื่นใดอันจำเป็นแก่การป้องกันและปราบปรามการกระทำความผิดตามพระราชบัญญัตินี้"
+| The following shall be inserted into the ''{{Translation:Computer Crimes Act 2007/tp|1}}'' as its section 31:
+
+{{c|'Section 31}}
+
+: The outlay in the following matters, as well as the procedure for reimbursement, shall be governed by the rules which the Ministry issues with the approval of the Ministry of Finance:
+:: (1) {{g|0.5em}} the investigation, the seeking of information, and the collection of evidence in cases of the crimes under this Act;
+:: (2) {{g|0.5em}} the carrying out of the activities under [[#13|section 18]], paragraph 1 (4), (5), (6), (7), and (8), and [[#14|section 20]];
+:: (3) {{g|0.5em}} the carrying out any other activity necessary for the prevention and suppression of the crimes under this Act.'
+}}
+
+===20===
+
+{{thl
+<!-- 1 -->
+| tc = s
+| l-s = 19
+| r-s = 21
+| rb-s =
+<!-- 2 -->
+| th = s
+| th-1 = ๒๐
+| en = s
+| en-1 = 20
+| บรรดาระเบียบหรือประกาศที่ออกตามพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐ ที่ใช้บังคับอยู่ในวันก่อนวันที่พระราชบัญญัตินี้ใช้บังคับ ให้ยังคงใช้บังคับต่อไปเท่าที่ไม่ขัดหรือแย้งกับบทบัญญัติแห่งพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐ ซึ่งแก้ไขเพิ่มเติมโดยพระราชบัญญัตินี้ จนกว่าจะมีระเบียบหรือประกาศที่ต้องออกตามพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐ ซึ่งแก้ไขเพิ่มเติมโดยพระราชบัญญัตินี้ ใช้บังคับ
+
+การดำเนินการออกระเบียบหรือประกาศตามวรรคหนึ่ง ให้ดำเนินให้แล้วเสร็จภายในหกสิบวันนับแต่วันที่พระราชบัญญัตินี้ใช้บังคับ หากไม่สามารถดำเนินการได้ ให้รัฐมนตรีว่าการกระทรวงดิจิทัลเพื่อเศรษฐกิจและสังคมรายงานเหตุผลที่ไม่อาจดำเนินการได้ต่อคณะรัฐมนตรีเพื่อทราบ
+|
+# All the rules or announcements which have been issued under the ''{{Translation:Computer Crimes Act 2007/tp|1}}'' and are in force on the day prior to the date this Act comes into force shall continue to be in force to the extent not contrary to or inconsistent with the ''{{Translation:Computer Crimes Act 2007/tp|1}}'' as amended by this Act, until there have come into force the rules or announcements needed to be issued in accordance with the ''{{Translation:Computer Crimes Act 2007/tp|1}}'' as amended by this Act.
+# As regards the issuance of the rules or announcements in accordance with paragraph 1, it shall be completed within sixty days reckoned from the date this Act comes into force. If it is unable to so issue, the Minister of Digital Economy and Society shall report to the Council of Ministers for acknowledgement the grounds for the inability to so issue.{{ref|20.1|[20.1]}}
+}}
+
+; Wikisource notes
+
+# {{note|20.1}} Literally 'The conduct of the act of issuing the rules or announcements according to paragraph 1[, it] shall be conducted to [the extent of] completion within sixty days counted from the date this Act comes into force. If unable to [so] conduct, the Minister of Digital Economy and Society shall report the grounds for being unable to [so] conduct to the Council of Ministers for acknowledgement.'
+
+===21===
+
+{{thl
+<!-- 1 -->
+| tc = s
+| l-s = 20
+| r-cts = e
+<!-- 2 -->
+| th = s
+| th-1 = ๒๑
+| en = s
+| en-1 = 21
+| ให้รัฐมนตรีว่าการกระทรวงดิจิทัลเพื่อเศรษฐกิจและสังคมรักษาการตามพระราชบัญญัตินี้
+| The Minister of Digital Economy and Society shall be in charge of this Act.
+}}
+
+===Countersignature===
+
+{{thl
+<!-- 1 -->
+| bg1 = ebe2f7
+| bg2 = e4cfff
+<!-- 2 -->
+| l-s = 21
+| tc = cts
+| r-sog = s
+<!-- 3 -->
+| th-l = cts
+| th-cts-0 = พระราชโองการ
+| th-cts-1 = พลเอก ประยุทธ์ จันทร์โอชา
+| th-cts-2 = นายกรัฐมนตรี
+| en-l = cts
+| en-cts-1 = General {{w|Prayut Chan-o-cha}},
+| en-cts-2 = Prime Minister.
+}}
+
+===Statement of grounds===
+
+{{thl
+<!-- 1 -->
+| bg1 = ebe2f7
+| bg2 = e4cfff
+<!-- 2 -->
+| l-cts = e
+| l-s = 21
+| tc = sog
+| r =
+<!-- 3 -->
+| th = sog
+| en = sog
+| เหตุผลในการประกาศใช้พระราชบัญญัติฉบับนี้ คือ โดยที่พระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐ มีบทบัญญัติบางประการที่ไม่เหมาะสมต่อการป้องกันและปราบปรามการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ในปัจจุบัน ซึ่งมีรูปแบบการกระทำความผิดที่มีความซับซ้อนมากขึ้นตามพัฒนาการทางเทคโนโลยีซึ่งเปลี่ยนแปลงอย่างรวดเร็ว และโดยที่มีการจัดตั้งกระทรวงดิจิทัลเพื่อเศรษฐกิจและสังคม ซึ่งมีภารกิจในการกำหนดมาตรฐานและมาตรการในการรักษาความมั่นคงปลอดภัยไซเบอร์ รวมทั้งการเฝ้าระวังและติดตามสถานการณ์ด้านความมั่นคงปลอดภัยของเทคโนโลยีสารสนเทศและการสื่อสารของประเทศ สมควรปรับปรุงบทบัญญัติในส่วนที่เกี่ยวกับผู้รักษาการตามกฎหมาย กำหนดฐานความผิดขึ้นใหม่ และแก้ไขเพิ่มเติมฐานความผิดเดิม รวมทั้งบทกำหนดโทษของความผิดดังกล่าว การปรับปรุงกระบวนการและหลักเกณฑ์ในการระงับการทำให้แพร่หลายหรือลบข้อมูลคอมพิวเตอร์ ตลอดจนกำหนดให้มีคณะกรรมการเปรียบเทียบซึ่งมีอำนาจเปรียบเทียบความผิดตามพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. ๒๕๕๐ และแก้ไขเพิ่มเติมอำนาจหน้าที่ของพนักงานเจ้าหน้าที่ให้เหมาะสมยิ่งขึ้น จึงจำเป็นต้องตราพระราชบัญญัตินี้
+| The grounds for promulgation of this Act are as follows: Whereas the ''{{Translation:Computer Crimes Act 2007/tp|1}}'' contains certain provisions that are unsuitable for the prevention and suppression of computer crimes at the present time, which are committed in more complicated forms due to rapidly changing technological development, and whereas there has been the creation of a Ministry of Digital Economy and Society, which has the missions to determine standards and measures for the maintenance of cybersecurity, as well as the monitoring and pursuit of situations concerning national information and communication technology security, it is expedient to improve the provisions with respect to the officer in charge, to establish new crimes and revise the original crimes, including the penalties therefor, to improve the procedures and rules concerning the termination of circulation or the deletion of computer data, as well as to to require the setting up of a panel empowered to settle crimes under the ''{{Translation:Computer Crimes Act 2007/tp|1}}'', and to modify the powers and duties of competent authorities for more suitability. It is therefore necessary to enact this Act.
+}}
+
+==Licences==
+
+{{translation licence|original={{PD-TH-exempt}}|translation={{Public domain release}}}}
+
+[[Category:Amendments to acts of Thai legislature]]
+[[Category:Acts of Thai legislature in 2017‎]]
+[[Category:Acts of Thai legislature still in force‎]]
