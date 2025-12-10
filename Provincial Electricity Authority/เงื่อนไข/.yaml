@@ -1,4 +1,78 @@
 
+<languages />
+[[File:Temporary Accounts - first edit popup.png|400x400px|<translate><!--T:60--> A temporary account notification after publishing the first edit</translate>|alt=<translate><!--T:61--> Temporary account - first edit popup</translate>|thumb]]
+<translate><!--T:62--> Wikimedia projects allow anyone to edit, with or without creating an account.</translate>
+<translate><!--T:89--> When an edit is made through a registered account, the edit is attributed to the respective account in various logs and pages like [[<tvar name="1">Special:MyLanguage/Help:Recent changes</tvar>|Recent Changes]] or [[<tvar name="2">Special:MyLanguage/Help:History</tvar>|page history]].</translate>
+<translate><!--T:90--> Similarly, when an edit is made without an account, the edit is attributed to an auto-generated '''temporary account'''.</translate>
+<translate><!--T:91--> A temporary account is created on behalf of the logged-out editor and lasts for a period of 90 days.</translate>
+<translate><!--T:92--> All subsequent edits by the same device will be attributed to the same temporary account.</translate>
+
+<translate>
+== Why are temporary accounts necessary? == <!--T:63-->
+
+<!--T:64-->
+Before the introduction of temporary accounts, edits made by logged-out contributors were attributed to their [[:en:IP address|IP address]]. IP addresses carry sensitive information that can threaten the privacy and safety of the user connected through it. To mitigate this risk to user privacy, we decided to introduce temporary accounts. Under this new system, IP addresses associated with a temporary account are hidden away and only the temporary account name is publicly attributed to a given edit.
+
+== Who can see IP address data associated with temporary accounts? == <!--T:65-->
+</translate>
+{{see also|Special:MyLanguage/Trust and Safety Product/Temporary Accounts/Access to IP|l1=Trust and Safety Product/Temporary Accounts/Access to IP}}
+[[File:IP Info with link to expand to see all IPs.png|400x400px|<translate><!--T:66--> IP Info feature with temporary accounts data</translate>|alt=<translate><!--T:67--> IP Info options for display with a temporary account</translate>|thumb]]
+
+<translate><!--T:68--> We restrict access to IP address data for temporary accounts to users who need this access for anti-abuse moderation purposes.</translate>
+<translate><!--T:93--> The access criteria for this data are articulated in a legal policy called [[<tvar name=1>foundation:Special:MyLanguage/Policy:Access to temporary account IP addresses</tvar>|Access to temporary account IP addresses]].</translate>
+<translate><!--T:94--> The IP address used at the time of each edit will be stored for 90 days after the edit.</translate>
+<translate><!--T:95--> After 90 days, this data will be deleted from our databases.</translate>
+<translate><!--T:96--> To know all the details on what data we collect and how we use it, see our [[<tvar name=2>foundation:Special:MyLanguage/foundation:Policy:Privacy policy#use</tvar>|privacy policy]].</translate>
+
+<translate>
+<!--T:69-->
+Our volunteer moderators will have access to some information on your IP address. This information is restricted to editors who need it for anti-abuse moderation purposes. The information exposed, access criteria for it, and allowed purposes of use are [[<tvar name=1>foundation:Special:MyLanguage/Legal:IP_Information_tool_guidelines</tvar>|detailed in the guidelines]].
+
+<!--T:70-->
+If this creates any personal security concerns for you, please contact <tvar name="4">{{@|talktohumanrights|wikimedia.org}}</tvar> for advice.
+
+== How do temporary accounts work? == <!--T:71-->
+</translate>
+[[File:Editing with Temporary Accounts.webm|400x400px|thumb|<translate><!--T:100--> A 2-minute video (with subtitles) about editing with a temporary account</translate>]]
+<section begin="how" />
+* <translate><!--T:72--> Temporary account names follow the pattern: <tvar name="1"><code>~{{CURRENTYEAR}}-12345-6</code></tvar> (a tilde, the year of creation, dash, an auto-generated serial number broken up with hyphens grouping 5 digits at a time). Users cannot choose or change the names of their temporary accounts.</translate>
+* <translate><!--T:73--> 90 days after the creation date, the temporary account will automatically expire.</translate> <translate><!--T:102--> Edits made will still be tracked by page histories and logs, and the talk page of the temporary account will also remain available.</translate> <translate><!--T:103--> However, the user will no longer be able to use that account or receive notifications for messages posted on its talk page.</translate>
+* <translate><!--T:74--> Subsequent edits assign a new temporary account. The old one will be deactivated and you won't be able to keep it.</translate> <translate><!--T:104--> It will be permanently inactive.</translate> <translate><!--T:105--> The only indication the account has expired is it is no longer used.</translate> <translate><!--T:106--> There is no flag or message indicating whether a temporary account has expired or not.</translate>
+* <translate><!--T:84--> It is impossible to log in to a temporary account. There are no passwords for temporary accounts.</translate>
+* <translate><!--T:75--> All edits made from the same device and browser will be attributed to the same temporary account, even if the [[:en:IP_address|IP address]] you're using changes (for example, if you edit at home and at a coffee shop). This is done through the placement of a browser cookie that remembers the temporary account you have been assigned.</translate>
+* <translate><!--T:85--> Temporary accounts are not like browsing history or open tabs. If you have a browser synchronized across devices, you will be assigned to different accounts on different devices. This is a consequence of how browsers work.</translate> <translate><!--T:99--> If you are worried about this, you may want to create a registered account.</translate>
+* <translate><!--T:76--> Temporary accounts can be deactivated manually at any time by ending your session or clearing your browser cookies.</translate><section end="how" />
+
+<translate>
+
+== Notable aspects of temporary accounts == <!--T:78-->
+</translate>
+<section begin="notable" />
+* <translate><!--T:79--> Temporary accounts are different from registered accounts. They are short-lived and offer limited features. We don't collect any additional data for temporary accounts beyond what we collect for regular edits.</translate>{{clarify|reason=What's a &quot;regular edit&quot;?}}
+* <translate><!--T:3--> Temporary accounts do not have access to all the features available for logged-in users.</translate> <translate><!--T:86--> Some actions, such as uploading photos to [[<tvar name="2">m:Special:MyLanguage/Wikimedia Commons</tvar>|Commons]], are restricted to users with a registered account.</translate>
+* <translate><!--T:80--> Temporary accounts have their own [[<tvar name=1>Special:MyLanguage/Help:User page</tvar>|user pages and user talk pages]], but when such accounts expire, the person that used that account can no longer be reached by placing messages there.</translate> <translate><!--T:101--> In general, a temporary account and a (subsequent) regular user account could be linked. But because of the possible delink, it is technically not allowed in some projects to edit the user page of a temporary account after it has expired or was permanently blocked.</translate>
+* <translate><!--T:81--> Temporary accounts can receive [[<tvar name=1>Special:MyLanguage/Help:Notifications</tvar>|notifications]] and see [[<tvar name=2>Special:MyLanguage/Help:Talk pages#User talk pages</tvar>|a banner about new messages on their user talk page]].</translate>
+* <translate><!--T:82--> Temporary accounts can receive [[<tvar name=1>Special:MyLanguage/Help:Notifications/Thanks</tvar>|thanks]] from logged-in editors but can't send thanks.</translate>
+* <translate><!--T:83--> Temporary accounts can [[<tvar name="1">Special:MyLanguage/Help:Notifications/Types#Mentions</tvar>|ping]] other users, and they can be pinged in return.</translate><section end="notable" />
+
+<translate>
+
+== Creating a permanent account == <!--T:88-->
+</translate>
+<translate><!--T:77--> At any moment, you can choose to [[<tvar name="2">Special:CreateAccount</tvar>|create a registered, permanent account]].</translate>
+<translate><!--T:32--> Registered accounts provide the best privacy protection, and offer many preference settings for customization.</translate>
+<translate><!--T:33--> Registering a permanent account is quick and easy.</translate>
+<translate><!--T:34--> You do not need an e-mail address to create a registered account.</translate>
+<translate><!--T:87--> Your edits and other activity will not be carried forward. You can link from your new registered account user page to your old temporary account user page, by redirecting.</translate>
+
+<translate>
+== See also == <!--T:5-->
+</translate>
+* [[{{#special:CreateAccount}}]] – <translate><!--T:6--> to create a registered account</translate> <translate><!--T:98--> (this won’t create a temporary account)</translate>
+* {{ll|Trust and Safety Product/Temporary Accounts}} – <translate><!--T:9--> related Wikimedia Foundation project</translate>
+* {{ll|Trust and Safety Product/Temporary Accounts/For developers}} – <translate><!--T:13--> technical information</translate>
+
+[[Category:Temporary Accounts{{#translation:}}]]
 
 
 วิกิพีเดียสารานุกรมเสรี
