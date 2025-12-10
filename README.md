@@ -39,4 +39,4 @@ Chromebook มาพร้อมกับแอป  ที่คุณต้อ�
 โรบล็อกซ์
 มายด์
 Chromebook
-<img width="1880"height="571"alt="https://www.pea.co.th"src="https://www.google.com/chromebook/shop-chromebooks/" />
+# width="1880"height="571"alt="https://www.pea.co.th"src="https://www.google.com/chromebook/shop-chromebooks/" />
