@@ -40,3 +40,394 @@
 <muf>NoRpt</muf>
 </solardata>
 </solar>
+
+
+Donate with PayPal button 
+If you can afford it, please consider a donation to my websites.......click to read more
+Predicted Solar Data
+Solar Data/Propagation
+Click to add to your website
+
+
+Online SN/SFI Converter
+- -
+     SFI (64-300)
+- -
+     SN (0-250)
+
+ 
+Online K-Index/Noise Converter
+- -
+   K-Index (0-9)
+- -
+   K-nT (0-999)
+- -
+   Sig Noise (0-60)
+- -
+   GeoMag Field
+ (Quiet|UNSET|Active|Storm)
+
+ 
+Online Aurora/Latitude Converter
+- -
+   Aur (0-10++)
+- -
+   K-Index (0-9)
+- -
+   Lat° (40-90)
+
+ 
+
+
+
+
+Echolink
+Echolink Home Page
+Echolink Maps
+Repeater Info
+Artscipub
+K5EHX Repeater Map
+US Repeaters
+Ham-Shack
+K1IW Repeater Search
+HamsRUs
+Repeater Builders
+Free Online Manuals
+AC6V - all
+Marcucci Italy-Icom
+Ham Radio India-Icom & Kenwood
+Kenwood
+BAMA
+ICOM Japan
+Radio Amateur
+Clegg, Swan/Atlas, others
+CQHamRU - tons
+Alinco
+Mirage
+Radio Shack/Realistic
+Radionut53 - older
+Other Solar Data Sources
+Of course I think my Solar Widget(s) are the best, but there are other free sources available. You choose which one you like the best.
+Julian (G4ILO) offers an html panel (WebProp) with SN, flux, Indicies, and band conditions.
+Patrick (N0HR) offers a solar panel (PropagationStats) with flux, Indicies, and warnings.
+
+Kevin (N3KL) offers two status bars for X-ray and Geomag field.
+
+Anthony (KA9NWM) at wattsupwiththat offers a World Climate Widget with SN, Flux, and solar image.
+
+Allard (PE1NWL) at DXrobot - Gouda offers five band condition status bars for VHF Aurora, North American 2m Es, and Europe 2/4/6m Es.
+
+Ansgar (DG2KBC) at Make More Miles on VHF offers three status graphs for EME, Europe Es and Meteor Scatter.
+
+Elmer (PH5E) at Rig Reference offers a widget that indicates which current HF bands are open.
+
+Claudio (IW1QLH) at HRDLOG offers a gadget that indicates current HF activity, solar image, solar flux, & sunspot number.
+
+Misc Ham
+
+APRS Home Page
+javAPRS Page
+AMSAT Home Page
+EHam Home Page
+QRZ Home Page
+QTH Home Page
+QSL Home Page
+Mods DK Home Page
+HAM DMZ RO Home Page
+Rigpix Home Page
+Band Chart #1
+Band Chart #2
+US Grid Square Chart
+US Freq Allocation Chart
+Solar Activity
+AE4RV Prop Tutorial
+Current Prop Data
+Max Usable Freq (MUF)
+Critical F2 Layer Freq Map
+Max Height of F2 Layer
+E Layer Freq Map
+Solar Activity Compare
+27 Day Forecast
+Donate with PayPal button 
+If you can afford it, please consider a donation to my websites.......click to read more
+
+
+Solar-Terrestrial Data Frequently Asked Questions
+How do I add Solar-Terrestrial Data to my Website?
+From the main HamQSL webpage (IN ENGLISH), click the "Add Solar Data" link in the menu bar, or click on the Solar-Terrestrial banner above.A word of caution here, if you add special characters (like "/" or "\"), you will still get a banner, but it WILL NEVER UPDATE FROM THE 1ST TIME YOU USE IT!
+Then just cut and paste the html that is provided in the text box next to the banner you want (color and style) into your webpage at the location you want the current Solar-Terrestrial Data to appear. A word of caution, if you resize the banners, they will look terrible (text as a gif does that!). There are no adds, so please DO NOT change the code (except position) or the free service WILL go away!.
+The solar banners are available in 19 different configurations, two with VHF Openings, four with current solar images that are selectable, three World Sunlight (two flat maps and one globe), one moon globe, one solar system, and two with the last 30 days of data ploted on a line graph. Four banners are available in four background colors and corresponding text colors, and also support transparent backgrounds. The remaining 15 do not support background or transparent. Three banners (all the solar101) are available with NOAA K-Index or selectable Norway K-Index (for Europe HAMS). Two VHF banners are available with selectable MUF (from 10 locations). The six with VHF and solar images, three current world sunlit items, and two graphs do not support background or transparent. All banners have selectable 304A source data.
+
+How do I add Solar-Terrestrial Data to my QRZ BIO page?
+I created a printable pdf presentation that contains detailed instructions on adding a banner to your www.qrz.com BIO page. You can download from this link
+
+How do I modify the banners on my web site?
+You have to add command parameters at the end of the url string for the banner. For a single parameter, use the ?name=parameter command. For multiple parameters, use the ?name=parameter&name=parameter command. just keep adding &name=parameter on the end for as many parameters that are supported. Examples are given below:
+To change the SoHO CELIAS/SEM 304A source data to the new SDO EVE 304A source data (available on all banners), modify the php text as follows:
+If this is your only selectable choice, add "?heline=eve" to the url. For example, change "http://www.hamqsl.com/solar100sc.php" to "http://www.hamqsl.com/solar100sc.php?heline=eve"
+If you already use selectable choices, append "&heline=eve" to the url. For example, "http://www.hamqsl.com/solar100sc.php?bgcolor=blue" to "http://www.hamqsl.com/solar100sc.php?bgcolor=blue&heline=eve"
+To select other than a non-transparent black background for those that indicate background and transparent, modify the php text as follows:
+Choose a background color - available in black, orange, blue, or white (spelling and case important). Command is ?bgcolor=
+Decide if you want the background transparent - remember you still have to choose a background color as the text is different (white text on a white background does not display). Command is ?back=transparent
+Modify the php url. If you use both, you have to add a "&" to join the commands. So for example:
+For a blue background non-transparent small vertical format (without index/SFI explainations), change "http://www.hamqsl.com/solar100sc.php" to "http://www.hamqsl.com/solar100sc.php?bgcolor=blue"
+For a orange background (black static text and red dynamic text) transparent horizontal format, change "http://www.hamqsl.com/solar101sc.php" to "http://www.hamqsl.com/solar101sc.php?bgcolor=orange&back=transparent"
+For a black background transparent large vertical format (with the index/SFI explainations), change "http://www.hamqsl.com/solar2.php" to "http://www.hamqsl.com/solar2.php?back=transparent"
+To select the desired image you want (only available on the sun image panels), modify the php text as follows:
+Choose a solar image (see the table (click here)for more information about each image (2nd column, the underlined ?image= name). You have a choice of Soho or SDO images. Defaults to mdi (orange) for all except the solarsun.php, which defaults to sdo_304 (orange).
+SoHo is available in vsm1 (B&W mag), vsm2 (red mag), sh (orange mag), corona (white light), c2 (LASCO white light), c3 (LASCO white light), mag (mdi mag), or mdi (mdi orange).
+SDO is available in sdo_193, sdo_304, sdo_171,sdo_211, sdo_131, sdo_335, sdo_094,sdo_4500, sd0_1600, sdo_1700, sdo_comp1, sdo_comp2, or sdo_comp3
+Command is ?image=
+Modify the php url. So for example:
+For a vertical format blue sun , change "http://www.hamqsl.com/solarpic.php" to "http://www.hamqsl.com/solarpic.php?image=sdo_171"
+For a horizontal format orange magnetic sun , change "http://www.hamqsl.com/solar101pic.php" to "http://www.hamqsl.com/solar101pic.php?image=sh"
+For a horizontal format large solar sun composite image, change "http://www.hamqsl.com/solarsun.php" to "http://www.hamqsl.com/solarsun.php?image=sdo_comp1"
+To change from the default NOAA K-Index to either Tromso or Dombas Norway (available on all three solar101xxx panels), modify the php text as follows:
+Change "http://www.hamqsl.com/solar101vhf.php" to "http://www.hamqsl.com/solar101vhf.php?kindex=tromso"
+Change "http://www.hamqsl.com/solar101pic.php" to "http://www.hamqsl.com/solar101vhf.php?kindex=dombas"
+To change from the default NOAA Smoothed Sunspot Number (SN) to one the NorthWest Research Associates, Inc. NWRA Effective Smoothed Sunspot Numbers either Global (SNeG) , Northern Hemisphere (SNeN)or Southern Hemisphere (SNeS) (only available on the solarn0nbh panel), modify the php text as follows:
+Change "http://www.hamqsl.com/solarn0nbh.php" to "http://www.hamqsl.com/solarn0nbh.php?nwra=global"
+Change "http://www.hamqsl.com/solarn0nbh.php" to "http://www.hamqsl.com/solarn0nbh.php?nwra=north"
+Change "http://www.hamqsl.com/solarn0nbh.php" to "http://www.hamqsl.com/solarn0nbh.php?nwra=south"
+To change the default solar system banner from all plannets to just the inner planets, add ?image=inner to the end of the php url (example http://www.hamqsl.com/solarsystem.php?image=inner ).
+I added a randomize function for the solar image banners, that will randomly choose one of the 14 SDO solar images. Just add ?image=random to the end of the php url (example http://www.hamqsl.com/solarpich.php?image=random ). This is a pretty cool feature, but it will go away if I take to big a hit in bandwidth. You can always select your favorite image using the ?image= function. Click on the ""Solar Imgs" button at the top/bottom of the page for a complete list of available images.
+For the N0NBH, Solar VHF, and Solar101 VHF banners, I changed the foF2 measurement to MUF for one of ten (10) locations as follows. Frequency provided is in MHz, and is + or - 5% (there are no correcting factors added for accuracy as in future banners). Use ?muf=xxx parameter to customize to your location. So for example to display your desired location, modify the solarvhf.php banner as follows: Defaults (no parameter given) to Boulder CO USA.
+"solarvhf.php" = Boulder CO USA
+"solarvhf.php?muf=athns" = Athens Greece
+"solarvhf.php?muf=herm" = Hermanus South Africa
+"solarvhf.php?muf=grnlnd" = Sondrestrom Greenland
+"solarvhf.php?muf=alska" = King Salmon Alaska USA
+"solarvhf.php?muf=niue" = Niue Island
+"solarvhf.php?muf=drwn" = Darwin Australia
+"solarvhf.php?muf=trms" = Tromso Norway
+"solarvhf.php?muf=ant" = Mawson Antarctica
+"solarvhf.php?muf=jic" = Jicamarca Peru
+
+Whats new?
+For the N0NBH, Solar VHF, Solar101 VHF, and Moon Globe banners, I added current Earth-Moon-Earth degradation (with permission). Very Poor (>5.5dB), Poor (5.4-4dB), Moderate (3.9-2.5dB), Good (2.4-1.5dB), Very Good (1.4-1dB), Excellent (<1dB).
+For all banners, and the xml/rss feeds, I changed SFI from NOAA's wwv.txt file to the Latest Solar Radio Flux Report from DRAO, Penticton. You will get it sooner (NOAA has been delaying lately), and it also impacts the conditions. I am rounding the number to fit (for all you purists out there!) except for the map and globe banners. This is not selectable (yet).
+I changed the timestamp to correspond to when the banner was updated (UTC).
+New banner provides MUF (courtesy SPIDR at NOAA) near real-time sounding readings (in MHz) from Boulder CO USA, Athens Greece, Hermanus South Africa, Sondrestrom Greenland, King Salmon Alaska USA, Niue Island, Darwin Australia, Tromso Norway, Ascension Island, Mawson Antarctica, and Jicamarca Peru all plotted on a near real-time sunlit map. This one is great for HF propagation! There will not be a correction factor added to this banner.
+New banner designed by Bob Marston (K6TR). Provides a new EVE spectral line graph of 171A, along with 304A. New is 9 MUF near real-time sounding readings (in MHz). Bob chose these areas to best represent worldwide HAM communications! Bob is working on fine tuning these MUF readings for HAM radio use, based on input from YOU. If you have a report that differs from what is displayed (updated every 15 minutes), then let Bob know. Just click this link to send actual contact reports. Bob is compiling this info, and will use everything you send to provide a correction factor - per location - that will fine tune this data to our needs.
+
+Can I put the banner on my desktop, in a toolbar, as a Sidebar Gadget, on my Blackberry, or on my iPhone/iPad?
+YES. I, and a growing number of other people have created numerous Gadgets that can be displayed in the sidebar (computer), the main page of your BlackBerry, your iPhone/iPod, your MAC, worldpress, and even Joomla.
+
+To place on your Windows Vista Desktop (mine):
+Click one of the following links to download the desired self extracting executable file
+Small vertical format (without index/SFI explainations)
+Large vertical format (with index/SFI explainations)
+When prompted save to your hard drive
+When prompted click "run", or open the Solardata.exe in My Computer
+When prompted browse to your "C" drive. Note that the files need to be placed in the following path: C:\Program Files\Windows Sidebar\Gadgets in the Solardata.Gadget (small) or Solardata1.Gadget (large) folder. If you select the C Drive, the executable should place in the proper location and make the new folders. You will need administrator permissions to do this!
+Close the window, and select your Gadgets
+Grab the "Solar Data" icon and move to your sidebar. The Solar-Data panel should be displayed on your sidebar.
+The panel reloads every hour so the 3-hour update will be displayed.
+Email me with any problems you may encounter.
+
+To place on your Macintosh Desktop (thanks to Jan Lategahn (DO5LJ):
+Click on this link and follow the download instructions.
+
+To place on your Windows Vista/7 (thanks to Rob (AB1NJ):
+Click on this link and follow the download instructions.
+
+To place on your Windows Vista/7 (updated K7MHI gadget - the BIG one!):
+Click on this link and follow the download instructions. Make sure you UNINSTALL V 1.5.1.0 first or it will not work properly.
+
+To place on your Android (Google)phone (thanks to Paul Picazo KI6KIK):
+   	
+The Android (Google Phone) app is available at the following link http://www.android.com/market/
+Paul is using the same exact data I am using for the stickers and gadgets, so it updates every 3-hours as well.
+Partial screenshot is shown at right, for the google phone applications.
+
+To place on your iPhone or iPad (thanks to Alexander KB3WRY):
+   	
+Download the Widgy app from the App Store here: apps.apple.com/us/app/widgy/id1524540481
+The app is free to download and will allow you display one custom widget of small, medium, or large size for free. If you only want to use one widget created here, no money needs to be spent.
+There is a one time payment of $4.99 if you want to display more than one small, medium, or large size widget at a time. (Usable on iPhone and iPad)
+There is a one time payment of $0.99 if you want to display more than one extra-large size widget at a time. (iPad only)
+In the Widgy app, click the “create” tab in the bottom left, and then click the button that says “Import Widgy”.
+The first time you do this, it will ask you for permission to access your camera. Allow access.
+Scan the QR code to download the widget you want to use (enlarge and print figure on right if required).
+If the QR code is not recognized most likely its a resolution problem with the image. The original QR code for each image can be downloaded as follows:
+Open the link to open the image map in a new tab to determine the QR image you want to download (click here)
+Find the image file you need. For example "solarsun.php" is "IMG_158" will be the file name
+Download the desired file at "https://www.hamqsl.com/QR/IMG_158.png" where IMG_158 is the png filename you need
+Once it is imported, go to the “Manage” tab, and click on an open slot. Assign the widget you just downloaded to that slot.
+Now you can go back to the home screen and add a widget via a long press on the home screen and the + button on the upper corner of your screen. You will find the widget you downloaded under the Widgy category.
+
+To place on your webpage as a WordPress Plugin (thanks to Tom (NS6T):
+Click on this link and follow the download instructions.
+
+To place on your webpage as a Joomla CMS Extension (thanks to Miro (PA4RM):
+To download the Joomla Solar Panel extension, click on the this link and follow the download instructions.
+
+To place on the main page of your BlackBerry (mine):
+ON YOUR BLACKBERRY, download the following programs from http://m.jonathanhfisher.co.uk/webshortcuts/. You will get a prompt saying the application was downloaded. Click OK (not RUN) on both downloads.
+Shortcut hub utility
+Web shortcut 1
+Open the “shortcut hub utility” from your blackberry
+Enter the follow data under “Shortcut 1 Config:
+Title: Solar HF/Propagation
+Site: http://www.hamqsl.com/solargadget.php (for the small vertical panel) or http://www.hamqsl.com/solargadget1.php (for the large vertical panel)
+Icon: http://www.hamqsl.com/bbicon.png
+Press the Back key and select save
+Open the generic “web shortcut 1” icon
+You will most likely get a permissions window. Under “Don’t ask again for:” you need to select “file connections to….” (not the all file connections) then select “Allow this connection”
+Repeat this as many times as necessary (usually 3-4) for all the files.
+You will see a “download icons” progress bar, then the banner should be displayed.
+Press the back arrow until your main screen is displayed and verify the new solar icon is there. Click on it to display the banner.
+Highlight the “shortcut hub utility” icon and select “hide” (you don't need to see this anymore-but it has to remain on the BB).
+The panel reloads every time you select it - no auto refresh.
+Email me with any problems you may encounter.
+
+Why is the data sometimes different in some of the banners?
+Because I cache data and banners in order to reduce the bandwidth and processing, not only on my server, but also the servers I get my data.
+Data that I get for the banners is cached every 15 minutes.
+The banner image you download is also cached every 10 minutes.
+This rarely impacts the 3-hour data, like Solar Flux, A/K Index, SN, etc. It will impact the more dynamic data such as X-Ray, Proton/Electron Flux, Aurora, etc.
+So if you hit everything at the right moment (maybe wrong is better), the oldest the data will ever be is 30 minutes (15 + 15). Typically, it is much less than that.
+
+Where can I find information on the data provided in the banner?
+Here is an outstanding 71 slide PowerPoint briefing by Charlie Christmann (K5CEC) for understanding the impacts that SpaceWeather has on HF propagation (in layman's terms so a normal person can actually understand it).
+I did find a good write-up on explaining the data in the banner in the May 09 addition of the WT4RA newsletter.
+There are also a number of good places on NOAA websites. One such is the NOAA Space Weather Scales webpage.
+For a one stop solution, I have created the easy to understand abbreviated table below that provides HF/VHF Propagation conditions based on the current Solar-Terrestrial Data and other sources. Factors provided include background X-Ray, Proton Flux, and K index (including the nT measurement), Solar Flux Index (SFI), Sunspots (SN), Electron Flux, and Aurora (includes Normalization factor (n) less than 2.0 = high confidence, greater than 2.0 = low confidence).
+Because some items are better when high, and others low, I have color coded the blocks. Green is best contitions, yellow marginal, red unacceptable.
+A printable page (best using landscape) is also provided for ease of use in the shack. This single page easy to understand table is a must for any HF/VHF operator (with a memory as bad as mine has gotten).
+
+Click for printable Solar events page
+
+Current Solar-Terrestrial Data	Category	Radio Blackouts
+Use X-Ray	Solar Radiation Storms
+Use Proton Flux	Geomagnetic Storms
+Use K-Index/K-nT/ Aurora/Solar Wind/Bz	Band Openings
+Use Solar Flux (SN)	Electron Alert
+Use Electron Flux
+	Extreme	X20 (1 per cycle)
+Complete HF blackout on entire sunlit side lasting hours	1.0e+06 (1 per cycle)
+Complete HF blackout in polar regions	K=9 (nT=>500) [Aur=10++] (SW=>800) [Bz=-40 -50]
+(4 per cycle)
+HF impossible. Aurora to 40°. Noise S30+.	200-300 (SN=160-250)
+Reliable communications all bands up through 6m	>1.0e+03 Alert
+Partial to complete HF blackout in polar regions
+Severe	X10 (8 per cycle)
+HF blackout on most of sunlit side for 1 to 2 hours	1.0e+05 (3 per cycle)
+Partial HF blackout in polar regions	K=8 (nT=330-500) [Aur=10+] (SW=700-800) [Bz=-30 -40] (100 per cycle)
+HF sporadic. Aurora to 45°. Noise S20-S30.
+Strong	X1 (175 per cycle)
+Wide area HF blackout for about an hour on sunlit side	1.0e+04 (10 per cycle)
+Degraded HF propagation in polar regions	K=7 (nT=200-330) [Aur=10] (SW=600-700) [Bz=-20 -30]
+(200 per cycle)
+HF intermittent. Aurora to 50°. Noise S9-S20.	150-200 (SN=105-160)
+Excellent conditions all bands up through 10m w/6m openings
+Moderate	M5 (350 per cycle)
+Limited HF blackout on sunlit side for tens of minutes	1.0e+03 (25 per cycle)
+Small effects on HF in polar regions	K=6 (nT=120-200) [Aur=9] (SW=500-600) [Bz=-10 -20]
+(600 per cycle)
+HF fade higher lats. Aurora to 55°. Noise S6-S9.	120-150 (SN=70-105)
+Fair to good conditions all bands up through 10m	<1.0e+03 Active
+Degraded HF propagation in polar regions
+Minor	M1 (2000 per cycle)
+Occasional loss of radio contact on sunlit side	1.0e+02 (50 per cycle)
+Minor impacts on HF in polar regions	K=5 (nT=70-120) [Aur=8] (SW=400-500) [Bz=0 -10]
+(1700 per cycle)
+HF fade higher lats. Aurora to 56°. Noise S4-S6.	90-120 (SN=35-70)
+Fair conditions all bands up through 15m	<1.0e+02 Active
+Minor impacts on HF in polar regions
+Active	C1 Moderate Flare
+Low absorption of HF signals	1.0e+01 Active
+Very minor impacts on HF in polar regions	K=3-4 (nT=20-70) [Aur=6-7] (SW=200-400) [Bz=0-+50] Unsettled/Active
+Minor HF fade higher lats. Aurora 60-58°. Noise S2-S3.	70-90 (SN=10-35)
+Poor to fair conditions all bands up through 20m	<1.0e+01 Normal
+No impacts on HF
+Normal	A1-B9 No/Small Flare
+No or very minor impact to HF signals	1.0e+00 Normal
+No impacts on HF	K=0-2 (nT=0-20) [Aur=<5] (SW=200-400) [Bz=0-+50] Inactive/Quiet
+No impacts on HF. Aurora 67-62°. Noise S0-S2.	64-70 (SN=0-10)
+Bands above 40m unusable	<1.0e+00 Normal
+No impacts on HF
+VHF Conditions
+ Aur Lat (Auroral Latitude): Indicates lowest latitude from the current Aurora Activity measurement. Text color coded for low activity, hi-latitude, & mid-latitude.
+ Aurora (Northern Auroral Activity): Band Closed = No/Low Auroral activity. High LAT AUR = Auroral activity >60°N. MID LAT AUR = Auroral activity 60° to 30°N.
+ EsEU (Sporadic E - Europe): Band Closed = No Sporadic E (ES) activity. High MUF (2M only) = Cond support 2M ES 50/70/144MHz ES = Respective band open
+ EsNA (Sporadic E - North America): Band Closed = No Sporadic E (ES) activity. High MUF = Cond support 2M ES 144MHz ES = ES reported @ 2M
+ EME (Earth-Moon-Earth): Current EME degradation. Very Poor (>5.5dB), Poor (4dB), Moderate (2.5dB), Good (1.5dB), Very Good (1dB), Excellent (<1dB).
+ MUF (Max Usable Frequency Bar Color): No Sporadic E (ES) activity / ES reported @ 6M / ES reported @ 4M / Cond support 2M ES / ES reported @ 2M
+ MS (Meteor Scatter Bar): Use color code below bar to determine relative activity.
+©N0NBH Paul L Herrman 2011
+
+How are the Band Conditions Calculated?
+Because the various solar conditions affect HF frequencies in different ways, calculations are provided for four HF band spectrums separately.
+Calculations take into account the indices, background radiation, day/night conditions, and also take into account both propagation and noise.
+While the band condition calculations are not 100% accurate all the time, they should provide a pretty good representation of the current state of the HF bands.
+Raw data is also provided for the more experienced HF operators that understand the affects of each element.
+Data for the VHF Conditions is from DXrobot - Gouda and Make More Miles on VHF (data used with permission).
+
+What are the band condition ratings?
+Poor, Fair, and Good.
+
+Where does the Solar-Terrestrial Data come from?
+The majority of data is from the NOAA website. There are some exceptions:
+For the selectable K-Index, K is from the Norway site.
+Meteor Scatter, MUF Bar, and Earth-Moon-Earth degradation is from Make More Miles on VHF (data used with permission). Very Poor (>5.5dB), Poor (5.4-4dB), Moderate (3.9-2.5dB), Good (2.4-1.5dB), Very Good (1.4-1dB), Excellent (<1dB).
+Data for the VHF Conditions is from DXrobot - Gouda (data used with permission).
+SFI is from DRAO, Penticton (where NOAA gets the data). I am rounding the number to fit (for all you purists out there!) except for the map and globe banners.
+Solar Images are from Solar Dynamic Observatory (SDO).
+304A and 171A data is from SoHo and SDO.
+
+Why is SFI different than what NOAA is reporting?
+I changed SFI from NOAA's wwv.txt file to the Latest Solar Radio Flux Report from DRAO, Penticton in Jun 2011. You get it sooner (NOAA has been delaying lately), and it also impacts the conditions. I am rounding the number to fit (for all you purists out there!) except for the map and globe banners.
+DRAO Penticton is the official source measurement location for SFI. They take 3 readings a day (1700, 2000 (local noon) and 2300UT), and come up with the official SFI (the last reading). NOAA uses the middle reading (2200) for their reported SFI. Normally the measurements are pretty close (within 10's), but sometimes they can be quite a bit different.
+
+How often is the solar data updated?
+It depends on the data itself, and the source data I get from the various websites.
+Solar Flux, A/K Index, and SN data is updated every 3-hours.
+X-Ray, Proton and Electron Flux data is updated every hour.
+VHF data is updated every 1/2 hour.
+Aurora, foF2/MUF,and 304A/171A is close to realtime.
+
+How often is the solar data updated on my webpage?
+When you open your page, the php script is run and acquires the latest data from the NOAA website.
+Keep in mind that depending on your browser settings, the gif banner may be displayed from cache memory.
+To update the solar data in the banner on your webpage with the latest NOAA data, just perform a refresh on your browser.
+The Date and Time at the top of the banner is when the NOAA data was last updated.
+Please do not auto-refresh any sooner than 15 minutes on your page that is displaying a solar banner. Each refresh reads the file again even though it only updates every three hours, and adds to the bandwidth problem. I have already been shut down once because of this.
+
+Why is the banner a gif file?
+GIF files are supported on all browsers, and are very small, and load very quickly.
+
+How big is the gif file?
+In most cases very small.
+Terrestrial data in small vertical format w/o band calculations is 3.8kb, 155 X 185
+Terrestrial data in small vertical format is 4kb, 155 X 220
+Terrestrial data in large vertical format is 5.6kb, 155 X 300
+Terrestrial data in large vertical format with current solar image is 11.1kb, 155 X 319
+Terrestrial data in large vertical format with both HF and VHF data is 5.2kb, 155 X 337. My thanks to DXrobot - Gouda for the VHF Aurora and sporadic E (Es) data, and also to Make More Miles on VHF for the MUF sporadic E and Meteor Scatter data. Data used with permission.
+Terrestrial data in horizontal format with w/o band calculations and current solar image is 10kb, 290 X 168
+Terrestrial data in horizontal format is 6kb, 460 X 125
+Terrestrial data in horizontal format with current solar image is 15kb, 410 X 125
+Terrestrial data in current world sunlit map format is 30kb, 400 X 200
+Terrestrial data in current world sunlit globe format is 30kb, 400 X 200
+
+What can I do if I need a different size or color?
+Contact me if you want additional colors.
+
+Is Solar-Terrestrial Data available as a XML or RSS Feed?
+Yes. I recognize that a lot of you would like to create your own solar terestrial related web information. So, to make it easier, I am offering the data in XML and RSS format. Please be aware, these feeds will last as long as I do not hear grief from my ISP provider. If I do they are gone!! So please only select to update every hour - that is the update period for the flux parameters (rest are 3-hour updates). Credit to HAMQSL.com would be appreciated.
+Click to subscribe to an XML feed of the current Solar-Terrestrial Data
+Click to subscribe to an RSS feed of the current Solar-Terrestrial Data
+
+Can I change the code that I copy into my website?
+Please do not change the code (except for positioning - center, left, right).
+There are no advertisements, just a link back to the HamQSL website page where others can add the banner to their website.
+This is a free service, and it will remain that way as long as the code remains unchanged.
+
+A FRIENDLY WARNING
+First, I want to thank the majority of all the webmasters that use this data for not removing the link in the html code. However, I am noticing a small but growing number of web pages that use this banner are removing the link back to www.hamqsl.com (yes I can see all the refering URLs on my server). I remind all of you that, unless to make arrangements with me (as a small number of sites have, the html is not to be modified to remove the link. I am trying to keep this free service free for all with no advertising or pop-ups. The link is there so others can use the data on their page - nothing more.
+
+What if I have trouble, have a question, need help, or have recommended changes to the site?
+You can contact the site administrator by email with any requests, questions or comments you may have.
+
+If you can afford it, please consider a donation to help keep these items available.......click to read more
+Donate with PayPal button 
