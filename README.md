@@ -1,4 +1,4 @@
-
+# https://www.hamqsl.com/solar.html#addrssxml
 [กลุ่ม VK ของเรา
 ช่อง YouTube ของเรา
 ช่อง Telegram ของเรา
