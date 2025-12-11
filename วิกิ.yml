@@ -1,0 +1,62 @@
+The '''Wikitech''' wiki hosts technical documentation for [[:m:Wikimedia movement|Wikimedia]]'s infrastructure and services. To edit this wiki, you need a [[:m:Special:MyLanguage/Help:Unified login|Wikimedia unified account]] (SUL) with a confirmed email address. Unlike [[:m:Complete list of Wikimedia projects|most other Wikimedia wikis]], Wikitech does not permit editing without an account.
+
+<templatestyles src="Template:Portal_list_item/styles.css" />
+<div class="mw-tpl-portal-list">
+{{Portal list item
+|name=Cloud Services
+|image=File:Wikimedia Cloud Services logo.svg
+|alt=Introduction
+|link=Help:Cloud_Services_introduction
+|description=Wikimedia Cloud Services (WMCS) provides tools, services, and support to technical contributors who build or maintain software that helps the Wikimedia movement. For help deciding which service is right for you, see the [[Help:Cloud Services introduction|Cloud Services introduction]].
+{{ContentGrid
+|content=
+{{Colored box
+|title = Toolforge, hosting for tools
+|title-link = Portal:Toolforge
+|content = Use [[Portal:Toolforge|Toolforge]] to build and host tools (bots, webservices, scheduled jobs) that support wiki projects.
+}}
+{{Colored box
+|title = Data services
+|title-link = Portal:Data_Services
+|content = Analyze wiki content and data in [[PAWS]], [[:m:Special:MyLanguage/Research:Quarry|Quarry]], and [[Superset]], or access [[Portal:Data Services | data services]] from within Cloud VPS or Toolforge.
+}}
+{{Colored box
+|title = Cloud VPS
+|title-link = Portal:Cloud_VPS
+|content = For advanced users: administer and run your own servers on [[Portal:Cloud VPS|Cloud VPS]], Wikimedia cloud computing infrastructure powered by [[:w:en:OpenStack|OpenStack]].
+}}
+}}
+}}
+{{Portal list item
+| name = Production
+| image = File:Wikitech-2021-blue-large-icon.svg
+| alt = Wikitech logo
+| link = Wikimedia infrastructure
+| description = [[Wikimedia infrastructure|Wikimedia production]] is the servers, software, and databases that power the live Wikimedia Foundation websites. It is maintained by the Wikimedia Site Reliability Engineering team as well as other teams.
+{{ContentGrid
+|content=
+{{Colored box
+|title = MediaWiki at the Wikimedia Foundation
+|title-link = MediaWiki at WMF
+|content = Our highly-configured deployment of MediaWiki, the free software wiki platform. To learn how to operate your own MediaWiki site, see [[:mw:Special:MyLanguage/Main Page|mediawiki.org]].
+}}
+{{Colored box
+|title = Data centers
+|title-link = Data centers
+|content = Physical locations where our servers are racked.
+}}
+{{Colored box
+|title = Wikimedia CDN
+|title-link = CDN
+|content = Traffic routing and HTTP caching for all Wikimedia projects.
+}}
+{{Colored box
+|title = Data Platform
+|title-link = Data_Platform
+|content = Infrastructure and services that enable Wikimedia Foundation data producers and consumers to discover, use, collect, and publish data.
+}}
+}}
+}}
+
+</div>
+<noinclude>__NOTOC__</noinclude>
