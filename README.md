@@ -1,3 +1,4 @@
+# https://discord.gg/ZxJ34EaaNT
 # https://notes.coloros.com/s/M0ymBVSIznbZ_4
 # https://www.hamqsl.com/solar.html#addrssxml
 [กลุ่ม VK ของเรา
