@@ -1,3 +1,4 @@
+# https://notes.coloros.com/s/M0ymBVSIznbZ_4
 # https://www.hamqsl.com/solar.html#addrssxml
 [กลุ่ม VK ของเรา
 ช่อง YouTube ของเรา
@@ -186,3 +187,6 @@ git fetch origin
 git branch -u origin/571 571
 git remote set-head origin -a
 ```
+<img width="222" height="227" alt="default" src="https://github.com/user-attachments/assets/e7c5790f-0f8e-4644-9e4f-0a6627b95e8f" />
+# 222
+# 227
