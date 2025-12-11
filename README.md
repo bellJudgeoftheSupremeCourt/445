@@ -414,3 +414,17 @@ children:
 shortTitle: Manage repository access
 ---
 ```
+https://github.com/blackduck-inc/black-duck-security-scan
+https://www.google.co.th/url?sa=t&source=web&rct=j&opi=89978449&url=https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets&ved=2ahUKEwjssvW81bWRAxXMka8BHSwPNMkQFnoECCEQAQ&usg=AOvVaw1mtzG1yAjD3sKtB2X2kbmk
+
+https://www.google.co.th/url?sa=t&source=web&rct=j&opi=89978449&url=https://docs.github.com/enterprise-cloud%40latest/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets&ved=2ahUKEwjssvW81bWRAxXMka8BHSwPNMkQFnoECCAQAQ&usg=AOvVaw2KDdBaWBlQWoRVqVbq9OXJ
+
+
+https://www.google.co.th/url?sa=t&source=web&rct=j&opi=89978449&url=https://docs.github.com/en/enterprise-server%403.14/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets&ved=2ahUKEwjssvW81bWRAxXMka8BHSwPNMkQFnoECEkQAQ&usg=AOvVaw1OiCMRDeK0iR2STl4Pvvr9
+
+https://www.google.co.th/url?sa=t&source=web&rct=j&opi=89978449&url=https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/creating-rulesets-for-a-repository&ved=2ahUKEwjssvW81bWRAxXMka8BHSwPNMkQFnoECEsQAQ&usg=AOvVaw0RL6B3z4Xw8XkJhf6KqmV4
+
+
+https://www.google.co.th/url?sa=t&source=web&rct=j&opi=89978449&url=https://github.blog/news-insights/product-news/github-repository-rules-are-now-generally-available/&ved=2ahUKEwjssvW81bWRAxXMka8BHSwPNMkQFnoECEwQAQ&usg=AOvVaw0e1PstHPy5Y0IY3a2xoR5I
+https://www.google.co.th/url?sa=t&source=web&rct=j&opi=89978449&url=https://learn.microsoft.com/en-us/azure/devops/repos/git/branch-policies%3Fview%3Dazure-devops&ved=2ahUKEwjssvW81bWRAxXMka8BHSwPNMkQFnoECEoQAQ&usg=AOvVaw0xfp4ewnKlruPKvw7Ry69G
+
