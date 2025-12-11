@@ -1,4 +1,8 @@
+![New-Bouncywikilogo](https://github.com/user-attachments/assets/a118a36d-8b78-414d-8c10-e37658447cf1)
 
+```
+<iframe src="https://th.widgets.investing.com/live-currency-cross-rates?theme=darkTheme" width="100%" height="100%" frameborder="0" allowtransparency="true" marginwidth="0" marginheight="0"></iframe><div class="poweredBy" style="font-family: Arial, Helvetica, sans-serif;">สนับสนุนโดย <a href="https://th.investing.com?utm_source=WMT&amp;utm_medium=referral&amp;utm_campaign=LIVE_CURRENCY_X_RATES&amp;utm_content=Footer%20Link" target="_blank" rel="nofollow">Investing.com</a></div>
+```
 
 https://github.com/user-attachments/assets/16632960-83ca-418f-be23-bfe0ab0b649a
 
