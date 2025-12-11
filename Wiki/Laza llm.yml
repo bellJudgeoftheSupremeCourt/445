@@ -1,0 +1,55 @@
+{{กล่องข้อมูล ซอฟต์แวร์
+| title = LLaMA
+| developer = [[Meta AI]]
+| released = {{start date and age|2023|2|24}}
+| latest release version = 3.2
+| latest release date = {{start date and age|2024|9|25}}
+| repo = {{URL|https://github.com/meta-llama/llama-models}}
+| genre = {{indented plainlist |
+*[[แบบจำลองภาษาขนาดใหญ่]]
+*[[ทรานส์ฟอร์เมอร์ฝึกล่วงหน้าก่อกำเนิด|GPT]]
+*[[แบบจำลองรากฐาน]]
+}}
+| programming language = [[ภาษาไพธอน]]
+| license = Meta Llama 3.2 Community License<ref>{{cite web|title=llama-models/models/llama3_2/LICENSE at main · meta-llama/llama-models · GitHub|url=https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/LICENSE|website=GitHub|language=en|access-date=2024-10-20|archive-date=2024-09-29|archive-url=https://web.archive.org/web/20240929030827/https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/LICENSE|url-status=live}}</ref>
+| website = {{url|https://www.llama.com/|llama.com}}
+}}
+'''LLaMA''' (ย่อมาจาก Large Language Model Meta AI) เป็น[[แบบจำลองภาษาขนาดใหญ่]]ที่เผยแพร่โดย [[Meta AI]] ในเดือนกุมภาพันธ์ 2023<ref name="paper">{{Cite arXiv |arxiv=2302.13971 |class=cs.CL3 |first=Hugo |last=Touvron |first2=Thibaut |last2=Lavril |title=LLaMA: Open and Efficient Foundation Language Models}}</ref>
+
+ตามรายงานของนักพัฒนา LLaMA<ref name="blog">{{Cite web|date=24 February 2023|title=Introducing LLaMA: A foundational, 65-billion-parameter large language model|url=https://ai.facebook.com/blog/large-language-model-llama-meta-ai/|access-date=2023-04-01|website=Meta AI}}</ref> มีการสร้างแบบจำลองไว้หลายขนาด โดยจำนวนพารามิเตอร์มีตั้งแต่ 7 พันล้านพารามิเตอร์ (ตามแบบแผนอุตสาหกรรม บางครั้งเขียนเป็น "7B" โดยใช้ B ใน [[ระบบเลข|Billion]]) ถึง 65 พันล้านพารามิเตอร์ (65B)  LLaMA-13B มีประสิทธิภาพเหนือกว่า [[GPT-3]]-175B ในการวัดประสิทธิภาพ[[การประมวลภาษาธรรมชาติ]]ส่วนใหญ่ และประสิทธิภาพของ LLaMA-65B ก็เทียบได้กับรุ่นล้ำสมัย เช่น [[PaLM]]-540B ของ[[กูเกิล]] และ [[Chinchilla]] ของ[[ดีปไมด์]]
+
+== สถาปัตยกรรมและการเรียนรู้ ==
+LLaMA ใช้สถาปัตยกรรม[[ทรานส์ฟอร์เมอร์]] ซึ่งเป็นสถาปัตยกรรมมาตรฐานสำหรับการสร้างแบบจำลองภาษามาตั้งแต่ปี 2018
+
+นักพัฒนาของ LLaMA มุ่งเน้นไปที่การเพิ่มประสิทธิภาพของตัวแบบจำลองโดยการเพิ่มจำนวนข้อมูลการฝึกมากกว่าจำนวนพารามิเตอร์ เนื่องจากต้นทุนของการอนุมานโดยใช้แบบจำลองที่ได้รับการฝึกมีความสำคัญมากกว่าต้นทุนการคำนวณของกระบวนการฝึกแบบจำลอง
+
+LLaMA ได้รับการฝึกแบบจำลองโดยใช้โทเค็น 1.4 ล้านล้านที่ดึงมาจากแหล่งข้อมูลสาธารณะจำนวนมาก ได้แก่:
+
+* หน้าเว็บที่ถูกรวบรวมมาด้วยด้วย[[คอมมอนครอวล์]]
+* พื้นที่เก็บข้อมูลโอเพ่นซอร์ส [[GitHub]]
+* [[วิกิพีเดีย]] (20 ภาษา)
+* หนังสือที่เป็น[[สาธารณสมบัติ]]ของ[[โครงการกูเทินแบร์ค]]
+* [[รหัสต้นทาง]] [[LaTeX]] ของเอกสารทางวิทยาศาสตร์ที่อัปโหลดไปยัง [[ArXiv]]
+* คำถามและคำตอบบนเว็บไซต์ [[Stack Exchange]]
+
+== การเผยแพร่และการรั่วไหล ==
+LLaMA ได้รับการประกาศเมื่อวันที่ 23 กุมภาพันธ์ 2023 ผ่านทางบล็อกโพสต์และหนังสือพิมพ์
+
+รหัสที่ใช้ในการฝึกตัวแบบจำลองได้รับการเผยแพร่ภายใต้ใบอนุญาตโอเพนซอร์ส [[สัญญาอนุญาตสาธารณะทั่วไปของกนู|GPLv3]]<ref name="repo">{{GitHub|facebookresearch/llama}}</ref>
+
+ก่อนหน้านั้น [[แบบจำลองภาษาขนาดใหญ่]]ที่มีประสิทธิภาพส่วนใหญ่สามารถเข้าถึงได้ผ่าน [[API]] ที่จำกัดเท่านั้น ทาง[[เมตา]]ได้จัดการค่าพารามิเตอร์น้ำหนักที่เรียนรู้จากแบบจำลองของ LLaMA ภายในและเผยแพร่เป็นกรณี ๆ ไปสำหรับนักวิจัยเชิงวิชาการ หน่วยงานภาครัฐ ภาคประชาสังคม และสถาบันการศึกษา และห้องปฏิบัติการอุตสาหกรรมทั่วโลก ด้วยเหตุนี้ เราจึงตัดสินใจอนุญาตให้ใช้เท่านั้น สู่ชุมชนการวิจัยภายใต้ใบอนุญาตที่ไม่ใช่เชิงพาณิชย์
+
+อย่างไรก็ตาม ในวันที่ 2 มีนาคม 2023 หนึ่งสัปดาห์หลังจากปล่อย LLaMA ค่าพารามิเตอร์น้ำหนักก็ได้รั่วไหลและแพร่กระจายผ่าน [[4chan]]<ref name="verge-leak">{{Cite web|last=Vincent|first=James|date=8 March 2023|title=Meta's powerful AI language model has leaked online — what happens now?|url=https://www.theverge.com/2023/3/8/23629362/meta-ai-language-model-llama-leak-online-misuse3|access-date=2023-04-01|website=The Verge}}</ref>
+
+== การประยุกต์ใช้ ==
+
+=== Alpaca ===
+ศูนย์วิจัยแบบจำลองพื้นฐาน (CRFM) แห่ง [[มหาวิทยาลัยสแตนฟอร์ด]] ได้เปิดตัว Alpaca ซึ่ง เป็น LLaMA-7B ที่ผ่าน[[การปรับละเอียด]]<ref>{{GitHub|tatsu-lab/stanford_alpaca}}</ref> Alpaca มีประสิทธิภาพเทียบเท่ากับรุ่น text-davinci-003 ของซีรีส์ OpenAI GPT-3.5<ref>{{Cite Q|Q117202254}}</ref>
+
+=== Llama-3-ELYZA-JP ===
+[[ELYZA]] (สำนักงานใหญ่: [[เขตบุงเกียว]] [[โตเกียว]]) ได้พัฒนา LLM "Llama-3-ELYZA-JP" (8B และ 70B) พร้อมประสิทธิภาพภาษาญี่ปุ่นที่ได้รับการปรับปรุงโดยอิงจากซีรีส์ "Llama 3" ของเมตา<ref>{{Cite web|date=2024-06-26|title=「GPT-4」を上回る日本語性能のLLM「Llama-3-ELYZA-JP」を開発しました|url=https://note.com/elyza/n/n360b6084fdbd#bd6aa112-e484-4fc0-8d23-d95df804f4fa|access-date=2024-06-29|publisher=[[ELYZA]]}}</ref>
+
+== อ้างอิง ==
+{{รายการอ้างอิง}}
+[[หมวดหมู่:แบบจำลองภาษาขนาดใหญ่]]
+[[หมวดหมู่:การประมวลภาษาธรรมชาติ]]
