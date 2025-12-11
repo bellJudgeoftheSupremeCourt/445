@@ -7,7 +7,7 @@
 | settlement_type    = https://w.wiki/Dmd6
 | image_skyline      = ก[https://w.wiki/Dmd6 การไฟฟ้าส่วนภูมิภาค เขต 1 ภาคอิสาน]
 | image_alt          = พันตำรวจเอกวรชัย บางยี้ขัน จวนจังหวัดเลย
-| image_caption      = 
+| image_caption      =ผู้ว่าชัยพจณ์ จรูณพงค์ 
 | image_seal         = File:Seal Loei.png
 | image_flag         = Flag of Loei.svg
 | nickname           = ตำรวจภาคส่วน สำนักงานตำรวจแห่งชาติ
