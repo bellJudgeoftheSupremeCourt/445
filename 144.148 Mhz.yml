@@ -1,0 +1,209 @@
+This XML file does not appear to have any style information associated with it. The document tree is shown below.
+<rss xmlns:slash="http://purl.org/rss/1.0/modules/slash/" version="2.0">
+<channel>
+<title>Blog</title>
+<description>concrete5 Blog</description>
+<generator>Laminas_Feed_Writer 2 (https://getlaminas.org)</generator>
+<link>https://college.globalsign.com/?cID=</link>
+<item>
+<title>ロードバランサーにおけるmTLS実装～証明書検証とWebアプリ連携のポイント～</title>
+<description>
+<![CDATA[ クラウド環境でもオンプレミス環境でも大規模なWebアプリケーションを構築・運用する際にはロードバランサー（負荷分散装置）の導入が欠かせません。特に企業間での情報のやり取りに用いられるB2B向けアプリケーションにおいてセキュリティ要件が高まる中で、mTLS（相互TLS）を用いた通信の保護が求められるケースも増えています。そこで今回は、ロードバランサーでのmTLSの検証ポイントやオリジンサーバーへの証明書情報の渡しかたについて紹介します。 ]]>
+</description>
+<pubDate>Wed, 12 Nov 2025 01:00:00 +0000</pubDate>
+<link>https://college.globalsign.com/blog/mtls_loadbalancer_20251112/</link>
+<guid>https://college.globalsign.com/blog/mtls_loadbalancer_20251112/</guid>
+<slash:comments>0</slash:comments>
+</item>
+<item>
+<title>メールロゴ表示で注目の「BIMI」とは？仕組みやメリット、必要な電子証明書を徹底解説</title>
+<description>
+<![CDATA[ BIMI（企業ロゴ付きメール、Brand Indicators for Message Identification）とは、メールの受信トレイに、メール送信元の組織やブランドのロゴを表示させるための規格です。Gmail、Apple Mail、Yahoo mail（米国）などの主要なメールサービスが対応しており、受信者は一目でそのメールが正規の送信元から送られたものであることを視覚的に確認できます。 ]]>
+</description>
+<pubDate>Thu, 30 Oct 2025 01:15:00 +0000</pubDate>
+<link>https://college.globalsign.com/blog/mail_bimi_20251030/</link>
+<guid>https://college.globalsign.com/blog/mail_bimi_20251030/</guid>
+<slash:comments>0</slash:comments>
+</item>
+<item>
+<title>mTLS（相互TLS）とは？SSL/TLSとの違いから分かりやすく解説</title>
+<description>
+<![CDATA[ インターネット上の通信を安全にする技術と聞くと、多くの人がSSL/TLSやウェブサイトのURLの横にある鍵マークを思い浮かべるかと思います。これは、私たちが普段使っているウェブサイトが本物であることを証明し、通信を暗号化してくれる非常に重要な技術で、いまやウェブサイト上では当たり前の技術となりました。しかし、セキュリティの世界には、さらに一歩進んだmTLS（相互TLS）という技術が存在します。この記事では、mTLS（相互TLS）がなにか、またSSL/TLSとの違いはなにか、イメージ図を交えながらわかりやすく解説します。 ]]>
+</description>
+<pubDate>Fri, 10 Oct 2025 00:00:00 +0000</pubDate>
+<link>https://college.globalsign.com/blog/pki_mtls_20251010/</link>
+<guid>https://college.globalsign.com/blog/pki_mtls_20251010/</guid>
+<slash:comments>0</slash:comments>
+</item>
+<item>
+<title>巧妙なフィッシングメールにどう立ち向かう？総務省の要請と最新対策技術を解説</title>
+<description>
+<![CDATA[ 2025年9月1日、総務省は、通信事業者団体の中でも主要な4団体に対して、フィッシングメール対策の強化を求める要請文を発出しました。これは、生成AIの進化により、従来は苦手としていた日本語のフィッシングメールも精巧に作れるようになったことで、より巧妙な詐欺メールが増加している現状と、それにより生まれた多大な被害状況を踏まえたものになります。 この記事では、今回の総務省の要請内容をわかりやすくまとめ、企業や個人がどのように対策を講じるべきかを考察します。また、要請内容の中でも記載されているDMARCやBIMI、VMCなどの昨今注目を集める最新のメールセキュリティ関連技術についても解説します。 ]]>
+</description>
+<pubDate>Fri, 12 Sep 2025 03:00:00 +0000</pubDate>
+<link>https://college.globalsign.com/blog/mail_vmc_20250912/</link>
+<guid>https://college.globalsign.com/blog/mail_vmc_20250912/</guid>
+<slash:comments>0</slash:comments>
+</item>
+<item>
+<title>コードサイニング証明書の取得〜署名までを実際の手順で解説</title>
+<description>
+<![CDATA[ 「自身で作ったアプリを配布して実行できるようにしたい。」そんなときに避けて通れないのがコード署名（code signing）です。 高まるコードサイニング証明書の重要性 | GMOグローバルサインカレッジにもある通り、コードサインにより署名されたプログラムの配布は今やスタンダードとなっています。また、コードサイニング証明書の仕様変更に関するお知らせ :: GMOグローバルサイン新着情報を受けて、物理型、クラウド型を問わず、HSMへの格納が必須になる等、例年コードサイニング証明書の取り扱いはより厳重化される傾向にあります。既存のサポートページは充実しているものの、「トークン格納版における証明書の取得から、署名までやってみた流れが載っているコンテンツがあれば、よりユーザーのイメージが付きやすくなる」と考え、今回はユーザーの視点から、実際の署名まで一連の作業を実施する方法をご紹介します。 ]]>
+</description>
+<pubDate>Thu, 10 Jul 2025 03:00:00 +0000</pubDate>
+<link>https://college.globalsign.com/blog/codesign_20250710/</link>
+<guid>https://college.globalsign.com/blog/codesign_20250710/</guid>
+<slash:comments>0</slash:comments>
+</item>
+<item>
+<title>Azure Application Gatewayでのクライアント証明書認証の設定方法</title>
+<description>
+<![CDATA[ 近年、ゼロトラストアーキテクチャの考え方が広がる中で、社内外からのアクセスを安全に制御する仕組みとして、ロードバランサーでの相互TLS（mTLS）が注目されています。業務システムや社内ポータルなどへのアクセス制御をより強固にするためには、ネットワーク境界での認証・検証が不可欠です。そこで、今回は、Microsoft Azureの負荷分散サービスであるAzure Application Gateway（以下、「App Gateway」）にて、弊社のクライアント証明書サービス「マネージドPKI Lite byGMO」で発行したテスト証明書での相互TLS（mTLS）を検証しましたので、その設定方法とその設定後の結果を紹介します。 ]]>
+</description>
+<pubDate>Fri, 27 Jun 2025 03:00:00 +0000</pubDate>
+<link>https://college.globalsign.com/blog/azureappgateway_clientcert_250627/</link>
+<guid>https://college.globalsign.com/blog/azureappgateway_clientcert_250627/</guid>
+<slash:comments>0</slash:comments>
+</item>
+<item>
+<title>量子時代の本格到来に備える――PQC対応電子証明書の重要性とGMOグローバルサインの最新動向</title>
+<description>
+<![CDATA[ 量子コンピューターの実用化が現実味を帯びる中、従来の暗号技術の安全性に警鐘が鳴らされています。こうした状況下で注目を集めているのが「PQC（Post-Quantum Cryptography：耐量子計算機暗号）」です。GMOグローバルサインは、このPQCに対応した電子証明書のテスト提供を2025年5月より開始しました。本記事では、PQCの進化背景、今後の展望、そして証明書がそれに対応するべき理由を包括的に解説します。 ]]>
+</description>
+<pubDate>Thu, 12 Jun 2025 05:00:00 +0000</pubDate>
+<link>https://college.globalsign.com/blog/post_quantum_cryptography20250612/</link>
+<guid>https://college.globalsign.com/blog/post_quantum_cryptography20250612/</guid>
+<slash:comments>0</slash:comments>
+</item>
+<item>
+<title>国内eシール制度が本格始動！GMOグローバルサインの対応状況と今後の展望</title>
+<description>
+<![CDATA[ 2024年度に制度化が進んだ「eシール認定制度」は、組織名義での電子署名の信頼性と真正性を担保する仕組みとして注目を集めています。GMOグローバルサインでは、国内外の最新動向に対応するべく、レベル1・レベル2のeシール関連商材やEU適格eシール（QSealC）など、さまざまなソリューションを展開中です。本記事では、eシール制度の概要とレベル分類、弊社の提供商材、今後の展望や国際対応についてわかりやすく解説します。 ]]>
+</description>
+<pubDate>Mon, 09 Jun 2025 01:00:00 +0000</pubDate>
+<link>https://college.globalsign.com/blog/electronic-seal_250609/</link>
+<guid>https://college.globalsign.com/blog/electronic-seal_250609/</guid>
+<slash:comments>0</slash:comments>
+</item>
+<item>
+<title>企業必見！オンラインサービスにおける本人確認レベルの基礎知識</title>
+<description>
+<![CDATA[ 近年、デジタル社会の発展とともに、本人確認や認証の重要性が急速に高まっています。特にオンラインサービスの利用が拡大する中で、「この人は本当に本人なのか？」を確実に確認する仕組みが求められています。そこで注目されるのが、“身元確認保証レベル（IAL）と当人認証保証レベル（AAL）”という2つの基準です。 本記事では、それぞれのレベルの違いや要件、利用シーンについて詳しく解説し、企業や個人がどのように活用すべきかを考察します。 ]]>
+</description>
+<pubDate>Tue, 20 May 2025 06:00:00 +0000</pubDate>
+<link>https://college.globalsign.com/blog/assurance-level_250520/</link>
+<guid>https://college.globalsign.com/blog/assurance-level_250520/</guid>
+<slash:comments>0</slash:comments>
+</item>
+<item>
+<title>セキュアなデバイス・エンロールメントによるIoTネットワークの保護</title>
+<description>
+<![CDATA[ <p><img src="https://college.globalsign.com/application/files/9617/3975/8866/pixta_69481284_M.jpg" /></p>IoTセキュリティは、安全なエンロールメントから始まります。IoTネットワークとデバイスが、構想と設計から始まるライフサイクルの最初から保護されていない場合、ネットワークが侵害されるリスクがはるかに高くなります。本記事ではIoTにおけるネットワークセキュリティの重要性について解説しています。 ]]>
+</description>
+<pubDate>Thu, 20 Feb 2025 02:50:00 +0000</pubDate>
+<link>https://college.globalsign.com/blog/protecting_iot_networks_250220/</link>
+<guid>https://college.globalsign.com/blog/protecting_iot_networks_250220/</guid>
+<slash:comments>0</slash:comments>
+</item>
+<item>
+<title>WHOIS情報を用いたドメイン認証方法における新たな要件変更とその影響</title>
+<description>
+<![CDATA[ SSLサーバ証明書をはじめとした電子証明書の発行に関する要件が、近々大きく変更される予定です。認証局（CA）や登録機関（RA）において、従来使用されてきたWHOISに依存しない方法でドメインの連絡先情報を取得する新しいプロセスが求められています。本記事では、今回の要件変更の詳細と具体的なスケジュール、さらにその影響について解説します。 ]]>
+</description>
+<pubDate>Thu, 05 Dec 2024 03:10:00 +0000</pubDate>
+<link>https://college.globalsign.com/blog/whois_br_241205/</link>
+<guid>https://college.globalsign.com/blog/whois_br_241205/</guid>
+<slash:comments>0</slash:comments>
+</item>
+<item>
+<title>SSLサーバ証明書を90日から45日へ短縮する起案と、証明書自動化の役割</title>
+<description>
+<![CDATA[ この10年間でSSLサーバ証明書証明書の有効期間は劇的に短くなっておりますが、この傾向はセキュリティを強化し、証明書の危殆化リスクを軽減することを目的として、米Google社が最初に推し進めたことから始まりました。 　先週、米Apple社が2027年までにSSLサーバ証明書証明書の最大有効期間をわずか45日に短縮する投票草案を提出し、デジタル・セキュリティの世界で大きな話題となりました。電子証明書ベンダーやブラウザベンダー等で構成される業界団体「CA/Bフォーラム」にて発表されたこの草案は、証明書の有効期間を短縮することでウェブセキュリティを強化する目的でGoogleを含む主要ブラウザが主導する業界の幅広い取り組みと一致しています。しかしこの最新動向は、SSLサーバ証明書の管理方法に大きな変化が起こることを意味しているといえます。 ]]>
+</description>
+<pubDate>Wed, 23 Oct 2024 01:22:00 +0000</pubDate>
+<link>https://college.globalsign.com/blog/90daysTo45daysCertificateLifespansAutomation_241023/</link>
+<guid>https://college.globalsign.com/blog/90daysTo45daysCertificateLifespansAutomation_241023/</guid>
+<slash:comments>0</slash:comments>
+</item>
+<item>
+<title>マッチングアプリ・サービスにおける本人確認の重要性とeKYCの役割</title>
+<description>
+<![CDATA[ マッチングアプリ・サービスは、私たちの生活の中でますます重要な役割を担うようになっています。恋愛・婚活サイト、ビジネスマッチング、フリーランスやパートナーの仕事紹介、趣味のコミュニティなど、多様な目的に利用されるマッチングプラットフォームが存在します。利用者が増加する一方で、サービスの安全性や信頼性に対するニーズも高まっています。特に、年齢、性別のなりすましや偽アカウントによるトラブルを防ぐため、本人確認（KYC: Know Your Customer）の重要性はますます強調されるようになりました。 ]]>
+</description>
+<pubDate>Tue, 17 Sep 2024 09:40:00 +0000</pubDate>
+<link>https://college.globalsign.com/blog/matching-ekyc_240917/</link>
+<guid>https://college.globalsign.com/blog/matching-ekyc_240917/</guid>
+<slash:comments>0</slash:comments>
+</item>
+<item>
+<title>Microsoft Entra IDでクライアント証明書を使った多要素認証の設定方法</title>
+<description>
+<![CDATA[ 前回の記事では、[条件付きアクセス]でCBAを必須とする認証強度を作成・設定し、パスワードなど他手段によるログインをさせないようにしました。しかし、この方法では証明書を使った単要素認証であることには変わりはないので（デバイスへのアクセス時のパスコードや、Face ID / Touch IDといった生体認証との組み合わせを前提）、今回の記事ではEntra IDでのID・パスワード＋クライアント証明書の多要素認証の設定を行います。 ]]>
+</description>
+<pubDate>Fri, 13 Sep 2024 03:00:00 +0000</pubDate>
+<link>https://college.globalsign.com/blog/microsoftentraid_clientcert_240913/</link>
+<guid>https://college.globalsign.com/blog/microsoftentraid_clientcert_240913/</guid>
+<slash:comments>0</slash:comments>
+</item>
+<item>
+<title>国内でのeシールに係る検討状況</title>
+<description>
+<![CDATA[ 2023年9月から総務省で実施されていました「eシールに係る検討会」が2024年3月で終了し、「eシールに係る検討会 最終取りまとめ」が発表されました。この「eシールに係る検討会 最終取りまとめ」をもとに、現在の日本におけるeシールの検討状況を記載していきます。 ]]>
+</description>
+<pubDate>Tue, 25 Jun 2024 06:00:00 +0000</pubDate>
+<link>https://college.globalsign.com/blog/electronic-seal_240625/</link>
+<guid>https://college.globalsign.com/blog/electronic-seal_240625/</guid>
+<slash:comments>0</slash:comments>
+</item>
+<item>
+<title>クライアント証明書を個別に発行すべき理由 ~共有時のリスクを徹底解説~</title>
+<description>
+<![CDATA[ 近年、企業や機関におけるデジタル認証手段として、クライアント証明書認証（CBA）や相互TLS（mTLS）などが注目されています。これらは、セキュリティの強化と効率化を目的に採用されることが多いですが、証明書の運用方法には様々な課題が伴います。特に、複数の利用者が同一の証明書を共有する行為は、便利でコスト効率が良いように見えますが、その背後には大きなリスクが潜んでいます。本記事では、証明書の共有がもたらすセキュリティリスクと、それに対する適切な対策について詳しく解説します。 ]]>
+</description>
+<pubDate>Thu, 02 May 2024 08:46:00 +0000</pubDate>
+<link>https://college.globalsign.com/blog/clientcert_share_240502/</link>
+<guid>https://college.globalsign.com/blog/clientcert_share_240502/</guid>
+<slash:comments>0</slash:comments>
+</item>
+<item>
+<title>Azure VPNでのクライアント証明書認証</title>
+<description>
+<![CDATA[ 近年、リモートワークの普及に伴い、セキュアなネットワーク接続の重要性が高まっています。Microsoft Azureの仮想ネットワークゲートウェイを用いたPoint to Site (P2S) VPNは、遠隔地から安全に企業のネットワークリソースにアクセスするための解決策として注目されています。本記事では、Azureの仮想ネットワークゲートウェイでクライアント証明書がサポートされていることから、Azure VPNを利用した際のクライアント証明書認証の設定手順とその検証結果について詳細に記載します。これにより、Azureを使用している企業がリモートアクセスのセキュリティを強化するための参考情報を提供します。 ]]>
+</description>
+<pubDate>Fri, 12 Apr 2024 03:00:00 +0000</pubDate>
+<link>https://college.globalsign.com/blog/Azurevpn_clientcert_240412/</link>
+<guid>https://college.globalsign.com/blog/Azurevpn_clientcert_240412/</guid>
+<slash:comments>0</slash:comments>
+</item>
+<item>
+<title>Google Chromeアドレスバー左に表示される鍵マークの廃止について</title>
+<description>
+<![CDATA[ すでにご存知の方もいらっしゃるかもしれませんが、2023年9月8日にリリースされた「Google Chrome 117」で、アドレスバーの左端に表示されていた鍵マークが「tuneアイコン」と呼ばれる新しいアイコンに変更されました。この変更を受け当ブログでは、鍵マークが廃止された経緯や、アイコンの役割などを解説します。 ]]>
+</description>
+<pubDate>Fri, 15 Mar 2024 02:00:00 +0000</pubDate>
+<link>https://college.globalsign.com/blog/tuneicon_ssl_240315/</link>
+<guid>https://college.globalsign.com/blog/tuneicon_ssl_240315/</guid>
+<slash:comments>0</slash:comments>
+</item>
+<item>
+<title>クライアント証明書認証の自動化 ～ブラウザのレジストリ設定で実現するセキュリティと効率化～</title>
+<description>
+<![CDATA[ 情報漏洩事故が増加している昨今、システムへのログインにおけるセキュリティ対策が重要視されている反面、多要素認証のように認証の手間が増えてしまうことで、ユーザーのログイン時の負担が増加してしまうことが懸念されます。 そこで、GMOグループでは業務効率化のため、RPAの利用が推奨されていることから、そのようなツールの使用などの手段で認証の自動化も可能かどうかを検証しました。 今回は、クライアント証明書の認証時に必要となる証明書の選択について、その負担を減らす自動化の方法を紹介します。 ]]>
+</description>
+<pubDate>Wed, 06 Mar 2024 03:00:00 +0000</pubDate>
+<link>https://college.globalsign.com/blog/rpa_clientcert_240306/</link>
+<guid>https://college.globalsign.com/blog/rpa_clientcert_240306/</guid>
+<slash:comments>0</slash:comments>
+</item>
+<item>
+<title>AWS ALBでのクライアント証明書認証の設定方法</title>
+<description>
+<![CDATA[ 昨年11月にAmazon Web Service（AWS）のApplication Load Balancer（ALB）で相互TLSがサポート(リンク：https://aws.amazon.com/jp/about-aws/whats-new/2023/11/application-load-balancer-authenticate-x509-certificate-based-identities/)されました。これにより、ALBでのクライアント証明書認証が可能となりました。 そこで今回、弊社のクライアント証明書サービス「マネージドPKI Lite by GMO」で発行しましたテスト用のクライアント証明書を用いて検証しましたので、そのクライアント証明書認証の設定方法とその設定後の結果を紹介します。 ]]>
+</description>
+<pubDate>Wed, 24 Jan 2024 03:00:00 +0000</pubDate>
+<link>https://college.globalsign.com/blog/awsalb_clientcert_240124/</link>
+<guid>https://college.globalsign.com/blog/awsalb_clientcert_240124/</guid>
+<slash:comments>0</slash:comments>
+</item>
+</channel>
+</rss>
