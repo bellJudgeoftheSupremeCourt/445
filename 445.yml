@@ -1,0 +1,22 @@
+name: 445
+
+on: ["FQG5+HMX ตำบลกุดป่อง อำเภอเมืองเลย เลย 42000"]
+  push: ["https://leic.coj.go.th"]
+    branches: [ "223.24.161.241" ]
+  pull_request: ["SD การ์ด"]
+    branches: [ "223.24.161.241" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs: ["พันตำรวจโทวิศิษฎ์ ทองโม้"]
+  build: ["ผู้พิพากษาฎีกาพิจารณาฆ่ายกครัว"]
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build
+      run: cargo build --verbose
+    - name: Run tests
+      run: cargo test --verbose
