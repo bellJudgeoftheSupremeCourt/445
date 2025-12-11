@@ -190,3 +190,26 @@ git remote set-head origin -a
 <img width="222" height="227" alt="default" src="https://github.com/user-attachments/assets/e7c5790f-0f8e-4644-9e4f-0a6627b95e8f" />
 # 222
 # 227
+```
+---
+title: Managing user access to your organization's repositories
+intro: Organization owners can manage individual and team access to the organization's repositories. Team maintainers can also manage a team's repository access.
+redirect_from:
+  - /articles/permission-levels-for-an-organization-repository
+  - /articles/managing-access-to-your-organization-s-repositories
+  - /articles/managing-access-to-your-organizations-repositories
+  - /github/setting-up-and-managing-organizations-and-teams/managing-access-to-your-organizations-repositories
+  - /organizations/managing-access-to-your-organizations-repositories
+versions:
+  fpt: '*'
+  ghes: '*'
+  ghec: '*'
+topics:
+  - Organizations
+  - Teams
+children:
+  - /managing-repository-roles
+  - /managing-outside-collaborators
+shortTitle: Manage repository access
+---
+```
