@@ -12,6 +12,40 @@ https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Universal_Code_o
 https://stats.wikimedia.org/#/commons.wikimedia.org
 https://developer.wikimedia.org/
 https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Cookie_statement
+```
+==================
+Maintainer's guide
+==================
+
+The sections below document how to setup and maintain a CKAN site, including
+installing, upgrading and configuring CKAN and its features and extensions.
+
+.. toctree::
+   :maxdepth: 1
+
+   releases
+   installing/index
+   upgrading/index
+   getting-started
+   database-management
+   cli
+   authorization
+   data-viewer
+   filestore
+   datastore
+   table-designer
+   apps-ideas
+   tag-vocabularies
+   form-integration
+   linked-data-and-rdf
+   background-tasks
+   email-notifications
+   tracking
+   multilingual
+   stats
+   configuration
+   
+```
 
 ```
 {{Infobox programming language
