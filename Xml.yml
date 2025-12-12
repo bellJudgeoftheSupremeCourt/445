@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Feed of &#34;toz/MediLog&#34;</title>
+    <link>https://codeberg.org/toz/MediLog</link>
+    <description></description>
+    <pubDate>Fri, 12 Dec 2025 22:50:49 +0100</pubDate>
+    <item>
+      <title>toz pushed to main at toz/MediLog</title>
+      <link>https://codeberg.org/toz/MediLog/commit/94f2cae4399aba54be242d7b06646280576fb5fa</link>
+      <description>&lt;a href=&#34;https://codeberg.org/toz/MediLog/commit/94f2cae4399aba54be242d7b06646280576fb5fa&#34;&gt;94f2cae4399aba54be242d7b06646280576fb5fa&lt;/a&gt;&#xA;Updated Readme.md to reflect new fdroid flavour</description>
+      <content:encoded><![CDATA[<a href="https://codeberg.org/toz/MediLog/commit/94f2cae4399aba54be242d7b06646280576fb5fa" rel="nofollow">94f2cae4399aba54be242d7b06646280576fb5fa</a>
+Updated Readme.md to reflect new fdroid flavour]]></content:encoded>
+      <author>toz</author>
+      <guid isPermaLink="false">79642833: https://codeberg.org/toz/MediLog/commit/94f2cae4399aba54be242d7b06646280576fb5fa</guid>
+      <pubDate>Thu, 11 Dec 2025 17:21:30 +0100</pubDate>
+    </item>
+    <item>
+      <title>toz closed issue toz/MediLog#583</title>
+      <link>https://codeberg.org/toz/MediLog/issues/583#issuecomment-8862921</link>
+      <description>Enable reproducible builds on F-Droid</description>
+      <content:encoded><![CDATA[Enable reproducible builds on F-Droid]]></content:encoded>
+      <author>toz</author>
+      <guid isPermaLink="false">79637997: https://codeberg.org/toz/MediLog/issues/583#issuecomment-8862921</guid>
+      <pubDate>Thu, 11 Dec 2025 16:57:22 +0100</pubDate>
+    </item>
+    <item>
+      <title>toz commented on issue toz/MediLog#583</title>
+      <link>https://codeberg.org/toz/MediLog/issues/583#issuecomment-8862918</link>
+      <description>Enable reproducible builds on F-Droid&#xA;&#xA;&lt;p dir=&#34;auto&#34;&gt;Done: &lt;a href=&#34;https://f-droid.org/en/packages/com.zell_mbc.medilog.fdroid/&#34; rel=&#34;nofollow&#34;&gt;https://f-droid.org/en/packages/com.zell_mbc.medilog.fdroid/&lt;/a&gt;&lt;/p&gt;&#xA;</description>
+      <content:encoded><![CDATA[Enable reproducible builds on F-Droid
+
+<p dir="auto">Done: <a href="https://f-droid.org/en/packages/com.zell_mbc.medilog.fdroid/" rel="nofollow">https://f-droid.org/en/packages/com.zell_mbc.medilog.fdroid/</a></p>
+]]></content:encoded>
+      <author>toz</author>
+      <guid isPermaLink="false">79637973: https://codeberg.org/toz/MediLog/issues/583#issuecomment-8862918</guid>
+      <pubDate>Thu, 11 Dec 2025 16:57:21 +0100</pubDate>
+    </item>
+    <item>
+      <title>toz commented on issue toz/MediLog#587</title>
+      <link>https://codeberg.org/toz/MediLog/issues/587#issuecomment-8857539</link>
+      <description>[Fluid] Empty entry should not be possible&#xA;&#xA;&lt;p dir=&#34;auto&#34;&gt;Genuine regression I am afraid, thanks for bringing it up &lt;span class=&#34;emoji&#34; aria-label=&#34;thumbs up&#34; data-alias=&#34;+1&#34;&gt;👍&lt;/span&gt;&lt;/p&gt;&#xA;</description>
+      <content:encoded><![CDATA[[Fluid] Empty entry should not be possible
+
+<p dir="auto">Genuine regression I am afraid, thanks for bringing it up <span class="emoji" aria-label="thumbs up" data-alias="+1">👍</span></p>
+]]></content:encoded>
+      <author>toz</author>
+      <guid isPermaLink="false">79550811: https://codeberg.org/toz/MediLog/issues/587#issuecomment-8857539</guid>
+      <pubDate>Thu, 11 Dec 2025 10:54:23 +0100</pubDate>
+    </item>
+    <item>
+      <title>bochecha opened issue toz/MediLog#587</title>
+      <link>https://codeberg.org/toz/MediLog/issues/587</link>
+      <description>587#[Fluid] Empty entry should not be possible#</description>
+      <content:encoded><![CDATA[<p dir="auto">I distinctly remember that before, an empty entry was forbidden, and it would complain that entering any water volume was mandatory, but not anymore. Did that change on purpose? <span class="emoji" aria-label="thinking face" data-alias="thinking">🤔</span></p>
+<p dir="auto">As it is, now I can press enter without entering any volume at all, leading to this &#34;interesting&#34; display.</p>
+<p dir="auto">My question is, should empty values be guarded against once again? <span class="emoji" aria-label="thinking face" data-alias="thinking">🤔</span></p>
+]]></content:encoded>
+      <author>bochecha</author>
+      <guid isPermaLink="false">79496805: https://codeberg.org/toz/MediLog/issues/587</guid>
+      <pubDate>Thu, 11 Dec 2025 03:08:14 +0100</pubDate>
+    </item>
+    <item>
+      <title>izzy commented on issue toz/MediLog#586</title>
+      <link>https://codeberg.org/toz/MediLog/issues/586#issuecomment-8840526</link>
+      <description>APK size&#xA;&#xA;&lt;p dir=&#34;auto&#34;&gt;Here are the biggest files in the APK:&lt;/p&gt;&#xA;</description>
+      <content:encoded><![CDATA[APK size
+
+<p dir="auto">Here are the biggest files in the APK:</p>
+]]></content:encoded>
+      <author>izzy</author>
+      <guid isPermaLink="false">79290372: https://codeberg.org/toz/MediLog/issues/586#issuecomment-8840526</guid>
+      <pubDate>Wed, 10 Dec 2025 12:08:27 +0100</pubDate>
+    </item>
+    <item>
+      <title>toz closed issue toz/MediLog#551</title>
+      <link>https://codeberg.org/toz/MediLog/issues/551#issuecomment-8839962</link>
+      <description>Charts: Fixed somewhat odd y-axis labeling</description>
+      <content:encoded><![CDATA[Charts: Fixed somewhat odd y-axis labeling]]></content:encoded>
+      <author>toz</author>
+      <guid isPermaLink="false">79278948: https://codeberg.org/toz/MediLog/issues/551#issuecomment-8839962</guid>
+      <pubDate>Wed, 10 Dec 2025 11:20:38 +0100</pubDate>
+    </item>
+    <item>
+      <title>toz commented on issue toz/MediLog#551</title>
+      <link>https://codeberg.org/toz/MediLog/issues/551#issuecomment-8839959</link>
+      <description>Charts: Fixed somewhat odd y-axis labeling&#xA;&#xA;&lt;p dir=&#34;auto&#34;&gt;Hopefully this release finally addresses this issue?&lt;/p&gt;&#xA;</description>
+      <content:encoded><![CDATA[Charts: Fixed somewhat odd y-axis labeling
+
+<p dir="auto">Hopefully this release finally addresses this issue?</p>
+]]></content:encoded>
+      <author>toz</author>
+      <guid isPermaLink="false">79278921: https://codeberg.org/toz/MediLog/issues/551#issuecomment-8839959</guid>
+      <pubDate>Wed, 10 Dec 2025 11:20:38 +0100</pubDate>
+    </item>
+    <item>
+      <title>toz closed issue toz/MediLog#580</title>
+      <link>https://codeberg.org/toz/MediLog/issues/580#issuecomment-8839956</link>
+      <description>Show timestamp in diary chart details</description>
+      <content:encoded><![CDATA[Show timestamp in diary chart details]]></content:encoded>
+      <author>toz</author>
+      <guid isPermaLink="false">79278813: https://codeberg.org/toz/MediLog/issues/580#issuecomment-8839956</guid>
+      <pubDate>Wed, 10 Dec 2025 11:19:57 +0100</pubDate>
+    </item>
+    <item>
+      <title>toz closed issue toz/MediLog#582</title>
+      <link>https://codeberg.org/toz/MediLog/issues/582#issuecomment-8839941</link>
+      <description>&#34;Add&#34; button covered by keyboard in diary</description>
+      <content:encoded><![CDATA[&#34;Add&#34; button covered by keyboard in diary]]></content:encoded>
+      <author>toz</author>
+      <guid isPermaLink="false">79278747: https://codeberg.org/toz/MediLog/issues/582#issuecomment-8839941</guid>
+      <pubDate>Wed, 10 Dec 2025 11:19:41 +0100</pubDate>
+    </item>
+    <item>
+      <title>toz commented on issue toz/MediLog#582</title>
+      <link>https://codeberg.org/toz/MediLog/issues/582#issuecomment-8839938</link>
+      <description>&#34;Add&#34; button covered by keyboard in diary&#xA;&#xA;&lt;p dir=&#34;auto&#34;&gt;Done&lt;/p&gt;&#xA;</description>
+      <content:encoded><![CDATA[&#34;Add&#34; button covered by keyboard in diary
+
+<p dir="auto">Done</p>
+]]></content:encoded>
+      <author>toz</author>
+      <guid isPermaLink="false">79278723: https://codeberg.org/toz/MediLog/issues/582#issuecomment-8839938</guid>
+      <pubDate>Wed, 10 Dec 2025 11:19:41 +0100</pubDate>
+    </item>
+    <item>
+      <title>toz closed issue toz/MediLog#584</title>
+      <link>https://codeberg.org/toz/MediLog/issues/584#issuecomment-8839917</link>
+      <description>New weight entry does not scroll into view</description>
+      <content:encoded><![CDATA[New weight entry does not scroll into view]]></content:encoded>
+      <author>toz</author>
+      <guid isPermaLink="false">79278684: https://codeberg.org/toz/MediLog/issues/584#issuecomment-8839917</guid>
+      <pubDate>Wed, 10 Dec 2025 11:19:18 +0100</pubDate>
+    </item>
+    <item>
+      <title>toz closed issue toz/MediLog#585</title>
+      <link>https://codeberg.org/toz/MediLog/issues/585#issuecomment-8839911</link>
+      <description>Unable to share settings between product flavours</description>
+      <content:encoded><![CDATA[Unable to share settings between product flavours]]></content:encoded>
+      <author>toz</author>
+      <guid isPermaLink="false">79278579: https://codeberg.org/toz/MediLog/issues/585#issuecomment-8839911</guid>
+      <pubDate>Wed, 10 Dec 2025 11:19:00 +0100</pubDate>
+    </item>
+    <item>
+      <title>toz commented on issue toz/MediLog#585</title>
+      <link>https://codeberg.org/toz/MediLog/issues/585#issuecomment-8839908</link>
+      <description>Unable to share settings between product flavours&#xA;&#xA;&lt;p dir=&#34;auto&#34;&gt;Done&lt;/p&gt;&#xA;</description>
+      <content:encoded><![CDATA[Unable to share settings between product flavours
+
+<p dir="auto">Done</p>
+]]></content:encoded>
+      <author>toz</author>
+      <guid isPermaLink="false">79278555: https://codeberg.org/toz/MediLog/issues/585#issuecomment-8839908</guid>
+      <pubDate>Wed, 10 Dec 2025 11:19:00 +0100</pubDate>
+    </item>
+    <item>
+      <title>toz commented on issue toz/MediLog#586</title>
+      <link>https://codeberg.org/toz/MediLog/issues/586#issuecomment-8839884</link>
+      <description>APK size&#xA;&#xA;&lt;p dir=&#34;auto&#34;&gt;I see, to be honest I can&amp;#39;t even tell where this slow increase is coming from. Looking at older apk&amp;#39;s, sizes seem to fluctuate a lot.&lt;/p&gt;&#xA;</description>
+      <content:encoded><![CDATA[APK size
+
+<p dir="auto">I see, to be honest I can&#39;t even tell where this slow increase is coming from. Looking at older apk&#39;s, sizes seem to fluctuate a lot.</p>
+]]></content:encoded>
+      <author>toz</author>
+      <guid isPermaLink="false">79278381: https://codeberg.org/toz/MediLog/issues/586#issuecomment-8839884</guid>
+      <pubDate>Wed, 10 Dec 2025 11:17:47 +0100</pubDate>
+    </item>
+    <item>
+      <title>izzy opened issue toz/MediLog#586</title>
+      <link>https://codeberg.org/toz/MediLog/issues/586</link>
+      <description>586#APK size#</description>
+      <content:encoded><![CDATA[<p dir="auto">The size of the APK has grown a lot meanwhile, and is closing up to the per-app size limit at IzzyOnDroid. Would you consider providing per-ABI-split APKs, so we&#39;d switch to the arm64 (or if you prefer, armeabi) build then? That would reduce the APK size by about 15 MB, and we&#39;d again have enough leeway to keep 2 versions.</p>
+<p dir="auto">An alternative option would be to enable &#34;legacy compression&#34; of the native libs, which would most likely come close to the same size reduction (currently, native libraries are stored into the APK uncompressed, so Android can use them directly from inside the APK – while with legacy compression, it would need to extract the ones for the device&#39;s architecture).</p>
+<p dir="auto">Thanks in advance for considering!</p>
+]]></content:encoded>
+      <author>izzy</author>
+      <guid isPermaLink="false">78886635: https://codeberg.org/toz/MediLog/issues/586</guid>
+      <pubDate>Mon, 08 Dec 2025 22:31:21 +0100</pubDate>
+    </item>
+    <item>
+      <title>toz released v3.5.0 at toz/MediLog</title>
+      <link>https://codeberg.org/toz/MediLog/releases/tag/v3.5.0</link>
+      <description></description>
+      <author>toz</author>
+      <guid isPermaLink="false">78789387: https://codeberg.org/toz/MediLog/releases/tag/v3.5.0</guid>
+      <pubDate>Mon, 08 Dec 2025 16:03:48 +0100</pubDate>
+    </item>
+    <item>
+      <title>toz pushed tag v3.5.0 to toz/MediLog</title>
+      <link>https://codeberg.org/toz/MediLog/src/tag/v3.5.0</link>
+      <description></description>
+      <author>toz</author>
+      <guid isPermaLink="false">78788883: https://codeberg.org/toz/MediLog/src/tag/v3.5.0</guid>
+      <pubDate>Mon, 08 Dec 2025 16:01:33 +0100</pubDate>
+    </item>
+    <item>
+      <title>toz pushed to main at toz/MediLog</title>
+      <link>https://codeberg.org/toz/MediLog/commit/b044844fbb89416317a1d0b9d9385e4ee4c07da6</link>
+      <description>&lt;a href=&#34;https://codeberg.org/toz/MediLog/commit/b044844fbb89416317a1d0b9d9385e4ee4c07da6&#34;&gt;b044844fbb89416317a1d0b9d9385e4ee4c07da6&lt;/a&gt;&#xA;Release version 3.5.0, build 5506</description>
+      <content:encoded><![CDATA[<a href="https://codeberg.org/toz/MediLog/commit/b044844fbb89416317a1d0b9d9385e4ee4c07da6" rel="nofollow">b044844fbb89416317a1d0b9d9385e4ee4c07da6</a>
+Release version 3.5.0, build 5506]]></content:encoded>
+      <author>toz</author>
+      <guid isPermaLink="false">78786660: https://codeberg.org/toz/MediLog/commit/b044844fbb89416317a1d0b9d9385e4ee4c07da6</guid>
+      <pubDate>Mon, 08 Dec 2025 15:54:58 +0100</pubDate>
+    </item>
+    <item>
+      <title>toz pushed to main at toz/MediLog</title>
+      <link>/toz/MediLog/compare/2530658d600781fea8e02fac11ec171ef28ff681...57cad014aca8d7a87e3a8773dd33014b90eef7c6</link>
+      <description>&lt;a href=&#34;https://codeberg.org/toz/MediLog/commit/57cad014aca8d7a87e3a8773dd33014b90eef7c6&#34;&gt;57cad014aca8d7a87e3a8773dd33014b90eef7c6&lt;/a&gt;&#xA;Fixed settings import not working as expected&#xA;&#xA;&lt;a href=&#34;https://codeberg.org/toz/MediLog/commit/4a1d603225e53acff0743e53193e35ba08bc9ffe&#34;&gt;4a1d603225e53acff0743e53193e35ba08bc9ffe&lt;/a&gt;&#xA;Merge branch &amp;#39;main&amp;#39; of &lt;a href=&#34;https://translate.codeberg.org/git/medilog/core&#34; class=&#34;link&#34;&gt;https://translate.codeberg.org/git/medilog/core&lt;/a&gt;&#xA;&#xA;&lt;a href=&#34;https://codeberg.org/toz/MediLog/commit/7b24fa76e67b1f952ad41118483fbc8d9b5b8fc3&#34;&gt;7b24fa76e67b1f952ad41118483fbc8d9b5b8fc3&lt;/a&gt;&#xA;Translated using Weblate (Italian)&#xA;&#xA;&lt;a href=&#34;https://codeberg.org/toz/MediLog/commit/f712f6e54403f9ecab6135ab5393204571cfa17e&#34;&gt;f712f6e54403f9ecab6135ab5393204571cfa17e&lt;/a&gt;&#xA;Translated using Weblate (French)&#xA;&#xA;&lt;a href=&#34;https://codeberg.org/toz/MediLog/commit/c5e49e5b550c50ba1a48577c060adff8b748d206&#34;&gt;c5e49e5b550c50ba1a48577c060adff8b748d206&lt;/a&gt;&#xA;Translated using Weblate (Ukrainian)</description>
+      <content:encoded><![CDATA[<a href="https://codeberg.org/toz/MediLog/commit/57cad014aca8d7a87e3a8773dd33014b90eef7c6" rel="nofollow">57cad014aca8d7a87e3a8773dd33014b90eef7c6</a>
+Fixed settings import not working as expected
+
+<a href="https://codeberg.org/toz/MediLog/commit/4a1d603225e53acff0743e53193e35ba08bc9ffe" rel="nofollow">4a1d603225e53acff0743e53193e35ba08bc9ffe</a>
+Merge branch &#39;main&#39; of <a href="https://translate.codeberg.org/git/medilog/core" rel="nofollow">https://translate.codeberg.org/git/medilog/core</a>
+
+<a href="https://codeberg.org/toz/MediLog/commit/7b24fa76e67b1f952ad41118483fbc8d9b5b8fc3" rel="nofollow">7b24fa76e67b1f952ad41118483fbc8d9b5b8fc3</a>
+Translated using Weblate (Italian)
+
+<a href="https://codeberg.org/toz/MediLog/commit/f712f6e54403f9ecab6135ab5393204571cfa17e" rel="nofollow">f712f6e54403f9ecab6135ab5393204571cfa17e</a>
+Translated using Weblate (French)
+
+<a href="https://codeberg.org/toz/MediLog/commit/c5e49e5b550c50ba1a48577c060adff8b748d206" rel="nofollow">c5e49e5b550c50ba1a48577c060adff8b748d206</a>
+Translated using Weblate (Ukrainian)]]></content:encoded>
+      <author>toz</author>
+      <guid isPermaLink="false">77917962: /toz/MediLog/compare/2530658d600781fea8e02fac11ec171ef28ff681...57cad014aca8d7a87e3a8773dd33014b90eef7c6</guid>
+      <pubDate>Fri, 05 Dec 2025 09:59:13 +0100</pubDate>
+    </item>
+    <item>
+      <title>toz opened issue toz/MediLog#585</title>
+      <link>https://codeberg.org/toz/MediLog/issues/585</link>
+      <description>585#Unable to share settings between product flavours#</description>
+      <content:encoded><![CDATA[<p dir="auto">Create a backup in e.g. Google Play version, restore in F-Droid version -&gt; settings won&#39;t import because Android auto created settings files differ</p>
+]]></content:encoded>
+      <author>toz</author>
+      <guid isPermaLink="false">77736447: https://codeberg.org/toz/MediLog/issues/585</guid>
+      <pubDate>Thu, 04 Dec 2025 16:57:04 +0100</pubDate>
+    </item>
+    <item>
+      <title>toz pushed to main at toz/MediLog</title>
+      <link>/toz/MediLog/compare/1fcd14cc47fcc5a9e53818ce826c06d77ed6ae69...2530658d600781fea8e02fac11ec171ef28ff681</link>
+      <description>&lt;a href=&#34;https://codeberg.org/toz/MediLog/commit/2530658d600781fea8e02fac11ec171ef28ff681&#34;&gt;2530658d600781fea8e02fac11ec171ef28ff681&lt;/a&gt;&#xA;Fixed tab list not auto scrolling when adding data with quick edit off&#xA;&#xA;&lt;a href=&#34;https://codeberg.org/toz/MediLog/commit/cc40db9b304045bbd28857e06ca77386f7951aba&#34;&gt;cc40db9b304045bbd28857e06ca77386f7951aba&lt;/a&gt;&#xA;Added state counter to diary chart&#xA;&#xA;&lt;a href=&#34;https://codeberg.org/toz/MediLog/commit/a74290b5b06ea4b8d12a964caede6a057cea4ebd&#34;&gt;a74290b5b06ea4b8d12a964caede6a057cea4ebd&lt;/a&gt;&#xA;Added state counter to diary chart&#xA;&#xA;&lt;a href=&#34;https://codeberg.org/toz/MediLog/commit/de581b026da31c2796f8799794a88803edc26c55&#34;&gt;de581b026da31c2796f8799794a88803edc26c55&lt;/a&gt;&#xA;Added state counter to diary chart&#xA;&#xA;&lt;a href=&#34;https://codeberg.org/toz/MediLog/commit/faabaf4c18cf33f2c7842ee1c044caa49e5c4bea&#34;&gt;faabaf4c18cf33f2c7842ee1c044caa49e5c4bea&lt;/a&gt;&#xA;Fixed FAB not properly moving up when keyboard appears</description>
+      <content:encoded><![CDATA[<a href="https://codeberg.org/toz/MediLog/commit/2530658d600781fea8e02fac11ec171ef28ff681" rel="nofollow">2530658d600781fea8e02fac11ec171ef28ff681</a>
+Fixed tab list not auto scrolling when adding data with quick edit off
+
+<a href="https://codeberg.org/toz/MediLog/commit/cc40db9b304045bbd28857e06ca77386f7951aba" rel="nofollow">cc40db9b304045bbd28857e06ca77386f7951aba</a>
+Added state counter to diary chart
+
+<a href="https://codeberg.org/toz/MediLog/commit/a74290b5b06ea4b8d12a964caede6a057cea4ebd" rel="nofollow">a74290b5b06ea4b8d12a964caede6a057cea4ebd</a>
+Added state counter to diary chart
+
+<a href="https://codeberg.org/toz/MediLog/commit/de581b026da31c2796f8799794a88803edc26c55" rel="nofollow">de581b026da31c2796f8799794a88803edc26c55</a>
+Added state counter to diary chart
+
+<a href="https://codeberg.org/toz/MediLog/commit/faabaf4c18cf33f2c7842ee1c044caa49e5c4bea" rel="nofollow">faabaf4c18cf33f2c7842ee1c044caa49e5c4bea</a>
+Fixed FAB not properly moving up when keyboard appears]]></content:encoded>
+      <author>toz</author>
+      <guid isPermaLink="false">77695068: /toz/MediLog/compare/1fcd14cc47fcc5a9e53818ce826c06d77ed6ae69...2530658d600781fea8e02fac11ec171ef28ff681</guid>
+      <pubDate>Thu, 04 Dec 2025 14:02:01 +0100</pubDate>
+    </item>
+    <item>
+      <title>toz opened issue toz/MediLog#584</title>
+      <link>https://codeberg.org/toz/MediLog/issues/584</link>
+      <description>584#New weight entry does not scroll into view#</description>
+      <content:encoded><![CDATA[<blockquote>
+<p dir="auto">After entering a new Weight entry (&#34;Quick data entry&#34; OFF) the new weight<br/>
+entry appears missing until I scroll up. It&#39;s as if the data grid is<br/>
+scrolled down exactly one row so that it appears just like it did before
