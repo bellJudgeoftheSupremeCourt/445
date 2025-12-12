@@ -1,0 +1,161 @@
+Skip to content
+Navigation Menu
+WikipediaLibrary
+TWLight
+
+Code
+Issues
+Pull requests
+17
+Actions
+Wiki
+Security
+Insights
+Wikipedia Library - test and deploy
+Bump django from 4.2.24 to 4.2.27 in /requirements #1279
+Jobs
+Run details
+cicd
+succeeded last week in 3m 6s
+Search logs
+1s
+22s
+1m 52s
+ 96d7347ba317 Waiting 
+ cffdfa9765de Waiting 
+ 4f4fb700ef54 Waiting 
+ 892acd9bdcf5 Waiting 
+ 63e5bc7682b8 Downloading [>                                                  ]  320.6kB/30.45MB
+ 63e5bc7682b8 Downloading [==========>                                        ]  6.494MB/30.45MB
+ 63e5bc7682b8 Downloading [======================>                            ]  13.67MB/30.45MB
+ 63e5bc7682b8 Downloading [==================================>                ]  21.14MB/30.45MB
+ 9629f042e43d Downloading [==================================================>]  1.725kB/1.725kB
+ 9629f042e43d Verifying Checksum 
+ 9629f042e43d Download complete 
+ 63e5bc7682b8 Downloading [============================================>      ]   27.4MB/30.45MB
+ 63e5bc7682b8 Verifying Checksum 
+ 63e5bc7682b8 Download complete 
+ 63e5bc7682b8 Extracting [>                                                  ]  327.7kB/30.45MB
+ 63e5bc7682b8 Extracting [===========>                                       ]  6.881MB/30.45MB
+ 63e5bc7682b8 Extracting [=================>                                 ]  10.49MB/30.45MB
+ 63e5bc7682b8 Extracting [================================>                  ]  19.66MB/30.45MB
+ 62c1a43ca7d9 Downloading [>                                                  ]   67.5kB/5.613MB
+ 62c1a43ca7d9 Downloading [==>                                                ]  254.7kB/5.613MB
+ 63e5bc7682b8 Extracting [===========================================>       ]  26.54MB/30.45MB
+ 62c1a43ca7d9 Downloading [=======>                                           ]  867.7kB/5.613MB
+ 63e5bc7682b8 Extracting [================================================>  ]  29.49MB/30.45MB
+ 62c1a43ca7d9 Downloading [=========================>                         ]  2.861MB/5.613MB
+ 2540807a6100 Downloading [==================================================>]     113B/113B
+ 2540807a6100 Verifying Checksum 
+ 2540807a6100 Download complete 
+ 63e5bc7682b8 Extracting [==================================================>]  30.45MB/30.45MB
+ 62c1a43ca7d9 Verifying Checksum 
+ 62c1a43ca7d9 Download complete 
+ 63e5bc7682b8 Pull complete 
+ 9629f042e43d Extracting [==================================================>]  1.725kB/1.725kB
+ 9629f042e43d Extracting [==================================================>]  1.725kB/1.725kB
+ 892acd9bdcf5 Downloading [==================================================>]     332B/332B
+ 892acd9bdcf5 Verifying Checksum 
+ 892acd9bdcf5 Download complete 
+ 9629f042e43d Pull complete 
+ 62c1a43ca7d9 Extracting [>                                                  ]  65.54kB/5.613MB
+ 62c1a43ca7d9 Extracting [=======================================>           ]  4.391MB/5.613MB
+ 62c1a43ca7d9 Extracting [=========================================>         ]  4.653MB/5.613MB
+ 62c1a43ca7d9 Extracting [===========================================>       ]   4.85MB/5.613MB
+ 62c1a43ca7d9 Extracting [==================================================>]  5.613MB/5.613MB
+ 62c1a43ca7d9 Pull complete 
+ 2540807a6100 Extracting [==================================================>]     113B/113B
+ 2540807a6100 Extracting [==================================================>]     113B/113B
+ 2540807a6100 Pull complete 
+ 892acd9bdcf5 Extracting [==================================================>]     332B/332B
+ 892acd9bdcf5 Extracting [==================================================>]     332B/332B
+ 892acd9bdcf5 Pull complete 
+ cffdfa9765de Download complete 
+ 96d7347ba317 Downloading [==================================================>]  4.023kB/4.023kB
+ 96d7347ba317 Download complete 
+ 4f4fb700ef54 Downloading [==================================================>]      32B/32B
+ 4f4fb700ef54 Verifying Checksum 
+ 4f4fb700ef54 Download complete 
+ 0aa9032ee110 Downloading [>                                                  ]    527kB/71.13MB
+ 0aa9032ee110 Downloading [=>                                                 ]   2.13MB/71.13MB
+ 0aa9032ee110 Downloading [=>                                                 ]  2.657MB/71.13MB
+ 0aa9032ee110 Downloading [==>                                                ]  4.234MB/71.13MB
+ 0aa9032ee110 Downloading [====>                                              ]  6.889MB/71.13MB
+ 0aa9032ee110 Downloading [=====>                                             ]  8.481MB/71.13MB
+ 0aa9032ee110 Downloading [======>                                            ]  9.011MB/71.13MB
+ 0aa9032ee110 Downloading [=======>                                           ]  10.59MB/71.13MB
+ 0aa9032ee110 Downloading [=======>                                           ]  11.13MB/71.13MB
+ 0aa9032ee110 Downloading [========>                                          ]   12.7MB/71.13MB
+ 0aa9032ee110 Downloading [==========>                                        ]  14.83MB/71.13MB
+ 0aa9032ee110 Downloading [==========>                                        ]  15.36MB/71.13MB
+ 0aa9032ee110 Downloading [===========>                                       ]  16.94MB/71.13MB
+ 0aa9032ee110 Downloading [=============>                                     ]  19.61MB/71.13MB
+ 0aa9032ee110 Downloading [===============>                                   ]  21.73MB/71.13MB
+ 0aa9032ee110 Downloading [================>                                  ]  23.32MB/71.13MB
+ 0aa9032ee110 Downloading [=================>                                 ]  24.38MB/71.13MB
+ 0aa9032ee110 Downloading [===================>                               ]  27.55MB/71.13MB
+ 0aa9032ee110 Downloading [=====================>                             ]  30.19MB/71.13MB
+ 0aa9032ee110 Downloading [======================>                            ]  32.31MB/71.13MB
+ 0aa9032ee110 Downloading [========================>                          ]  34.94MB/71.13MB
+ 0aa9032ee110 Downloading [=========================>                         ]  35.99MB/71.13MB
+ 0aa9032ee110 Downloading [==========================>                        ]  38.11MB/71.13MB
+ 0aa9032ee110 Downloading [============================>                      ]  40.24MB/71.13MB
+ 0aa9032ee110 Downloading [=============================>                     ]  42.38MB/71.13MB
+ 0aa9032ee110 Downloading [===============================>                   ]  45.02MB/71.13MB
+ 0aa9032ee110 Downloading [================================>                  ]  46.61MB/71.13MB
+ 0aa9032ee110 Downloading [==================================>                ]  48.72MB/71.13MB
+ 0aa9032ee110 Downloading [===================================>               ]  50.84MB/71.13MB
+ 0aa9032ee110 Downloading [=====================================>             ]  52.94MB/71.13MB
+ 0aa9032ee110 Downloading [======================================>            ]  54.56MB/71.13MB
+ 0aa9032ee110 Downloading [=======================================>           ]  56.68MB/71.13MB
+ 0aa9032ee110 Downloading [=========================================>         ]  58.79MB/71.13MB
+ 0aa9032ee110 Downloading [==========================================>        ]   60.9MB/71.13MB
+ 0aa9032ee110 Downloading [============================================>      ]  63.01MB/71.13MB
+ 0aa9032ee110 Downloading [==============================================>    ]  65.66MB/71.13MB
+ 0aa9032ee110 Downloading [================================================>  ]  68.32MB/71.13MB
+ 0aa9032ee110 Downloading [=================================================> ]   69.9MB/71.13MB
+ 0aa9032ee110 Verifying Checksum 
+ 0aa9032ee110 Download complete 
+ 0aa9032ee110 Extracting [>                                                  ]  557.1kB/71.13MB
+ 0aa9032ee110 Extracting [=====>                                             ]  8.356MB/71.13MB
+ 0aa9032ee110 Extracting [============>                                      ]  17.27MB/71.13MB
+ 0aa9032ee110 Extracting [=================>                                 ]  24.51MB/71.13MB
+ 0aa9032ee110 Extracting [======================>                            ]  32.31MB/71.13MB
+ 0aa9032ee110 Extracting [=============================>                     ]  42.34MB/71.13MB
+ 0aa9032ee110 Extracting [==================================>                ]  49.58MB/71.13MB
+ 0aa9032ee110 Extracting [======================================>            ]  54.59MB/71.13MB
+ 0aa9032ee110 Extracting [===========================================>       ]  62.39MB/71.13MB
+ 0aa9032ee110 Extracting [==============================================>    ]  66.85MB/71.13MB
+ 0aa9032ee110 Extracting [================================================>  ]  69.07MB/71.13MB
+ 0aa9032ee110 Extracting [=================================================> ]  70.75MB/71.13MB
+ 0aa9032ee110 Extracting [==================================================>]  71.13MB/71.13MB
+ 0aa9032ee110 Pull complete 
+ 96d7347ba317 Extracting [==================================================>]  4.023kB/4.023kB
+ 96d7347ba317 Extracting [==================================================>]  4.023kB/4.023kB
+ 96d7347ba317 Pull complete 
+ cffdfa9765de Extracting [==================================================>]  8.367kB/8.367kB
+ cffdfa9765de Extracting [==================================================>]  8.367kB/8.367kB
+ cffdfa9765de Pull complete 
+ 4f4fb700ef54 Extracting [==================================================>]      32B/32B
+ 4f4fb700ef54 Extracting [==================================================>]      32B/32B
+ 4f4fb700ef54 Pull complete 
+ db Pulled 
+ Network twlight_default  Creating
+ Network twlight_default  Created
+ Volume "twlight_mysql"  Creating
+ Volume "twlight_mysql"  Created
+ Container twlight-db-1  Creating
+ Container twlight-db-1  Created
+ Container twlight-twlight-1  Creating
+ Container twlight-twlight-1  Created
+ Container twlight-db-1  Starting
+ Container twlight-db-1  Started
+ Container twlight-twlight-1  Starting
+ Container twlight-twlight-1  Started
+15s
+1s
+31s
+0s
+0s
+0s
+0s
