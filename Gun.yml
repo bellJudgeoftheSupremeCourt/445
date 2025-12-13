@@ -1,0 +1,21 @@
+{{Short description|Type of free content license}}
+{{Distinguish|Artistic License}}
+
+{{Infobox software license
+| name = Free Art License<br />''{{lang|fr|(Licence Art Libre)}}''
+| image = Licence Art Libre.svg
+| caption = Logo
+| author = 
+| version = 1.3
+| publisher = Copyleft Attitude
+| date = 8 April 2007<ref>[https://web.archive.org/web/20070702152109/http://artlibre.org/archives/news/302 LAL 1.3], copy in [[Internet Archive]] {{in lang|fr}}</ref>
+| OSI approved = 
+| Debian approved = 
+| Free Software = Yes<ref name="fsf">{{cite web |url=https://www.gnu.org/licenses/license-list.en.html#FreeArt |title=Various Licenses and Comments about Them|website=Free Software Foundation |accessdate=2 August 2018 |date=26 June 2018}}</ref>
+| GPL compatible = No<ref name="fsf"/> (for possible exceptions see the [[#Compatibility|compatibility section in this article]])
+| copyleft = Yes<ref name="fsf"/>
+| linking = 
+| website = [https://artlibre.org/ artlibre.org]
+}}
+
+The '''Free Art License''' ('''FAL''') ({{langx|fr|Licence Art Libre, LAL}}) is a [[copyleft]] [[license]] that grants the right to freely copy, [[distribution (economics)|distribute]], and [[derivative work|transform]] creative works except for computer hardware and software, including for commercial use.<ref>{{Cite web |title=FAQ_eng {{!}} Copyleft Attitude |url=https://artlibre.org/faq_eng/#370 |access-date=2024-02-03 |website=artlibre.org}}</ref>
